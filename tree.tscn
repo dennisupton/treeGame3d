@@ -2,6 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://dmuns2w2rh0s5" path="res://wind.gdshader" id="1_brfkd"]
 [ext_resource type="Script" uid="uid://dgtlchu8wuedn" path="res://tree.gd" id="1_nnvrw"]
+[ext_resource type="AudioStream" uid="uid://b0e8omndsdoiq" path="res://thud.mp3" id="3_gvmkm"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tht1a"]
 resource_name = "Tree"
@@ -120,6 +121,8 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [node name="tree" type="RigidBody3D" unique_id=1333644917 groups=["tree"]]
 mass = 750.0
 freeze = true
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_nnvrw")
 
 [node name="Trunk" type="MeshInstance3D" parent="." unique_id=626300000]
@@ -156,3 +159,6 @@ scale_amount_curve = SubResource("Curve_nnvrw")
 color_ramp = SubResource("Gradient_7mycd")
 hue_variation_min = -0.49
 hue_variation_max = 0.38
+
+[node name="fall" type="AudioStreamPlayer3D" parent="." unique_id=1640826595]
+stream = ExtResource("3_gvmkm")
