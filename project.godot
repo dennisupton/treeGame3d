@@ -10,14 +10,18 @@ config_version=5
 
 [application]
 
-config/name="treeGame3D"
-run/main_scene="uid://b0ay7uv2djtul"
+config/name="incrementalProto"
+run/main_scene="uid://dp73ut5kytmkk"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://images/icon.svg"
 
 [autoload]
 
 InputManager="*uid://b1wabhuei88xg"
+
+[display]
+
+window/stretch/mode="viewport"
 
 [editor_plugins]
 
@@ -95,3 +99,4 @@ enter={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+textures/vram_compression/import_etc2_astc=true

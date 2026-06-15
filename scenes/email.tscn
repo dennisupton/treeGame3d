@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://brtpfubeib45d"]
+
+[ext_resource type="Theme" uid="uid://ciosglxnflv5n" path="res://office.theme" id="1_85euw"]
+[ext_resource type="Texture2D" uid="uid://b3vwobxmeuvu" path="res://images/important.svg" id="2_bd1t5"]
+
+[node name="Email" type="Button" unique_id=1475606214]
+custom_minimum_size = Vector2(0, 40)
+offset_right = 489.0
+offset_bottom = 48.0
+size_flags_horizontal = 3
+theme = ExtResource("1_85euw")
+theme_override_font_sizes/font_size = 25
+text = "very important emal"
+icon = ExtResource("2_bd1t5")
+alignment = 0
+text_overrun_behavior = 3
