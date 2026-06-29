@@ -14,6 +14,7 @@ func checkBin():
 	for i in $Area3D.get_overlapping_bodies():
 		if i.is_in_group("tree"):
 			i.queue_free()
-			$"..".money += 5
-			$"../CanvasLayer/Control/Label".text = "$ "+str($"..".money)
-			$"../audio/money".play()
+			#$"../..".money += 5
+			#$"../CanvasLayer/Control/Label".text = "$ "+str($"..".money)
+			#$"../audio/money".play()
+ 

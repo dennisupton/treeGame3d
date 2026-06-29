@@ -56,7 +56,7 @@ func _on_email_timer_timeout() -> void:
 	$emailTimer.wait_time = 2+(random.randi_range(5,8)/((index+2)*0.5))
 	$emailTimer.start()
 	if $OS/split/Inbox/Emails.get_child_count()<8 and escapeReady:
-		if index>10+escapeIndex*2:
+		if index>5+escapeIndex*2:
 			spawn_email(escapeEmails[escapeIndex])
 			escapeIndex += 1
 			$AnimationPlayer.speed_scale = 1

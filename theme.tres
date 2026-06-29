@@ -1,6 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://b518xsmddhkom"]
 
 [ext_resource type="FontFile" uid="uid://c51qgrxfu1of2" path="res://PixelifySans-VariableFont_wght.ttf" id="1_e1x85"]
+[ext_resource type="FontFile" uid="uid://w47rkt6ewd0q" path="res://Nunito-VariableFont_wght.ttf" id="2_cjfk0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e1x85"]
 content_margin_left = 4.0
@@ -91,6 +92,13 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 corner_detail = 2
 
+[sub_resource type="FontVariation" id="FontVariation_epphy"]
+base_font = ExtResource("2_cjfk0")
+variation_opentype = {
+2003265652: 537
+}
+variation_embolden = 0.3
+
 [resource]
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
@@ -119,4 +127,7 @@ Button/styles/pressed = SubResource("StyleBoxFlat_4c57u")
 HFlowContainer/constants/h_separation = 40
 HFlowContainer/constants/v_separation = 20
 Panel/styles/panel = SubResource("StyleBoxFlat_kek77")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_kek77")
+RichTextLabel/font_sizes/normal_font_size = 42
+RichTextLabel/fonts/normal_font = SubResource("FontVariation_epphy")
 VBoxContainer/constants/separation = 20

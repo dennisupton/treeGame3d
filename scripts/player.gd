@@ -5,13 +5,15 @@ extends CharacterBody3D
 @export var CARRY_SPEED = 2.0
 @export var speedMulti = 1.0
 @export var axeSpeed = 1.0
+@export var wheelbarrowTurnSpeed = 5.0  # how fast the wheelbarrow pivots toward a new direction
 
 const JUMP_VELOCITY = 4.5
 var holding = false
 var random = RandomNumberGenerator.new()
 var inShop = false
 var damage = 1.0
-
+var driving = false
+var controlling = self
 func chop():
 	for i in $player/Area3D.get_overlapping_bodies():
 		if i.is_in_group("tree"):
@@ -25,6 +27,19 @@ func hasBodyInGroup(bodies,group):
 			return i
 	return false
 
+func pickup(object):
+	object.freeze = true
+	object.set_collision_layer_value(1, false)
+	$player/hands.show()
+	get_parent().remove_child(object)
+	if object.is_in_group("tree"):
+		$player/treeHold.add_child(object)
+	else:
+		$player/hold.add_child(object)
+	object.position = Vector3.ZERO
+	object.rotation = Vector3.ZERO
+
+
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
@@ -36,10 +51,13 @@ func _physics_process(delta: float) -> void:
 	if input_dir:
 		$player/Axe.hide()
 		$AnimationPlayer.play("walk")
-		if input_dir.y > 0:
-			$player.rotation.y = lerp_angle($player.rotation.y,PI + input_dir.x * 0.5*PI,rotationSpeed)
+		if controlling == self:
+			if input_dir.y > 0:
+				$player.rotation.y = lerp_angle($player.rotation.y,PI + input_dir.x * 0.5*PI,rotationSpeed)
+			else:
+				$player.rotation.y = lerp_angle($player.rotation.y, input_dir.x * -0.5*PI,rotationSpeed)
 		else:
-			$player.rotation.y = lerp_angle($player.rotation.y, input_dir.x * -0.5*PI,rotationSpeed)
+			$player.rotation.y = lerp_angle($player.rotation.y, 0.0, rotationSpeed)
 	elif $AnimationPlayer.current_animation == "walk":
 		$AnimationPlayer.stop()
 		
@@ -49,23 +67,15 @@ func _physics_process(delta: float) -> void:
 			if i.is_in_group("tree") and i.getForceSum()< 0.5 and not holding:
 				isItem = true
 				if i.chopped:
-					i.freeze = true
-					i.set_collision_layer_value(1, false)
-					$player/hands.show()
-					get_parent().remove_child(i)
-					$player/treeHold.add_child(i)
-					i.position = Vector3.ZERO
-					i.rotation = Vector3.ZERO
+					pickup(i)
 					holding = "tree"
 			elif i.is_in_group("acorn") and not holding:
-				i.freeze = true
-				i.set_collision_layer_value(1, false)
-				$player/hands.show()
-				get_parent().remove_child(i)
-				$player/hold.add_child(i)
-				i.position = Vector3.ZERO
-				i.rotation = Vector3.ZERO
+				pickup(i)
 				holding = "acorn"
+			elif i.name == "wheelbarrow":
+				driving = "wheelbarrow"
+				controlling = i
+				set_collision_layer_value(1, false)
 		if isItem and not holding and not $AnimationPlayer.current_animation:
 			$AnimationPlayer.stop()
 			$"../audio/chop".pitch_scale = random.randf_range(0.8,1.2)
@@ -127,16 +137,39 @@ func _physics_process(delta: float) -> void:
 	else:
 		$camPivot/Camera3D.position = lerp($camPivot/Camera3D.position,Vector3(3.802,6.334,0),0.2)
 		$camPivot/Camera3D.rotation_degrees = lerp($camPivot/Camera3D.rotation_degrees,Vector3(-49,90,1),0.2)
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction and not inShop:
-		if holding:
-			velocity.x = -sin($player.rotation.y) * CARRY_SPEED * speedMulti
-			velocity.z = -cos($player.rotation.y) * CARRY_SPEED* speedMulti
-		else:
-			velocity.x = -sin($player.rotation.y) * SPEED* speedMulti
-			velocity.z = -cos($player.rotation.y) * SPEED* speedMulti
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED* speedMulti)
-		velocity.z = move_toward(velocity.z, 0, SPEED* speedMulti)
 
-	move_and_slide()
+	var moveSpeed = (CARRY_SPEED if holding else SPEED) * speedMulti
+	if holding:
+		moveSpeed = CARRY_SPEED
+	else:
+		moveSpeed = SPEED
+
+	moveSpeed *= speedMulti
+	
+	if controlling == self:
+		if input_dir and not inShop:
+			controlling.velocity.x = -sin($player.rotation.y) * moveSpeed
+			controlling.velocity.z = -cos($player.rotation.y) * moveSpeed
+		else:
+			controlling.velocity.x = move_toward(velocity.x, 0, moveSpeed)
+			controlling.velocity.z = move_toward(velocity.z, 0, moveSpeed)
+	else:
+		if input_dir and not inShop:
+			var target_yaw
+			if input_dir.y > 0:
+				target_yaw = PI + input_dir.x * 0.5 * PI
+			else:
+				target_yaw = input_dir.x * -0.5 * PI
+			controlling.rotation.y = lerp_angle(controlling.rotation.y, target_yaw, wheelbarrowTurnSpeed * delta)
+			var align = clampf(cos(angle_difference(controlling.rotation.y, target_yaw)), 0.0, 1.0)
+			controlling.velocity.x = -sin(controlling.rotation.y) * moveSpeed * align
+			controlling.velocity.z = -cos(controlling.rotation.y) * moveSpeed * align
+		else:
+			controlling.velocity.x = move_toward(controlling.velocity.x, 0, moveSpeed)
+			controlling.velocity.z = move_toward(controlling.velocity.z, 0, moveSpeed)
+
+	controlling.move_and_slide()
+	
+	if not controlling == self:
+		position = controlling.get_node("player").global_position
+		$player.rotation = controlling.get_node("player").global_rotation

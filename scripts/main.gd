@@ -7,6 +7,8 @@ var tree
 var treePositions = []
 var seperation = 3**2
 
+var whoIsTalking = false
+var animationLeader = false
 func tooClose(pos):
 	for i in treePositions:
 		if i.distance_squared_to(pos) < seperation:
@@ -40,6 +42,16 @@ func spawnAcorn(pos):
 	child.position = pos
 	add_child(child)
 
+func setLeader(NPC: String):
+	animationLeader = $NPCs.get_node(NPC)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if whoIsTalking:
+		$CanvasLayer/speech.size = Vector2.ZERO # re-fit to current text (top-level controls don't auto-shrink)
+		var screen_pos = $player/camPivot/Camera3D.unproject_position(whoIsTalking.get_node("textBoxPos").global_position)
+		$CanvasLayer/speech.position = Vector2(0,-40) + screen_pos - $CanvasLayer/speech.size/2.0
+	if animationLeader:
+		if not $player in animationLeader.get_node("Area3D").get_overlapping_bodies():
+			$NPCs/cutscene.speed_scale = 0
+		elif not animationLeader.needToStartCutscene:
+			$NPCs/cutscene.speed_scale = 1

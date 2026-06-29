@@ -662,7 +662,7 @@ bus = &"SFX"
 
 [node name="click" type="AudioStreamPlayer" parent="." unique_id=1323353537]
 stream = ExtResource("9_alkg7")
-volume_db = 13.827
+volume_db = -7.218
 pitch_scale = 0.5
 bus = &"SFX"
 
