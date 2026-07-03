@@ -23,7 +23,7 @@ func _ready() -> void:
 	for i in range(500):
 		var child = tree.instantiate()
 		var pos = Vector3(random.randf_range(-100,100),0,random.randf_range(-100,100))
-		while tooClose(pos):
+		while tooClose(pos) or Vector3.ZERO.distance_to(pos) < 58 :
 			pos = Vector3(random.randf_range(-100,100),0,random.randf_range(-100,100))
 		child.position = pos
 		treePositions.append(pos)
