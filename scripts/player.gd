@@ -10,10 +10,16 @@ extends CharacterBody3D
 const JUMP_VELOCITY = 4.5
 var holding = false
 var random = RandomNumberGenerator.new()
-var inShop = false
+var freeze = false
 var damage = 1.0
 var driving = false
 var controlling = self
+var defaultCamBasis  # follow-camera orientation, restored when leaving a fixed-cam area
+
+var whistling = false
+
+func _ready() -> void:
+	defaultCamBasis = $camPivot/Camera3D.transform.basis
 func chop():
 	for i in $player/Area3D.get_overlapping_bodies():
 		if i.is_in_group("tree"):
@@ -29,7 +35,7 @@ func hasBodyInGroup(bodies,group):
 
 func pickup(object):
 	object.freeze = true
-	object.set_collision_layer_value(1, false)
+	#object.set_collision_layer_value(1, false)
 	$player/hands.show()
 	get_parent().remove_child(object)
 	if object.is_in_group("tree"):
@@ -103,11 +109,11 @@ func _physics_process(delta: float) -> void:
 		$player/hands.hide()
 	
 	if Input.is_action_just_pressed("Enter"):
-		if hasBodyInGroup($player/Area3D.get_overlapping_bodies(),"shop") and not inShop:
+		if hasBodyInGroup($player/Area3D.get_overlapping_bodies(),"shop") and not freeze:
 			for i in $player/Area3D.get_overlapping_bodies():
 				if i.is_in_group("shop"):
 					$"../CanvasLayer/Control/Shop".makeButtons()
-					inShop = true
+					freeze = true
 					$"../store/AnimationPlayer".play("enter")
 					$"../store/AnimationPlayer".queue("idle")
 		elif holding and holding == "acorn" and not $"..".tooClose(position):
@@ -117,26 +123,21 @@ func _physics_process(delta: float) -> void:
 			$player/hands.hide()
 			$"..".spawnTree(position)
 	
-	if Input.is_action_just_pressed("Exit"):
-		if inShop:
-			inShop = false
-			$"../store/AnimationPlayer".play("leave")
-			$"../store/AnimationPlayer".queue("idle")
-			if get_viewport().gui_get_focus_owner():
-				get_viewport().gui_get_focus_owner().release_focus()
-
-
-	if inShop:
-		$camPivot/Camera3D.global_position = lerp($camPivot/Camera3D.global_position,$"../store/camera".global_position,0.2)
-		$camPivot/Camera3D.global_rotation = lerp($camPivot/Camera3D.global_rotation, $"../store/camera".global_rotation,0.2)
-		if InputManager.current_device == InputManager.Device.KEYBOARD_MOUSE and get_viewport().gui_get_focus_owner() and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			get_viewport().gui_get_focus_owner().release_focus()
-		elif InputManager.current_device == InputManager.Device.GAMEPAD and not get_viewport().gui_get_focus_owner() and $"../CanvasLayer/Control/Shop/Items".get_child_count()>0:
-			$"../CanvasLayer/Control/Shop/Items".get_child(0).grab_focus()
-
+	if Input.is_action_pressed("whistle") and not holding:
+		freeze = true
+		whistling = true
 	else:
-		$camPivot/Camera3D.position = lerp($camPivot/Camera3D.position,Vector3(3.802,6.334,0),0.2)
-		$camPivot/Camera3D.rotation_degrees = lerp($camPivot/Camera3D.rotation_degrees,Vector3(-49,90,1),0.2)
+		freeze = false
+		whistling = false
+
+
+	'''
+	if InputManager.current_device == InputManager.Device.KEYBOARD_MOUSE and get_viewport().gui_get_focus_owner() and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		get_viewport().gui_get_focus_owner().release_focus()
+	elif InputManager.current_device == InputManager.Device.GAMEPAD and not get_viewport().gui_get_focus_owner() and $"../CanvasLayer/Control/Shop/Items".get_child_count()>0:
+		$"../CanvasLayer/Control/Shop/Items".get_child(0).grab_focus()
+	'''
+
 
 	var moveSpeed = (CARRY_SPEED if holding else SPEED) * speedMulti
 	if holding:
@@ -147,14 +148,14 @@ func _physics_process(delta: float) -> void:
 	moveSpeed *= speedMulti
 	
 	if controlling == self:
-		if input_dir and not inShop:
+		if input_dir and not freeze:
 			controlling.velocity.x = -sin($player.rotation.y) * moveSpeed
 			controlling.velocity.z = -cos($player.rotation.y) * moveSpeed
 		else:
 			controlling.velocity.x = move_toward(velocity.x, 0, moveSpeed)
 			controlling.velocity.z = move_toward(velocity.z, 0, moveSpeed)
 	else:
-		if input_dir and not inShop:
+		if input_dir and not freeze:
 			var target_yaw
 			if input_dir.y > 0:
 				target_yaw = PI + input_dir.x * 0.5 * PI
@@ -173,3 +174,28 @@ func _physics_process(delta: float) -> void:
 	if not controlling == self:
 		position = controlling.get_node("player").global_position
 		$player.rotation = controlling.get_node("player").global_rotation
+
+
+	var area = $"..".getArea()
+	var cam = $camPivot/Camera3D
+	if area:
+		var desPos = cam.global_position
+		if area == "townhall":
+			desPos = $"../townhall/cam".global_position
+		elif area == "blacksmithHouse":
+			desPos = $"../blacksmithHouse/Area3D/cam".global_position
+		elif area == "dylansHouse":
+			desPos = $"../dylansHouse/Area3D/cam".global_position
+		desPos.x = global_position.x
+		if cam.global_position.distance_to(desPos) < 1:
+			cam.global_position = desPos
+		else:
+			cam.global_position = lerp(cam.global_position,desPos,0.2)
+		# point the fixed camera towards the player
+		var lookTarget = global_position + Vector3.UP
+		var targetBasis = cam.global_transform.looking_at(lookTarget, Vector3.UP).basis
+		cam.global_transform.basis = cam.global_transform.basis.slerp(targetBasis, 0.2)
+
+	else:
+		cam.position = lerp(cam.position,Vector3(3.802,6.334,0),0.2)
+		cam.transform.basis = cam.transform.basis.slerp(defaultCamBasis, 0.2)

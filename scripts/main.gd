@@ -42,6 +42,15 @@ func spawnAcorn(pos):
 	child.position = pos
 	add_child(child)
 
+func getArea():
+	if $player in $townhall/Area3D.get_overlapping_bodies():
+		return "townhall"
+	elif $player in $blacksmithHouse/Area3D.get_overlapping_bodies():
+		return "blacksmithHouse"
+	elif $player in $dylansHouse/Area3D.get_overlapping_bodies():
+		return "dylansHouse"
+	return false
+
 func setLeader(NPC: String):
 	animationLeader = $NPCs.get_node(NPC)
 # Called every frame. 'delta' is the elapsed time since the previous frame.

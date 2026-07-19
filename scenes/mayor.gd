@@ -98,5 +98,3 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, moveSpeed)
 		velocity.z = move_toward(velocity.z, 0, moveSpeed)
-	if $"../../player" in $Area3D.get_overlapping_bodies() and not $"../../audio/music".get_stream_playback().get_current_clip_index() == 1:
-		$"../../audio/music".get_stream_playback().switch_to_clip_by_name("mayor")
