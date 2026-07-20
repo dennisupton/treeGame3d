@@ -17,6 +17,7 @@ var controlling = self
 var defaultCamBasis  # follow-camera orientation, restored when leaving a fixed-cam area
 
 var whistling = false
+@onready var camPos = false
 
 func _ready() -> void:
 	defaultCamBasis = $camPivot/Camera3D.transform.basis
@@ -45,6 +46,11 @@ func pickup(object):
 	object.position = Vector3.ZERO
 	object.rotation = Vector3.ZERO
 
+func getClosestTameable():
+	for i in $player/tameRange.get_overlapping_bodies():
+		if i.is_in_group("tameable"):
+			return i
+	return false
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -54,7 +60,7 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("Left", "Right", "Forward", "Back")
-	if input_dir:
+	if input_dir and not freeze:
 		$player/Axe.hide()
 		$AnimationPlayer.play("walk")
 		if controlling == self:
@@ -108,7 +114,7 @@ func _physics_process(delta: float) -> void:
 		holding = false
 		$player/hands.hide()
 	
-	if Input.is_action_just_pressed("Enter"):
+	if Input.is_action_just_pressed("Enter") and not freeze:
 		if hasBodyInGroup($player/Area3D.get_overlapping_bodies(),"shop") and not freeze:
 			for i in $player/Area3D.get_overlapping_bodies():
 				if i.is_in_group("shop"):
@@ -123,13 +129,15 @@ func _physics_process(delta: float) -> void:
 			$player/hands.hide()
 			$"..".spawnTree(position)
 	
-	if Input.is_action_pressed("whistle") and not holding:
+	if Input.is_action_pressed("whistle") and not holding and not whistling:
 		freeze = true
 		whistling = true
-	else:
+		$AnimationPlayer.play("whistle")
+	elif not Input.is_action_pressed("whistle") and not $AnimationPlayer.current_animation == "whistleSuccess":
 		freeze = false
 		whistling = false
-
+		if $AnimationPlayer.current_animation == "whistle":
+			$AnimationPlayer.stop()
 
 	'''
 	if InputManager.current_device == InputManager.Device.KEYBOARD_MOUSE and get_viewport().gui_get_focus_owner() and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
@@ -137,15 +145,8 @@ func _physics_process(delta: float) -> void:
 	elif InputManager.current_device == InputManager.Device.GAMEPAD and not get_viewport().gui_get_focus_owner() and $"../CanvasLayer/Control/Shop/Items".get_child_count()>0:
 		$"../CanvasLayer/Control/Shop/Items".get_child(0).grab_focus()
 	'''
-
-
+	
 	var moveSpeed = (CARRY_SPEED if holding else SPEED) * speedMulti
-	if holding:
-		moveSpeed = CARRY_SPEED
-	else:
-		moveSpeed = SPEED
-
-	moveSpeed *= speedMulti
 	
 	if controlling == self:
 		if input_dir and not freeze:
@@ -178,7 +179,10 @@ func _physics_process(delta: float) -> void:
 
 	var area = $"..".getArea()
 	var cam = $camPivot/Camera3D
-	if area:
+	if camPos:
+		cam.global_position = lerp(cam.global_position,camPos.global_position,0.2)
+		cam.global_rotation = lerp(cam.global_rotation,camPos.global_rotation,0.2)
+	elif area:
 		var desPos = cam.global_position
 		if area == "townhall":
 			desPos = $"../townhall/cam".global_position
@@ -186,6 +190,8 @@ func _physics_process(delta: float) -> void:
 			desPos = $"../blacksmithHouse/Area3D/cam".global_position
 		elif area == "dylansHouse":
 			desPos = $"../dylansHouse/Area3D/cam".global_position
+		elif area == "fashionHouse":
+			desPos = $"../fashionHouse/Area3D/cam".global_position
 		desPos.x = global_position.x
 		if cam.global_position.distance_to(desPos) < 1:
 			cam.global_position = desPos
@@ -199,3 +205,36 @@ func _physics_process(delta: float) -> void:
 	else:
 		cam.position = lerp(cam.position,Vector3(3.802,6.334,0),0.2)
 		cam.transform.basis = cam.transform.basis.slerp(defaultCamBasis, 0.2)
+
+
+func animDone(anim_name: StringName) -> void:
+	if whistling and anim_name == "whistle":
+		var animal = getClosestTameable()
+		if animal:# and random.randi_range(0,1) == 0:
+			$AnimationPlayer.play("whistleSuccess")
+			animal.freeze = true
+			animal.get_node("AnimationPlayer").play("whistle")
+			faceEachOther(animal)
+		else:
+			$AnimationPlayer.play("whistle")
+
+
+func faceEachOther(animal: Node3D, duration := 0.4, animalYawOffset := PI/2) -> void:
+	var toAnimal := animal.global_position - global_position
+	toAnimal.y = 0.0                       # yaw only, don't tilt
+	if toAnimal.length() < 0.001:
+		return
+	var playerYaw := atan2(-toAnimal.x, -toAnimal.z)
+	var animalYaw := atan2(toAnimal.x, toAnimal.z) + animalYawOffset   # opposite direction
+
+	var pStart = $player.rotation.y
+	var aStart = animal.rotation.y
+	var tween = create_tween().set_parallel(true)
+	tween.tween_method(func(t): $player.rotation.y = lerp_angle(pStart, playerYaw, t), 0.0, 1.0, duration)
+	tween.tween_method(func(t): animal.rotation.y = lerp_angle(aStart, animalYaw, t), 0.0, 1.0, duration)
+
+func setCamPos(node):
+	if node:
+		camPos = get_node(node)
+	else:
+		camPos = false

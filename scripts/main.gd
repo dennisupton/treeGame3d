@@ -49,6 +49,8 @@ func getArea():
 		return "blacksmithHouse"
 	elif $player in $dylansHouse/Area3D.get_overlapping_bodies():
 		return "dylansHouse"
+	elif $player in $fashionHouse/Area3D.get_overlapping_bodies():
+		return "fashionHouse"
 	return false
 
 func setLeader(NPC: String):
@@ -56,9 +58,12 @@ func setLeader(NPC: String):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if whoIsTalking:
+		$CanvasLayer/speech.show()
 		$CanvasLayer/speech.size = Vector2.ZERO # re-fit to current text (top-level controls don't auto-shrink)
 		var screen_pos = $player/camPivot/Camera3D.unproject_position(whoIsTalking.get_node("textBoxPos").global_position)
 		$CanvasLayer/speech.position = Vector2(0,-40) + screen_pos - $CanvasLayer/speech.size/2.0
+	else:
+		$CanvasLayer/speech.hide()
 	if animationLeader:
 		if not $player in animationLeader.get_node("Area3D").get_overlapping_bodies():
 			$NPCs/cutscene.speed_scale = 0

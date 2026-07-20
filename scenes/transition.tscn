@@ -1779,7 +1779,7 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.0014277995, 0, -0.00024113
 mesh = SubResource("ArrayMesh_50nbv")
 
 [node name="Rleg" type="MeshInstance3D" parent="scene3/player" unique_id=542534914]
-transform = Transform3D(-4.2975362e-08, 7.987358e-09, -1, 0.18272941, 0.9831617, 1.5224106e-15, 0.9831617, -0.18272941, -4.371139e-08, 0.0014277995, 0, -0.00024113059)
+transform = Transform3D(-4.297536e-08, 7.987357e-09, -1, 0.1827294, 0.9831616, 1.5224106e-15, 0.9831616, -0.1827294, -4.371139e-08, 0.0014277995, 0, -0.00024113059)
 mesh = SubResource("ArrayMesh_6ancn")
 
 [node name="Lleg" type="MeshInstance3D" parent="scene3/player" unique_id=1458758601]

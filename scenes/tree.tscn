@@ -397,6 +397,7 @@ shape = SubResource("BoxShape3D_nnvrw")
 
 [node name="particles" type="CPUParticles3D" parent="." unique_id=1211526162]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.6867557, 0)
+visible = false
 emitting = false
 amount = 500
 lifetime = 2.0
@@ -424,5 +425,8 @@ stream = ExtResource("3_gvmkm")
 
 [node name="acornSpawn" type="Marker3D" parent="." unique_id=213666091]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15386, 0)
+
+[node name="bird" type="Marker3D" parent="." unique_id=1995290594]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.45264834, 0.56137466, 0)
 
 [connection signal="timeout" from="growthTimer" to="." method="_on_growth_timer_timeout"]

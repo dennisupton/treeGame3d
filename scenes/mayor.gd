@@ -4,13 +4,13 @@ extends CharacterBody3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 var moveSpeed = 5
-@export var rotationSpeed = 0.2
+@export var rotationSpeed = 0.5
 var whereTo = false
 var needToStartCutscene = false
 
 
 var lastLetter = 0
-var talkSpeed = 50
+var talkSpeed = 80
 var remainingText = ""
 var typed = ""
 var tone = 0
@@ -20,6 +20,7 @@ var tone = 0
 @export var pitchRange: Vector2
 const BounceFXScript = preload("res://scripts/rich_text_bounce.gd")
 var bounceFX
+var state = "idle"
 
 func _ready() -> void:
 	if textBox.custom_effects.is_empty():
@@ -30,6 +31,9 @@ func _ready() -> void:
 
 func setTone(t):
 	tone = t
+
+func stopTalking():
+	$"../..".whoIsTalking = false
 
 func say(text:String, wait:bool = false):
 	$"../../CanvasLayer/speech".show()
@@ -43,9 +47,11 @@ func say(text:String, wait:bool = false):
 		$"../cutscene".speed_scale = 0
 		needToStartCutscene = true
 func goto(where: String, wait:bool = false):
-	whereTo = "player"
+	whereTo = where
 	if where == "player":
 		$NavigationAgent3D.target_position = $"../../player".position
+	elif where == "townHall":
+		$NavigationAgent3D.target_position = $"../../townhall/Marker3D".global_position
 	if wait:
 		$"../cutscene".speed_scale = 0
 		needToStartCutscene = true
@@ -67,8 +73,8 @@ func _physics_process(delta: float) -> void:
 		lastLetter = Time.get_ticks_msec()
 		var direction = $"../../player".position - global_position
 		direction.y = 0
-		direction = direction.normalized()
 		if direction.length() > 0.1:
+			direction = direction.normalized()
 			rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), rotationSpeed)
 
 	if not is_on_floor():
@@ -77,12 +83,16 @@ func _physics_process(delta: float) -> void:
 		needToStartCutscene = false
 		$"../cutscene".speed_scale = 1
 	if not $NavigationAgent3D.is_navigation_finished():
-		if whereTo and whereTo == "player":
-			$NavigationAgent3D.target_position = $"../../player".position
+		if whereTo:
+			if whereTo == "player":
+				$NavigationAgent3D.target_position = $"../../player".position
+			elif whereTo == "townHall":
+				$NavigationAgent3D.target_position = $"../../townhall/Marker3D".global_position
+
 		var direction = $NavigationAgent3D.get_next_path_position() - global_position
 		direction.y = 0
-		direction = direction.normalized()
 		if direction.length() > 0.1:
+			direction = direction.normalized()
 			rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), rotationSpeed)
 		if not $mayor/charAnim.current_animation == "walk":
 			$mayor/charAnim.play("walk")
@@ -96,5 +106,12 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, moveSpeed)
 		velocity.z = move_toward(velocity.z, 0, moveSpeed)
 	else:
+		if state == "idle":
+			if $"../../player" in $"../../player/player/Area3D".get_overlapping_bodies():
+				var direction = $"../../player".position - global_position
+				direction.y = 0
+				if direction.length() > 0.1:
+					direction = direction.normalized()
+					rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), 0.2)
 		velocity.x = move_toward(velocity.x, 0, moveSpeed)
 		velocity.z = move_toward(velocity.z, 0, moveSpeed)
