@@ -1,0 +1,107 @@
+{
+	"categories": [
+		{
+			"uuid": "5751decc-7ebc-4c88-8a8f-c132b06c759d",
+			"title": "Task",
+			"color": "569eff"
+		}
+	],
+	"stages": [
+		{
+			"uuid": "4c2d29c9-c934-4858-a3d9-5a64f212c4d2",
+			"title": "Todo",
+			"tasks": [
+				"334ccd9f-00a3-498b-87fc-e9bd1ef5ca71",
+				"8d781b77-4c96-42ac-bd42-86daf79ec185",
+				"114b1a63-b11d-4cf0-85b3-35224c822ef4",
+				"2416b44b-f934-48f1-8dfc-7226727cde25",
+				"041429f9-98b2-4081-9a50-c29d0d1c0305"
+			]
+		},
+		{
+			"uuid": "9ee0dca1-f1d8-4a35-9c01-059ad2617136",
+			"title": "Doing",
+			"tasks": []
+		},
+		{
+			"uuid": "590b61b6-6343-4a87-9bb0-e3aa17e35500",
+			"title": "Done",
+			"tasks": [
+				"211ed585-0d22-4c31-86d0-3982dae93152",
+				"92e911ee-001f-43d6-8a3e-029271049467",
+				"b2fb0f60-2885-46e1-83d0-6176f38e113b"
+			]
+		}
+	],
+	"tasks": [
+		{
+			"uuid": "334ccd9f-00a3-498b-87fc-e9bd1ef5ca71",
+			"title": "Shop UI",
+			"description": "",
+			"category": "5751decc-7ebc-4c88-8a8f-c132b06c759d",
+			"steps": []
+		},
+		{
+			"uuid": "211ed585-0d22-4c31-86d0-3982dae93152",
+			"title": "modeling children",
+			"description": "",
+			"category": "5751decc-7ebc-4c88-8a8f-c132b06c759d",
+			"steps": []
+		},
+		{
+			"uuid": "8d781b77-4c96-42ac-bd42-86daf79ec185",
+			"title": "converting models to NPCs",
+			"description": "",
+			"category": "5751decc-7ebc-4c88-8a8f-c132b06c759d",
+			"steps": []
+		},
+		{
+			"uuid": "92e911ee-001f-43d6-8a3e-029271049467",
+			"title": "making the children run around",
+			"description": "",
+			"category": "5751decc-7ebc-4c88-8a8f-c132b06c759d",
+			"steps": []
+		},
+		{
+			"uuid": "114b1a63-b11d-4cf0-85b3-35224c822ef4",
+			"title": "writing all the dialouge",
+			"description": "",
+			"category": "5751decc-7ebc-4c88-8a8f-c132b06c759d",
+			"steps": []
+		},
+		{
+			"uuid": "2416b44b-f934-48f1-8dfc-7226727cde25",
+			"title": "seedman",
+			"description": "",
+			"category": "5751decc-7ebc-4c88-8a8f-c132b06c759d",
+			"steps": []
+		},
+		{
+			"uuid": "041429f9-98b2-4081-9a50-c29d0d1c0305",
+			"title": "building playground",
+			"description": "",
+			"category": "5751decc-7ebc-4c88-8a8f-c132b06c759d",
+			"steps": []
+		},
+		{
+			"uuid": "b2fb0f60-2885-46e1-83d0-6176f38e113b",
+			"title": "well",
+			"description": "",
+			"category": "5751decc-7ebc-4c88-8a8f-c132b06c759d",
+			"steps": []
+		}
+	],
+	"layout": {
+		"columns": [
+			[
+				"4c2d29c9-c934-4858-a3d9-5a64f212c4d2"
+			],
+			[
+				"9ee0dca1-f1d8-4a35-9c01-059ad2617136"
+			],
+			[
+				"590b61b6-6343-4a87-9bb0-e3aa17e35500"
+			]
+		]
+	}
+}

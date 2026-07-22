@@ -20,11 +20,11 @@ func _ready() -> void:
 	tree = preload("res://scenes/tree.tscn")
 	acorn = preload("res://scenes/acorn.tscn")
 
-	for i in range(500):
+	for i in range(1800):
 		var child = tree.instantiate()
-		var pos = Vector3(random.randf_range(-100,100),0,random.randf_range(-100,100))
-		while tooClose(pos) or Vector3.ZERO.distance_to(pos) < 58 :
-			pos = Vector3(random.randf_range(-100,100),0,random.randf_range(-100,100))
+		var pos = Vector3(random.randf_range(-200,200),0,random.randf_range(-200,200))
+		while tooClose(pos) or Vector3.ZERO.distance_to(pos) < 28 :
+			pos = Vector3(random.randf_range(-200,200),0,random.randf_range(-200,200))
 		child.position = pos
 		treePositions.append(pos)
 		add_child(child)

@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://dj8c5ejlteqew"]
 
-[ext_resource type="Script" uid="uid://cmbftd00v4oa7" path="res://scenes/woodpecker.gd" id="1_l628s"]
+[ext_resource type="Script" uid="uid://cmbftd00v4oa7" path="res://scripts/woodpecker.gd" id="1_l628s"]
 [ext_resource type="AudioStream" uid="uid://bdxkmuqrs4kuo" path="res://sfx/woodpeckerFlap.mp3" id="2_bkx5j"]
 [ext_resource type="Texture2D" uid="uid://b00sjeisxtt58" path="res://models/woodpeckerColor.png" id="2_ewwwu"]
 [ext_resource type="AudioStream" uid="uid://d2m4t42ta668h" path="res://sfx/woodpeckerPeck.mp3" id="2_upeyg"]

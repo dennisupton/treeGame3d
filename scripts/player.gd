@@ -176,7 +176,7 @@ func _physics_process(delta: float) -> void:
 		position = controlling.get_node("player").global_position
 		$player.rotation = controlling.get_node("player").global_rotation
 
-
+	# CAMERA
 	var area = $"..".getArea()
 	var cam = $camPivot/Camera3D
 	if camPos:

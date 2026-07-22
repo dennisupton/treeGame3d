@@ -57,6 +57,7 @@ func pickDestination():
 		destination = groundPoint(spot)
 
 func _physics_process(delta: float) -> void:
+
 	if freeze and not tamed:
 		return
 	if destination == null:
@@ -86,7 +87,7 @@ func _physics_process(delta: float) -> void:
 	global_position = global_position.move_toward(destination, flySpeed * delta)
 	if destTree:
 		var perch = destTree.get_node("bird").global_transform.basis.get_rotation_quaternion()
-		global_transform.basis = global_transform.basis.slerp(Basis(perch), turnSpeed * delta)
+		global_transform.basis = global_transform.basis.orthonormalized().slerp(Basis(perch), turnSpeed * delta)
 		if anim.has_animation("peck"):
 			if anim.current_animation != "peck":
 				anim.play("peck")
