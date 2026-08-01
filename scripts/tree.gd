@@ -5,6 +5,8 @@ var startingHealth = 10
 var health = 0
 var age = 0
 var growTime = 5
+var random = RandomNumberGenerator.new()
+@export var still = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	health = startingHealth
@@ -12,8 +14,10 @@ func _ready() -> void:
 	max_contacts_reported = 1  
 	body_entered.connect(_on_body_entered)
 	setAge(0)
-	$growthTimer.wait_time = growTime + $"..".random.randf_range(0-growTime/2,growTime/2)
+	$growthTimer.wait_time = growTime + random.randf_range(0-growTime/2,growTime/2)
 	$growthTimer.start()
+	if still:
+		setAge(4)
 
 func setAge(newAge):
 	if chopped:
@@ -53,6 +57,8 @@ func setAge(newAge):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if still:
+		return
 	if health <= 0 and not chopped:
 		freeze = false
 		chopped = true
@@ -82,4 +88,4 @@ func getForceSum():
 
 func _on_growth_timer_timeout() -> void:
 	setAge(age+1)
-	$growthTimer.wait_time = growTime + $"..".random.randf_range(0-growTime/2,growTime/2)
+	$growthTimer.wait_time = growTime + random.randf_range(0-growTime/2,growTime/2)

@@ -1,0 +1,43 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/bubble.gd" id="1_bubbl"]
+[ext_resource type="Theme" uid="uid://cyi4xq6uvrdq6" path="res://theme.tres" id="2_bubbl"]
+[ext_resource type="Shader" uid="uid://b6krunll82uoq" path="res://shaders/pixel.gdshader" id="3_bubbl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bubbl"]
+render_priority = 0
+shader = ExtResource("3_bubbl")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubbl"]
+bg_color = Color(0.43137255, 0.34117648, 0.2784314, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.9098039, 0.8352941, 0.68235296, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+corner_detail = 2
+
+[node name="bubble" type="PanelContainer"]
+material = SubResource("ShaderMaterial_bubbl")
+theme = ExtResource("2_bubbl")
+theme_override_styles/panel = SubResource("StyleBoxFlat_bubbl")
+script = ExtResource("1_bubbl")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+use_parent_material = true
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = -20
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
+layout_mode = 2
+theme = ExtResource("2_bubbl")
+bbcode_enabled = true
+fit_content = true
+autowrap_mode = 0

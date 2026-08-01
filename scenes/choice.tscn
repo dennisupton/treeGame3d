@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://c7e6c7ffivvja"]
+
+[ext_resource type="Theme" uid="uid://cyi4xq6uvrdq6" path="res://theme.tres" id="1_yhyp7"]
+[ext_resource type="Script" uid="uid://dwgp47dnu1qwi" path="res://scripts/button.gd" id="2_8qvna"]
+
+[node name="choice" type="Button" unique_id=1577182078]
+theme = ExtResource("1_yhyp7")
+text = "id like those shoes!"
+script = ExtResource("2_8qvna")

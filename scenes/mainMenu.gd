@@ -1,0 +1,39 @@
+extends Control
+
+var random = RandomNumberGenerator.new()
+var tree
+var treePositions = []
+var seperation = 3**2
+
+var whoIsTalking = false
+var animationLeader = false
+func tooClose(pos):
+	for i in treePositions:
+		if i.distance_squared_to(pos) < seperation:
+			return true
+	return false
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	tree = preload("res://scenes/tree.tscn")
+	for i in range(4000):
+		var child = tree.instantiate()
+		var pos = Vector3(random.randf_range(-200,200),0,random.randf_range(-200,200))
+		while tooClose(pos) or Vector3.ZERO.distance_to(pos) < 2 :
+			pos = Vector3(random.randf_range(-200,200),0,random.randf_range(-200,200))
+		child.position = pos
+		treePositions.append(pos)
+		add_child(child)
+		child.setAge(4)
+		child.still = true
+	$VBoxContainer/CenterContainer/VBoxContainer/newGame.grab_focus(true)
+func _process(delta: float) -> void:
+	$Node3D/Path3D/PathFollow3D.progress += 0.005
+
+
+func _on_quit_pressed() -> void:
+	get_tree().quit()
+
+
+func _on_settings_pressed() -> void:
+	$AnimationPlayer.play("enterSettings")

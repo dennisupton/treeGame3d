@@ -18,6 +18,7 @@ var defaultCamBasis  # follow-camera orientation, restored when leaving a fixed-
 
 var whistling = false
 @onready var camPos = false
+var shop = false
 
 func _ready() -> void:
 	defaultCamBasis = $camPivot/Camera3D.transform.basis
@@ -48,7 +49,7 @@ func pickup(object):
 
 func getClosestTameable():
 	for i in $player/tameRange.get_overlapping_bodies():
-		if i.is_in_group("tameable"):
+		if i.is_in_group("tameable") and not i.tamed:
 			return i
 	return false
 
@@ -113,15 +114,15 @@ func _physics_process(delta: float) -> void:
 		item.linear_velocity = velocity*4 + Vector3.UP*2
 		holding = false
 		$player/hands.hide()
-	
 	if Input.is_action_just_pressed("Enter") and not freeze:
-		if hasBodyInGroup($player/Area3D.get_overlapping_bodies(),"shop") and not freeze:
-			for i in $player/Area3D.get_overlapping_bodies():
-				if i.is_in_group("shop"):
-					$"../CanvasLayer/Control/Shop".makeButtons()
-					freeze = true
-					$"../store/AnimationPlayer".play("enter")
-					$"../store/AnimationPlayer".queue("idle")
+		if hasBodyInGroup($player/Area3D.get_overlapping_areas(),"shop") and not freeze:
+			freeze = true
+			var place = hasBodyInGroup($player/Area3D.get_overlapping_areas(),"shop")
+			camPos = place.get_parent().get_node("talking")
+			if place.get_parent().name == "fashionHouse":
+				$"../CanvasLayer/shop".person = $"../NPCs/enriquez"
+			
+			$"../CanvasLayer/shop".start()
 		elif holding and holding == "acorn" and not $"..".tooClose(position):
 			var item = $player/hold.get_child(0)
 			item.queue_free()
@@ -133,7 +134,7 @@ func _physics_process(delta: float) -> void:
 		freeze = true
 		whistling = true
 		$AnimationPlayer.play("whistle")
-	elif not Input.is_action_pressed("whistle") and not $AnimationPlayer.current_animation == "whistleSuccess":
+	elif not Input.is_action_pressed("whistle") and not $AnimationPlayer.current_animation == "whistleSuccess" and whistling:
 		freeze = false
 		whistling = false
 		if $AnimationPlayer.current_animation == "whistle":

@@ -1,0 +1,19 @@
+Game
+- Language
+
+Video
+- resolution
+- fullscreen
+  - borderless
+  - off
+  - on
+- vsync
+
+Audio
+- master
+- music
+- sfx
+
+Controls
+- remap
+- controller rumble

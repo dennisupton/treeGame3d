@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="incrementalProto"
-run/main_scene="uid://dp73ut5kytmkk"
+run/main_scene="uid://b0ay7uv2djtul"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://images/icon.svg"
 
@@ -21,6 +21,8 @@ InputManager="*uid://b1wabhuei88xg"
 
 [display]
 
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/stretch/mode="viewport"
 
 [editor_plugins]

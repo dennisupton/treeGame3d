@@ -8,6 +8,7 @@ extends CharacterBody3D
 @export var lookAtPlayer = false   # head-tracks the player with IK when within lookRange
 @export var lookRange = 6.0
 @export var bodyTurnAngle = 60.0   # degrees off-forward before the body turns to help the head
+@export var animBlendTime = 0.3
 
 @export_category("It")
 @export var target: NodePath      # the other tag player to chase
@@ -20,50 +21,74 @@ extends CharacterBody3D
 @export var pitchRange: Vector2
 @export var talkSpeed = 80    # ms between letters — lower = faster typing
 @export var soundSpeed = 160  # ms between speaking blips — lower = faster sounds
+@export var faces: Dictionary[String,Texture]
+# after the last letter lands, a line keeps the floor for a beat so it can actually be
+# read before the next one starts: readBase + readPerLetter per character, capped.
+@export var readBase = 0.35
+@export var readPerLetter = 0.025
+@export var readPauseMax = 1.5
+@export var bubbleHold = 0.8  # seconds the bubble lingers on after losing the floor
+@export var bubbleRange = 14.0 # how close the player must be for the bubble to show at all
+
+
+const BubbleScene = preload("res://scenes/bubble.tscn")
+const HOUSES = ["townHall", "blacksmithHouse", "dylansHouse", "fashionHouse"]
+const NAV_TARGETS = {
+	"player": "player",
+	"townHall": "townhall/Marker3D",
+	"blacksmithHouse": "blacksmithHouse/Marker3D",
+	"dylansHouse": "dylansHouse/Marker3D",
+	"fashionHouse": "fashionHouse/Marker3D",
+	"may": "NPCs/may",
+	"colin": "NPCs/colin",
+}
 
 # ---- tag state ----
 var aimDir = 0.0
 var isIt = false
 var grace = 0
-var random = RandomNumberGenerator.new()
 
 # ---- talking / cutscene state ----
-var whereTo = false
-var needToStartCutscene = false
-var lastLetter = 0
-var lastSound = 0
+var whereTo = ""
+var talking = false
+var letterTimer = 0.0   # ms accumulated toward the next letter
+var soundTimer = 0.0    # ms accumulated toward the next blip
+var lookTarget = null   # a node to face instead of the player, or null
+var wantsBubble = false # there's something worth showing, range permitting
+var bubbleShown = false # whether the bubble is currently popped in
+var scene = null        # the Cutscene driving this npc right now, or null
+var speedScale = 1.0    # set by that scene; 0 while it's gated out
+var sayId = 0           # bumped per line, so a superseded say() stops waiting
+var gotoId = 0
+var readTimer = 0.0     # seconds left of the read beat after the last letter
+var holdTimer = 0.0     # seconds left before a finished bubble hides
+var gotoPending = 0     # frames until the arrived check arms (see navStep)
 var remainingText = ""
 var typed = ""
 var tone = 0
-var bounceFX
-const BounceFXScript = preload("res://scripts/rich_text_bounce.gd")
+var moveAnim = "walk"
+var bubble
 
 @onready var nav = $NavigationAgent3D
 @onready var main = get_tree().current_scene
-@onready var cutscene = get_node_or_null("../cutscene")
+@onready var player = main.get_node("player")
 @onready var audioPlayer = get_node_or_null("AudioStreamPlayer3D")
-@onready var textBox = main.get_node_or_null("CanvasLayer/speech/MarginContainer/RichTextLabel")
 # node names differ per character, so pick them once based on who this is
 @onready var animPlayer = ($mayor/charAnim if name == "mayor" else $AnimationPlayer)
-@onready var moveAnim = "walk"
 @onready var lookAt = get_node_or_null("Armature/Skeleton3D/LookAtModifier3D")
 
 func _ready() -> void:
-	random.randomize()
-	# share one bounce effect across whoever talks
-	if textBox and textBox.custom_effects.is_empty():
-		bounceFX = BounceFXScript.new()
-		textBox.install_effect(bounceFX)
-	elif textBox:
-		bounceFX = textBox.custom_effects[0]
 	applyActivity()
-	# aim the look-at IK at the player, faded out until they come close
 	if lookAtPlayer and lookAt:
-		lookAt.target_node = lookAt.get_path_to(main.get_node("player"))
+		lookAway()
 		lookAt.influence = 0.0
 
+func playAnim(anim):
+	animPlayer.play(anim, animBlendTime)
+
 func _physics_process(delta: float) -> void:
-	handleTalking()
+	handleTalking(delta)
+	updateBubble()
 
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -72,12 +97,10 @@ func _physics_process(delta: float) -> void:
 		tagStep()
 	else:
 		navStep()
+		if hasLookTarget():
+			turnTo(lookTarget.global_position, rotationSpeed * 0.5)
 
-	if lookAtPlayer and lookAt and activity == "idle":
-		var lookNear = global_position.distance_to(main.get_node("player").global_position) < lookRange
-		lookAt.influence = move_toward(lookAt.influence, 1.0 if lookNear else 0.0, delta * 4.0)
-	elif lookAtPlayer and lookAt:
-		lookAt.influence = 0.0
+	updateLookIK(delta)
 
 #activity
 
@@ -88,12 +111,12 @@ func setActivity(next: String):
 
 # set up whatever the current activity needs (also run once on _ready)
 func applyActivity():
-	whereTo = false
+	whereTo = ""
 	nav.target_position = global_position   # drop any leftover path
 	if activity == "tag":
 		isIt = startsIt
 		changeDir()
-	elif activity in ["townHall","blacksmithHouse","dylansHouse","fashionHouse"]:
+	elif activity in HOUSES:
 		goto(activity)
 
 #things cutscenes call
@@ -104,55 +127,152 @@ func it():
 func setTone(t):
 	tone = t
 
+
+func lookAtNode(who) -> void:
+	lookTarget = who
+	if lookAt and who:
+		var marker = who.get_node_or_null("textBoxPos")
+		lookAt.target_node = lookAt.get_path_to(marker if marker else who)
+
+func lookAway() -> void:
+	lookTarget = null
+	if lookAt:
+		lookAt.target_node = lookAt.get_path_to(player)
+
+func hasLookTarget() -> bool:
+	return lookTarget != null and is_instance_valid(lookTarget)
+
 func stopTalking():
-	main.whoIsTalking = false
+	holdTimer = 0.0
+	wantsBubble = false
 
-func say(text: String, wait: bool = false):
-	main.get_node("CanvasLayer/speech").show()
-	textBox.text = ""
+func nearPlayer(dist: float) -> bool:
+	return global_position.distance_to(player.global_position) < dist
+
+func updateLookIK(delta: float) -> void:
+	if not lookAt:
+		return
+
+	if hasLookTarget():
+		lookAt.influence = move_toward(lookAt.influence, 1.0, delta * 4.0)
+	elif lookAtPlayer:
+		if activity == "idle":
+			var want = 1.0 if nearPlayer(lookRange) else 0.0
+			lookAt.influence = move_toward(lookAt.influence, want, delta * 4.0)
+		else:
+			lookAt.influence = 0.0
+
+# the bubble is only up when there's something worth showing AND the player is close
+# enough to read it. both directions animate, so walking in and out of range pops it
+# rather than blinking it.
+func updateBubble() -> void:
+	if not bubble:
+		return
+	var wanted = wantsBubble and nearPlayer(bubbleRange)
+	if wanted == bubbleShown:
+		return
+	bubbleShown = wanted
+	if wanted:
+		bubble.popIn()
+	else:
+		bubble.popOut()
+
+# this npc's own bubble, made the first time it speaks
+func getBubble():
+	if bubble:
+		return bubble
+	var host = main.get_node_or_null("CanvasLayer/bubbles")
+	if not host:
+		return null
+	bubble = BubbleScene.instantiate()
+	bubble.name = name + "Bubble"   # so it's identifiable in the remote inspector
+	host.add_child(bubble)
+	bubble.follow(get_node("textBoxPos"), player.get_node("camPivot/Camera3D"))
+	return bubble
+
+# `await npc.say("hi")` waits for the line to finish typing; a bare `npc.say("hi")`
+# fires it off and returns straight away.
+func say(text: String) -> void:
+	if sceneStopped():
+		return   # leftover line from a scene that's been stopped
+	var b = getBubble()
+	if b:
+		b.clear()
+		b.move_to_front()   # sibling order is draw order, so whoever spoke last is on top
+	wantsBubble = true      # updateBubble() does the actual pop, once range allows
 	typed = ""
-	if bounceFX: bounceFX.reset()
-	lastLetter = 0
-	lastSound = 0
+	letterTimer = 0.0
+	soundTimer = 0.0
+	holdTimer = 0.0
+	readTimer = minf(readBase + text.length() * readPerLetter, readPauseMax)
 	remainingText = text
-	main.whoIsTalking = self
-	if wait:
-		if cutscene: cutscene.speed_scale = 0
-		needToStartCutscene = true
+	talking = true
+	sayId += 1
+	var id = sayId
+	while talking and sayId == id and not sceneStopped():
+		await get_tree().process_frame
 
-func goto(where: String, wait: bool = false):
+func goto(where: String) -> void:
+	if sceneStopped():
+		return
 	whereTo = where
 	nav.target_position = navPoint(where)
-	if wait:
-		if cutscene: cutscene.speed_scale = 0
-		needToStartCutscene = true
+	gotoPending = 2
+	gotoId += 1
+	var id = gotoId
+	while gotoPending > 0 and gotoId == id and not sceneStopped():
+		await get_tree().process_frame
 
-func navPoint(where):
-	if where == "player":
-		return main.get_node("player").position
-	elif where == "townHall":
-		return main.get_node("townhall/Marker3D").global_position
-	elif where == "fashionHouse":
-		return main.get_node("fashionHouse/Marker3D").global_position
-	elif where == "blacksmithHouse":
-		return main.get_node("blacksmithHouse/Marker3D").global_position
-	elif where == "dylansHouse":
-		return main.get_node("dylansHouse/Marker3D").global_position
-	return global_position
+func shutUp() -> void:
+	remainingText = ""
+	talking = false
+	readTimer = 0.0
+	holdTimer = 0.0
+	gotoPending = 0
+	sayId += 1
+	gotoId += 1
+	wantsBubble = false
+	bubbleShown = false
+	lookAway()
+	if bubble: bubble.hideNow()
+
+func sceneStopped() -> bool:
+	return scene != null and scene.stopped
+
+func navPoint(where) -> Vector3:
+	if not where in NAV_TARGETS:
+		return global_position
+	var node = main.get_node_or_null(NAV_TARGETS[where])
+	if not node:
+		return global_position
+	return node.global_position
 
 # ---------- shared movement ----------
 
+# flat (height-ignoring) offset from here to a world point
+func flatTo(pos: Vector3) -> Vector3:
+	var dir = pos - global_position
+	dir.y = 0
+	return dir
+
+func faceDir(dir: Vector3, weight: float) -> void:
+	rotation.y = lerp_angle(rotation.y, atan2(-dir.x, -dir.z), weight)
+
+func turnTo(pos: Vector3, weight: float) -> void:
+	var dir = flatTo(pos)
+	if dir.length() >= 0.1:
+		faceDir(dir, weight)
+
 # turn toward the next point on the current nav path; returns the flat direction to it
 func steer(turnWeight) -> Vector3:
-	var dir = nav.get_next_path_position() - global_position
-	dir.y = 0
+	var dir = flatTo(nav.get_next_path_position())
 	if dir.length() > 0.001:
 		dir = dir.normalized()
-		rotation.y = lerp_angle(rotation.y, atan2(-dir.x, -dir.z), turnWeight)
+		faceDir(dir, turnWeight)
 	return dir
 
 func playMove():
-	if not animPlayer.current_animation == moveAnim:
+	if animPlayer.current_animation != moveAnim:
 		animPlayer.play(moveAnim)
 
 func stopMove(decel):
@@ -175,80 +295,98 @@ func navMove() -> bool:
 # ---------- helpers ----------
 
 func changeDir():
-	aimDir = random.randf_range(-PI, PI)
+	aimDir = randf_range(-PI, PI)
 
 # turn to look at the player when they're close (or lean the body to help the head IK)
 func facePlayerWhenNear():
-	if not main.get_node("player") in main.get_node("player/player/Area3D").get_overlapping_bodies():
+	if hasLookTarget():
+		return   # busy looking at someone else
+	var area = player.get_node("player/Area3D")
+	if not player in area.get_overlapping_bodies():
 		return
-	var direction = main.get_node("player").position - global_position
-	direction.y = 0
-	if direction.length() < 0.1:
+	var dir = flatTo(player.global_position)
+	if dir.length() < 0.1:
 		return
-	direction = direction.normalized()
-	var targetYaw = atan2(-direction.x, -direction.z)
+
+	var targetYaw = atan2(-dir.x, -dir.z)
+	var off = abs(angle_difference(rotation.y, targetYaw))
+	var limit = deg_to_rad(bodyTurnAngle)
 	if not lookAtPlayer:
 		rotation.y = lerp_angle(rotation.y, targetYaw, 0.2)
-	elif abs(angle_difference(rotation.y, targetYaw)) > deg_to_rad(bodyTurnAngle):
-		# ramp the turn in from 0 at the threshold so it never snaps on/off (that was the chop)
-		var excess = abs(angle_difference(rotation.y, targetYaw)) - deg_to_rad(bodyTurnAngle)
-		rotation.y = lerp_angle(rotation.y, targetYaw, clampf(excess, 0.0, 0.12))
+	elif off > limit:
+		rotation.y = lerp_angle(rotation.y, targetYaw, clampf(off - limit, 0.0, 0.12))
 
-# ---------- behaviours ----------
-
-func handleTalking():
-	# talking animations
+func rest():
 	if name == "mayor":
 		$mayor/Icosphere.position.y = lerpf($mayor/Icosphere.position.y, 0, 0.2)
 		$mayor/Torus.position.y = lerpf($mayor/Torus.position.y, 0, 0.1)
 
-	if len(remainingText) == 0:
+func pop():
+	if name == "mayor":
+		$mayor/Icosphere.position.y = 0.1
+		$mayor/Torus.position.y = 0.15
+	if name == "enriquez":
+		$Armature/Skeleton3D/ModifierBoneTarget3D/mouthAnim.play("open")
+func playBlip():
+	if not audioPlayer:
+		return
+	audioPlayer.stream = syllables.pick_random()
+	audioPlayer.pitch_scale = randf_range(pitchRange.x, pitchRange.y) + tone / 10.0
+	audioPlayer.play()
+
+func setFace(face):
+	if faces.has(face):
+		$Armature/Skeleton3D/ModifierBoneTarget3D/Decal.texture_albedo = faces[face]
+
+func handleTalking(delta: float):
+	rest()
+	var step = delta * speedScale
+
+	if remainingText.is_empty():
+		if talking:
+			readTimer -= step
+			if readTimer <= 0.0:
+				talking = false
+				holdTimer = bubbleHold
+		elif holdTimer > 0.0:
+			holdTimer -= step
+			if holdTimer <= 0.0:
+				wantsBubble = false
 		return
 
 	# speaking blips play on their own timer
-	if Time.get_ticks_msec() - lastSound > soundSpeed:
-		lastSound = Time.get_ticks_msec()
-		if audioPlayer:
-			audioPlayer.stream = syllables.pick_random()
-			audioPlayer.pitch_scale = randf_range(pitchRange.x, pitchRange.y) + (float(tone) / 10)
-			audioPlayer.play()
-		# talking animations
-		if name == "mayor":
-			$mayor/Icosphere.position.y = 0.1
-			$mayor/Torus.position.y = 0.15
-
-	# letters reveal on their own timer
-	if Time.get_ticks_msec() - lastLetter > talkSpeed:
-		var letter = remainingText[0]
+	soundTimer += step * 1000.0
+	if soundTimer > soundSpeed:
+		soundTimer = 0.0
+		playBlip()
+		pop()
+	letterTimer += step * 1000.0
+	if letterTimer > talkSpeed:
+		letterTimer = 0.0
+		typed += remainingText[0]
 		remainingText = remainingText.substr(1)
-		typed += letter
-		textBox.text = "[bounce]" + typed + "[/bounce]"
-		lastLetter = Time.get_ticks_msec()
-		var direction = main.get_node("player").position - global_position
-		direction.y = 0
-		if direction.length() > 0.1:
-			direction = direction.normalized()
-			rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), rotationSpeed)
+		if bubble: bubble.setText("[bounce]" + typed + "[/bounce]")
+		if not hasLookTarget():
+			turnTo(player.global_position, rotationSpeed)
 
 func tagStep():
-	if grace > 0:
-		grace -= 1
+	grace = maxi(grace - 1, 0)
 	var other = get_node(target)
 	if isIt:
 		nav.target_position = other.global_position
 		steer(0.8)
-		if position.distance_to(other.position) < 1 and grace <= 0:
+		if position.distance_to(other.position) < 1 and grace == 0:
 			other.it()
 			isIt = false
 			other.grace = 100
-			say("it", false)
+			say("it")
 	else:
 		rotation.y = lerp_angle(rotation.y, aimDir, 0.05)
 		if abs(angle_difference(rotation.y, aimDir)) < deg_to_rad(10):
 			changeDir()
 
 	var speed = moveSpeed * (itSpeed if isIt else notItSpeed)
-	if grace < 1:
+	if grace == 0:
 		playMove()
 		velocity.x = -sin(rotation.y) * speed
 		velocity.z = -cos(rotation.y) * speed
@@ -256,23 +394,21 @@ func tagStep():
 		stopMove(speed)
 	move_and_slide()
 
-# idle, townHall and cutscene "goto" all share this nav-driven step
 func navStep():
-	# resume a paused cutscene once we've arrived and finished talking
-	if nav.is_navigation_finished() and needToStartCutscene and len(remainingText) == 0:
-		needToStartCutscene = false
-		if cutscene: cutscene.speed_scale = 1
-
-	# keep following a moving goto target (e.g. the player)
+	if gotoPending > 1:
+		gotoPending -= 1
+	elif gotoPending == 1 and nav.is_navigation_finished():
+		gotoPending = 0
+		whereTo = ""
+		nav.target_position = global_position
 	if whereTo:
 		nav.target_position = navPoint(whereTo)
 
 	if navMove():
 		return
-
-	# arrived / standing still
+	# done
 	stopMove(moveSpeed)
-	if activity in ["townHall","blacksmithHouse","dylansHouse","fashionHouse"]:
-		setActivity("idle")  
+	if activity in HOUSES:
+		setActivity("idle")
 	elif activity == "idle":
 		facePlayerWhenNear()
