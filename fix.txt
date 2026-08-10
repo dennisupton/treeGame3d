@@ -1,0 +1,3 @@
+- title screen camera goes through trees -> tree generation tool script and delete the unneeded ones
+
+- gramma errors

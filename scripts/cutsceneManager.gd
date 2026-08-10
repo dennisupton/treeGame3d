@@ -6,7 +6,7 @@ const CutsceneScript = preload("res://scripts/cutscene.gd")
 
 var scenes = []   # cutscenes currently running
 
-var introPlayed = true
+var introPlayed = false
 
 @onready var colin = $colin
 @onready var may = $may
@@ -60,17 +60,17 @@ func introduction(s) -> void:
 	introPlayed = true
 	s.take([mayor])
 	s.gate = mayor   # pause if the player wanders off, the way setLeader() used to
-	mayor.animPlayer.play("jump")
+	mayor.playAnim("jump")
 	await mayor.goto("player")
 	await mayor.say("are you lost?")
 	await mayor.say("or right where you need to be?")
 	await mayor.say("im the mayor by the way")
 	await mayor.say("i got something to show you")
 	await mayor.say("but first")
-	await mayor.say("youre gonna need to meet everyone in the village")
-	await mayor.say("they arent really a big fan of outsiders")
+	await mayor.say("you might wanna introduce yourself to the community")
+	await mayor.say("because who wants a stranger wandering round")
 	await mayor.say("let me know when you are done")
-	await mayor.say("il be in the town hall")
+	await mayor.say("ill be in the town hall")
 	mayor.stopTalking()
 	s.gate = null
 	mayor.goto("townHall")

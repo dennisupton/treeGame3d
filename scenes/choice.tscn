@@ -5,5 +5,4 @@
 
 [node name="choice" type="Button" unique_id=1577182078]
 theme = ExtResource("1_yhyp7")
-text = "id like those shoes!"
 script = ExtResource("2_8qvna")

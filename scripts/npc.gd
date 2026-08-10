@@ -10,6 +10,14 @@ extends CharacterBody3D
 @export var bodyTurnAngle = 60.0   # degrees off-forward before the body turns to help the head
 @export var animBlendTime = 0.3
 
+@export_category("Idle")
+# which house this npc runs, if any. while they're stood at it they use shopIdle —
+# behind the counter, ready to serve — and anywhere else they use idleAnim.
+@export_enum("none", "townHall", "blacksmithHouse", "dylansHouse", "fashionHouse") var shop: String = "none"
+@export var idleAnim = "idle"
+@export var shopIdle = "shopIdle"
+@export var shopRange = 4.0   # how far from the shop marker still counts as being there
+
 @export_category("It")
 @export var target: NodePath      # the other tag player to chase
 @export var startsIt = false
@@ -69,6 +77,10 @@ var tone = 0
 var moveAnim = "walk"
 var bubble
 
+# ---- idle state ----
+var posed = false      # a cutscene or shop line is driving the animation; idle stays off it
+var idlePlaying = ""   # the idle currently handed to the animation player, or ""
+
 @onready var nav = $NavigationAgent3D
 @onready var main = get_tree().current_scene
 @onready var player = main.get_node("player")
@@ -84,7 +96,14 @@ func _ready() -> void:
 		lookAt.influence = 0.0
 
 func playAnim(anim):
+	posed = true
+	idlePlaying = ""
 	animPlayer.play(anim, animBlendTime)
+
+# hand the animation back to the idle system once a cutscene or shop line is done posing them
+func stopPose() -> void:
+	posed = false
+	idlePlaying = ""
 
 func _physics_process(delta: float) -> void:
 	handleTalking(delta)
@@ -157,7 +176,9 @@ func updateLookIK(delta: float) -> void:
 		lookAt.influence = move_toward(lookAt.influence, 1.0, delta * 4.0)
 	elif lookAtPlayer:
 		if activity == "idle":
-			var want = 1.0 if nearPlayer(lookRange) else 0.0
+			# at their shop the head lets go once the player rounds past the body turn
+			# angle, so they settle back to forward rather than the body chasing after
+			var want = 1.0 if nearPlayer(lookRange) and not pastShopLookLimit() else 0.0
 			lookAt.influence = move_toward(lookAt.influence, want, delta * 4.0)
 		else:
 			lookAt.influence = 0.0
@@ -234,6 +255,7 @@ func shutUp() -> void:
 	wantsBubble = false
 	bubbleShown = false
 	lookAway()
+	stopPose()
 	if bubble: bubble.hideNow()
 
 func sceneStopped() -> bool:
@@ -272,14 +294,50 @@ func steer(turnWeight) -> Vector3:
 	return dir
 
 func playMove():
+	posed = false   # walking off ends whatever pose they were holding
+	idlePlaying = ""
 	if animPlayer.current_animation != moveAnim:
 		animPlayer.play(moveAnim)
 
 func stopMove(decel):
-	if animPlayer.current_animation == moveAnim:
+	# settle into an idle if there's one to settle into, otherwise drop the walk cycle
+	# and hold the rest pose, the way this always did
+	if not playIdle() and animPlayer.current_animation == moveAnim:
 		animPlayer.stop()
 	velocity.x = move_toward(velocity.x, 0, decel)
 	velocity.z = move_toward(velocity.z, 0, decel)
+
+# ---------- idling ----------
+
+# stood at the marker they walk to for their own shop, however they got there — their
+# starting activity, a cutscene goto, or just never having left
+func atShop() -> bool:
+	if not shop in HOUSES:
+		return false
+	# flat, because the shop markers sit well above the floor by varying amounts
+	return flatTo(navPoint(shop)).length() < shopRange
+
+# the idle that suits where they're stood right now. falls back to the normal one while
+# a shop idle hasn't been animated for them yet.
+func idleFor() -> String:
+	if atShop() and animPlayer.has_animation(shopIdle):
+		return shopIdle
+	return idleAnim
+
+# returns false when there's no idle to play, so stopMove() knows to fall back
+func playIdle() -> bool:
+	if posed:
+		return true   # a cutscene or shop line has the floor
+	var anim = idleFor()
+	if anim.is_empty() or not animPlayer.has_animation(anim):
+		idlePlaying = ""
+		return false
+	if idlePlaying != anim:
+		idlePlaying = anim
+		animPlayer.play(anim, animBlendTime)
+	elif not animPlayer.is_playing():
+		animPlayer.play(anim, animBlendTime)   # idle isn't marked as looping; go round again
+	return true
 
 # walk along the current nav path; returns true while still travelling
 func navMove() -> bool:
@@ -297,6 +355,19 @@ func navMove() -> bool:
 func changeDir():
 	aimDir = randf_range(-PI, PI)
 
+# how far round from their own forward the player is, in radians
+func playerOffAngle() -> float:
+	var dir = flatTo(player.global_position)
+	if dir.length() < 0.1:
+		return 0.0
+	return abs(angle_difference(rotation.y, atan2(-dir.x, -dir.z)))
+
+# behind their own counter they're planted, so once the player gets further round than the
+# body would normally turn to follow they give up and face front again instead of
+# swivelling. away from the shop there's nothing keeping them put, so the body helps out.
+func pastShopLookLimit() -> bool:
+	return atShop() and playerOffAngle() > deg_to_rad(bodyTurnAngle)
+
 # turn to look at the player when they're close (or lean the body to help the head IK)
 func facePlayerWhenNear():
 	if hasLookTarget():
@@ -313,7 +384,7 @@ func facePlayerWhenNear():
 	var limit = deg_to_rad(bodyTurnAngle)
 	if not lookAtPlayer:
 		rotation.y = lerp_angle(rotation.y, targetYaw, 0.2)
-	elif off > limit:
+	elif off > limit and not atShop():
 		rotation.y = lerp_angle(rotation.y, targetYaw, clampf(off - limit, 0.0, 0.12))
 
 func rest():

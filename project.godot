@@ -18,6 +18,7 @@ config/icon="res://images/icon.svg"
 [autoload]
 
 InputManager="*uid://b1wabhuei88xg"
+SaveManager="*uid://b75xblo1avd1i"
 
 [display]
 

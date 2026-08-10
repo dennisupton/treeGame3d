@@ -121,7 +121,12 @@ func _physics_process(delta: float) -> void:
 			camPos = place.get_parent().get_node("talking")
 			if place.get_parent().name == "fashionHouse":
 				$"../CanvasLayer/shop".person = $"../NPCs/enriquez"
-			
+			if place.get_parent().name == "blacksmithHouse":
+				$"../CanvasLayer/shop".person = $"../NPCs/toby"
+			if place.get_parent().name == "dylansHouse":
+				$"../CanvasLayer/shop".person = $"../NPCs/dylan"
+			if place.get_parent().name == "townhall":
+				$"../CanvasLayer/shop".person = $"../NPCs/mayor"
 			$"../CanvasLayer/shop".start()
 		elif holding and holding == "acorn" and not $"..".tooClose(position):
 			var item = $player/hold.get_child(0)
@@ -137,9 +142,10 @@ func _physics_process(delta: float) -> void:
 	elif not Input.is_action_pressed("whistle") and not $AnimationPlayer.current_animation == "whistleSuccess" and whistling:
 		freeze = false
 		whistling = false
+
 		if $AnimationPlayer.current_animation == "whistle":
 			$AnimationPlayer.stop()
-
+		$player/hands2.hide()
 	'''
 	if InputManager.current_device == InputManager.Device.KEYBOARD_MOUSE and get_viewport().gui_get_focus_owner() and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		get_viewport().gui_get_focus_owner().release_focus()

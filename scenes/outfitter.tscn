@@ -313,534 +313,6 @@ tracks/23/path = NodePath("Armature/Skeleton3D:Bone.009")
 tracks/23/interp = 1
 tracks/23/loop_wrap = true
 tracks/23/keys = PackedFloat32Array(0, 1, 0.026176125, -0.02020988, 0.12553097, 0.99153835)
-tracks/24/type = "bezier"
-tracks/24/imported = false
-tracks/24/enabled = true
-tracks/24/path = NodePath("Armature/Skeleton3D:Bone:x")
-tracks/24/interp = 1
-tracks/24/loop_wrap = true
-tracks/24/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.094751224, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/25/type = "bezier"
-tracks/25/imported = false
-tracks/25/enabled = true
-tracks/25/path = NodePath("Armature/Skeleton3D:Bone:y")
-tracks/25/interp = 1
-tracks/25/loop_wrap = true
-tracks/25/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.00010941644, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/26/type = "bezier"
-tracks/26/imported = false
-tracks/26/enabled = true
-tracks/26/path = NodePath("Armature/Skeleton3D:Bone:z")
-tracks/26/interp = 1
-tracks/26/loop_wrap = true
-tracks/26/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-1.0414202e-05, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/27/type = "bezier"
-tracks/27/imported = false
-tracks/27/enabled = true
-tracks/27/path = NodePath("Armature/Skeleton3D:Bone:w")
-tracks/27/interp = 1
-tracks/27/loop_wrap = true
-tracks/27/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.995501, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/28/type = "bezier"
-tracks/28/imported = false
-tracks/28/enabled = true
-tracks/28/path = NodePath("Armature/Skeleton3D:Bone.001:x")
-tracks/28/interp = 1
-tracks/28/loop_wrap = true
-tracks/28/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.800146, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/29/type = "bezier"
-tracks/29/imported = false
-tracks/29/enabled = true
-tracks/29/path = NodePath("Armature/Skeleton3D:Bone.001:y")
-tracks/29/interp = 1
-tracks/29/loop_wrap = true
-tracks/29/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.03458115, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/30/type = "bezier"
-tracks/30/imported = false
-tracks/30/enabled = true
-tracks/30/path = NodePath("Armature/Skeleton3D:Bone.001:z")
-tracks/30/interp = 1
-tracks/30/loop_wrap = true
-tracks/30/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.21132228, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/31/type = "bezier"
-tracks/31/imported = false
-tracks/31/enabled = true
-tracks/31/path = NodePath("Armature/Skeleton3D:Bone.001:w")
-tracks/31/interp = 1
-tracks/31/loop_wrap = true
-tracks/31/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.56027985, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/32/type = "bezier"
-tracks/32/imported = false
-tracks/32/enabled = true
-tracks/32/path = NodePath("Armature/Skeleton3D:Bone.004:x")
-tracks/32/interp = 1
-tracks/32/loop_wrap = true
-tracks/32/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.33921695, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/33/type = "bezier"
-tracks/33/imported = false
-tracks/33/enabled = true
-tracks/33/path = NodePath("Armature/Skeleton3D:Bone.004:y")
-tracks/33/interp = 1
-tracks/33/loop_wrap = true
-tracks/33/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.2102414, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/34/type = "bezier"
-tracks/34/imported = false
-tracks/34/enabled = true
-tracks/34/path = NodePath("Armature/Skeleton3D:Bone.004:z")
-tracks/34/interp = 1
-tracks/34/loop_wrap = true
-tracks/34/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9110941, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/35/type = "bezier"
-tracks/35/imported = false
-tracks/35/enabled = true
-tracks/35/path = NodePath("Armature/Skeleton3D:Bone.004:w")
-tracks/35/interp = 1
-tracks/35/loop_wrap = true
-tracks/35/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.10314009, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/36/type = "bezier"
-tracks/36/imported = false
-tracks/36/enabled = true
-tracks/36/path = NodePath("Armature/Skeleton3D:Bone.002:x")
-tracks/36/interp = 1
-tracks/36/loop_wrap = true
-tracks/36/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.8713687, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/37/type = "bezier"
-tracks/37/imported = false
-tracks/37/enabled = true
-tracks/37/path = NodePath("Armature/Skeleton3D:Bone.002:y")
-tracks/37/interp = 1
-tracks/37/loop_wrap = true
-tracks/37/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.008491877, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/38/type = "bezier"
-tracks/38/imported = false
-tracks/38/enabled = true
-tracks/38/path = NodePath("Armature/Skeleton3D:Bone.002:z")
-tracks/38/interp = 1
-tracks/38/loop_wrap = true
-tracks/38/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.015282965, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/39/type = "bezier"
-tracks/39/imported = false
-tracks/39/enabled = true
-tracks/39/path = NodePath("Armature/Skeleton3D:Bone.002:w")
-tracks/39/interp = 1
-tracks/39/loop_wrap = true
-tracks/39/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.49031723, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/40/type = "bezier"
-tracks/40/imported = false
-tracks/40/enabled = true
-tracks/40/path = NodePath("Armature/Skeleton3D:Bone.003:x")
-tracks/40/interp = 1
-tracks/40/loop_wrap = true
-tracks/40/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.7084364, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/41/type = "bezier"
-tracks/41/imported = false
-tracks/41/enabled = true
-tracks/41/path = NodePath("Armature/Skeleton3D:Bone.003:y")
-tracks/41/interp = 1
-tracks/41/loop_wrap = true
-tracks/41/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.06757533, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/42/type = "bezier"
-tracks/42/imported = false
-tracks/42/enabled = true
-tracks/42/path = NodePath("Armature/Skeleton3D:Bone.003:z")
-tracks/42/interp = 1
-tracks/42/loop_wrap = true
-tracks/42/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.043425545, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/43/type = "bezier"
-tracks/43/imported = false
-tracks/43/enabled = true
-tracks/43/path = NodePath("Armature/Skeleton3D:Bone.003:w")
-tracks/43/interp = 1
-tracks/43/loop_wrap = true
-tracks/43/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.7011887, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/44/type = "bezier"
-tracks/44/imported = false
-tracks/44/enabled = true
-tracks/44/path = NodePath("Armature/Skeleton3D:Bone.010:x")
-tracks/44/interp = 1
-tracks/44/loop_wrap = true
-tracks/44/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.023278603, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/45/type = "bezier"
-tracks/45/imported = false
-tracks/45/enabled = true
-tracks/45/path = NodePath("Armature/Skeleton3D:Bone.010:y")
-tracks/45/interp = 1
-tracks/45/loop_wrap = true
-tracks/45/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.0021248062, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/46/type = "bezier"
-tracks/46/imported = false
-tracks/46/enabled = true
-tracks/46/path = NodePath("Armature/Skeleton3D:Bone.010:z")
-tracks/46/interp = 1
-tracks/46/loop_wrap = true
-tracks/46/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(4.435881e-05, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/47/type = "bezier"
-tracks/47/imported = false
-tracks/47/enabled = true
-tracks/47/path = NodePath("Armature/Skeleton3D:Bone.010:w")
-tracks/47/interp = 1
-tracks/47/loop_wrap = true
-tracks/47/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.99972683, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/48/type = "bezier"
-tracks/48/imported = false
-tracks/48/enabled = true
-tracks/48/path = NodePath("Armature/Skeleton3D:Bone.011:x")
-tracks/48/interp = 1
-tracks/48/loop_wrap = true
-tracks/48/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.38022384, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/49/type = "bezier"
-tracks/49/imported = false
-tracks/49/enabled = true
-tracks/49/path = NodePath("Armature/Skeleton3D:Bone.011:y")
-tracks/49/interp = 1
-tracks/49/loop_wrap = true
-tracks/49/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.063826814, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/50/type = "bezier"
-tracks/50/imported = false
-tracks/50/enabled = true
-tracks/50/path = NodePath("Armature/Skeleton3D:Bone.011:z")
-tracks/50/interp = 1
-tracks/50/loop_wrap = true
-tracks/50/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.024771776, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/51/type = "bezier"
-tracks/51/imported = false
-tracks/51/enabled = true
-tracks/51/path = NodePath("Armature/Skeleton3D:Bone.011:w")
-tracks/51/interp = 1
-tracks/51/loop_wrap = true
-tracks/51/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.92235696, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/52/type = "bezier"
-tracks/52/imported = false
-tracks/52/enabled = true
-tracks/52/path = NodePath("Armature/Skeleton3D:Bone.005:x")
-tracks/52/interp = 1
-tracks/52/loop_wrap = true
-tracks/52/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.7976116, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/53/type = "bezier"
-tracks/53/imported = false
-tracks/53/enabled = true
-tracks/53/path = NodePath("Armature/Skeleton3D:Bone.005:y")
-tracks/53/interp = 1
-tracks/53/loop_wrap = true
-tracks/53/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.021873154, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/54/type = "bezier"
-tracks/54/imported = false
-tracks/54/enabled = true
-tracks/54/path = NodePath("Armature/Skeleton3D:Bone.005:z")
-tracks/54/interp = 1
-tracks/54/loop_wrap = true
-tracks/54/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.60207784, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/55/type = "bezier"
-tracks/55/imported = false
-tracks/55/enabled = true
-tracks/55/path = NodePath("Armature/Skeleton3D:Bone.005:w")
-tracks/55/interp = 1
-tracks/55/loop_wrap = true
-tracks/55/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.028976802, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/56/type = "bezier"
-tracks/56/imported = false
-tracks/56/enabled = true
-tracks/56/path = NodePath("Armature/Skeleton3D:Bone.006:x")
-tracks/56/interp = 1
-tracks/56/loop_wrap = true
-tracks/56/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.023552207, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/57/type = "bezier"
-tracks/57/imported = false
-tracks/57/enabled = true
-tracks/57/path = NodePath("Armature/Skeleton3D:Bone.006:y")
-tracks/57/interp = 1
-tracks/57/loop_wrap = true
-tracks/57/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.043346383, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/58/type = "bezier"
-tracks/58/imported = false
-tracks/58/enabled = true
-tracks/58/path = NodePath("Armature/Skeleton3D:Bone.006:z")
-tracks/58/interp = 1
-tracks/58/loop_wrap = true
-tracks/58/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.070814766, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/59/type = "bezier"
-tracks/59/imported = false
-tracks/59/enabled = true
-tracks/59/path = NodePath("Armature/Skeleton3D:Bone.006:w")
-tracks/59/interp = 1
-tracks/59/loop_wrap = true
-tracks/59/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9962689, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/60/type = "bezier"
-tracks/60/imported = false
-tracks/60/enabled = true
-tracks/60/path = NodePath("Armature/Skeleton3D:Bone.007:x")
-tracks/60/interp = 1
-tracks/60/loop_wrap = true
-tracks/60/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.03028715, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/61/type = "bezier"
-tracks/61/imported = false
-tracks/61/enabled = true
-tracks/61/path = NodePath("Armature/Skeleton3D:Bone.007:y")
-tracks/61/interp = 1
-tracks/61/loop_wrap = true
-tracks/61/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.0066333255, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/62/type = "bezier"
-tracks/62/imported = false
-tracks/62/enabled = true
-tracks/62/path = NodePath("Armature/Skeleton3D:Bone.007:z")
-tracks/62/interp = 1
-tracks/62/loop_wrap = true
-tracks/62/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.08097926, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/63/type = "bezier"
-tracks/63/imported = false
-tracks/63/enabled = true
-tracks/63/path = NodePath("Armature/Skeleton3D:Bone.007:w")
-tracks/63/interp = 1
-tracks/63/loop_wrap = true
-tracks/63/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9962335, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/64/type = "bezier"
-tracks/64/imported = false
-tracks/64/enabled = true
-tracks/64/path = NodePath("Armature/Skeleton3D:Bone.008:x")
-tracks/64/interp = 1
-tracks/64/loop_wrap = true
-tracks/64/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.058170807, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/65/type = "bezier"
-tracks/65/imported = false
-tracks/65/enabled = true
-tracks/65/path = NodePath("Armature/Skeleton3D:Bone.008:y")
-tracks/65/interp = 1
-tracks/65/loop_wrap = true
-tracks/65/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.044673894, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/66/type = "bezier"
-tracks/66/imported = false
-tracks/66/enabled = true
-tracks/66/path = NodePath("Armature/Skeleton3D:Bone.008:z")
-tracks/66/interp = 1
-tracks/66/loop_wrap = true
-tracks/66/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.24688463, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/67/type = "bezier"
-tracks/67/imported = false
-tracks/67/enabled = true
-tracks/67/path = NodePath("Armature/Skeleton3D:Bone.008:w")
-tracks/67/interp = 1
-tracks/67/loop_wrap = true
-tracks/67/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9662652, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/68/type = "bezier"
-tracks/68/imported = false
-tracks/68/enabled = true
-tracks/68/path = NodePath("Armature/Skeleton3D:Bone.009:x")
-tracks/68/interp = 1
-tracks/68/loop_wrap = true
-tracks/68/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.026176125, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/69/type = "bezier"
-tracks/69/imported = false
-tracks/69/enabled = true
-tracks/69/path = NodePath("Armature/Skeleton3D:Bone.009:y")
-tracks/69/interp = 1
-tracks/69/loop_wrap = true
-tracks/69/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.02020988, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/70/type = "bezier"
-tracks/70/imported = false
-tracks/70/enabled = true
-tracks/70/path = NodePath("Armature/Skeleton3D:Bone.009:z")
-tracks/70/interp = 1
-tracks/70/loop_wrap = true
-tracks/70/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.12553096, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/71/type = "bezier"
-tracks/71/imported = false
-tracks/71/enabled = true
-tracks/71/path = NodePath("Armature/Skeleton3D:Bone.009:w")
-tracks/71/interp = 1
-tracks/71/loop_wrap = true
-tracks/71/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9915384, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
 
 [sub_resource type="Animation" id="Animation_q7b0m"]
 resource_name = "eyeroll"
@@ -1197,6 +669,180 @@ tracks/11/interp = 2
 tracks/11/loop_wrap = true
 tracks/11/keys = PackedFloat32Array(1, 1, 0.026176125, -0.02020988, 0.12553096, 0.9915384, 2, 1, 0.02617612, -0.02020988, 0.12553093, 0.9915384)
 
+[sub_resource type="Animation" id="Animation_fnseh"]
+resource_name = "point"
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Armature/Skeleton3D:Bone")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.5, 1, 0.08294289, 0.48107728, -0.045806903, 0.8715428)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Armature/Skeleton3D:Bone.001")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0.5, 1, 0.7705393, 0.0457129, -0.029329447, 0.6350743)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Armature/Skeleton3D:Bone.004")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0.5, 1, -0.1442961, 0.09744137, -0.39500412, 0.90202856)
+tracks/3/type = "rotation_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Armature/Skeleton3D:Bone.002")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0.5, 1, 0.8713687, 0.008491877, -0.015282965, -0.49031723)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Armature/Skeleton3D:Bone.003")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0.5, 1, -0.7084364, 0.06757533, -0.043425545, 0.7011887)
+tracks/5/type = "rotation_3d"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Armature/Skeleton3D:Bone.010")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = PackedFloat32Array(0.5, 1, 0.022233976, -0.27171186, 0.05926928, 0.9602945)
+tracks/6/type = "rotation_3d"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Armature/Skeleton3D:Bone.011")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = PackedFloat32Array(0.5, 1, -0.38022384, -0.063826814, 0.024771776, 0.92235696)
+tracks/7/type = "rotation_3d"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Armature/Skeleton3D:Bone.005")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = PackedFloat32Array(0.5, 1, 0.9598157, -0.03076415, 0.27827275, -0.019278405)
+tracks/8/type = "rotation_3d"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Armature/Skeleton3D:Bone.006")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = PackedFloat32Array(0.5, 1, 0.023552207, -0.043346383, 0.070814766, 0.9962689)
+tracks/9/type = "rotation_3d"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Armature/Skeleton3D:Bone.007")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = PackedFloat32Array(0.5, 1, -0.03028715, 0.0066333255, -0.08097926, 0.9962335)
+tracks/10/type = "rotation_3d"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Armature/Skeleton3D:Bone.008")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = PackedFloat32Array(0.5, 1, -0.058170807, 0.044673894, -0.24688463, 0.9662652)
+tracks/11/type = "rotation_3d"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Armature/Skeleton3D:Bone.009")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = PackedFloat32Array(0.5, 1, 0.026176125, -0.02020988, 0.12553096, 0.9915384)
+
+[sub_resource type="Animation" id="Animation_odanv"]
+resource_name = "pose"
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Armature/Skeleton3D:Bone")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.5, 1, 0.094751224, -0.00010941644, -1.0414202e-05, 0.995501)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Armature/Skeleton3D:Bone.001")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0.5, 1, 0.75976086, -0.037806194, -0.046870038, 0.6474081)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Armature/Skeleton3D:Bone.004")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0.5, 1, 0.7780718, -0.09249305, -0.20045896, 0.5881033)
+tracks/3/type = "rotation_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Armature/Skeleton3D:Bone.002")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0.5, 1, -0.85603607, -0.008177689, 0.01436218, 0.5166519)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Armature/Skeleton3D:Bone.003")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0.5, 1, -0.83028626, -0.04974707, -0.20499521, 0.5158749)
+tracks/5/type = "rotation_3d"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Armature/Skeleton3D:Bone.010")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = PackedFloat32Array(0.5, 1, 0.031226777, 0.062392738, 0.27903628, 0.9577426)
+tracks/6/type = "rotation_3d"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Armature/Skeleton3D:Bone.011")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = PackedFloat32Array(0.5, 1, -0.37331894, -0.07365381, 0.08817516, 0.9205614)
+tracks/7/type = "rotation_3d"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Armature/Skeleton3D:Bone.005")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = PackedFloat32Array(0.5, 1, 0.7976116, -0.021873154, 0.60207784, -0.028976802)
+tracks/8/type = "rotation_3d"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Armature/Skeleton3D:Bone.006")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = PackedFloat32Array(0.5, 1, 0.09545625, -0.03982097, 0.31361023, 0.943902)
+tracks/9/type = "rotation_3d"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Armature/Skeleton3D:Bone.007")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = PackedFloat32Array(0.5, 1, -0.03028715, 0.0066333255, -0.08097926, 0.9962335)
+tracks/10/type = "rotation_3d"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Armature/Skeleton3D:Bone.008")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = PackedFloat32Array(0.5, 1, -0.09881339, 0.04231014, -0.45079744, 0.8861306)
+tracks/11/type = "rotation_3d"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Armature/Skeleton3D:Bone.009")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = PackedFloat32Array(0.5, 1, 0.026176125, -0.02020988, 0.12553096, 0.9915384)
+
 [sub_resource type="Animation" id="Animation_7v4qi"]
 resource_name = "shock"
 length = 1.5
@@ -1291,534 +937,90 @@ resource_name = "stare"
 
 [sub_resource type="Animation" id="Animation_63ml7"]
 resource_name = "think"
-tracks/0/type = "bezier"
+tracks/0/type = "rotation_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Armature/Skeleton3D:Bone:x")
+tracks/0/path = NodePath("Armature/Skeleton3D:Bone")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.094751224, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/1/type = "bezier"
+tracks/0/keys = PackedFloat32Array(0.5, 1, 0.094751224, -0.00010941644, -1.0414202e-05, 0.995501)
+tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Armature/Skeleton3D:Bone:y")
+tracks/1/path = NodePath("Armature/Skeleton3D:Bone.001")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.00010941644, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/2/type = "bezier"
+tracks/1/keys = PackedFloat32Array(0.5, 1, 0.800146, 0.03458115, -0.21132228, 0.56027985)
+tracks/2/type = "rotation_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Armature/Skeleton3D:Bone:z")
+tracks/2/path = NodePath("Armature/Skeleton3D:Bone.004")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-1.0414202e-05, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/3/type = "bezier"
+tracks/2/keys = PackedFloat32Array(0.5, 1, -0.33921695, -0.2102414, 0.9110941, -0.10314009)
+tracks/3/type = "rotation_3d"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Armature/Skeleton3D:Bone:w")
+tracks/3/path = NodePath("Armature/Skeleton3D:Bone.002")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.995501, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/4/type = "bezier"
+tracks/3/keys = PackedFloat32Array(0.5, 1, 0.8713687, 0.008491877, -0.015282965, -0.49031723)
+tracks/4/type = "rotation_3d"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Armature/Skeleton3D:Bone.001:x")
+tracks/4/path = NodePath("Armature/Skeleton3D:Bone.003")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.800146, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/5/type = "bezier"
+tracks/4/keys = PackedFloat32Array(0.5, 1, -0.7084364, 0.06757533, -0.043425545, 0.7011887)
+tracks/5/type = "rotation_3d"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Armature/Skeleton3D:Bone.001:y")
+tracks/5/path = NodePath("Armature/Skeleton3D:Bone.010")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
-tracks/5/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.03458115, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/6/type = "bezier"
+tracks/5/keys = PackedFloat32Array(0.5, 1, 0.023278603, 0.0021248062, 4.435881e-05, 0.99972683)
+tracks/6/type = "rotation_3d"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Armature/Skeleton3D:Bone.001:z")
+tracks/6/path = NodePath("Armature/Skeleton3D:Bone.011")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
-tracks/6/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.21132228, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/7/type = "bezier"
+tracks/6/keys = PackedFloat32Array(0.5, 1, -0.38022384, -0.063826814, 0.024771776, 0.92235696)
+tracks/7/type = "rotation_3d"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Armature/Skeleton3D:Bone.001:w")
+tracks/7/path = NodePath("Armature/Skeleton3D:Bone.005")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
-tracks/7/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.56027985, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/8/type = "bezier"
+tracks/7/keys = PackedFloat32Array(0.5, 1, 0.7976116, -0.021873154, 0.60207784, -0.028976802)
+tracks/8/type = "rotation_3d"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Armature/Skeleton3D:Bone.004:x")
+tracks/8/path = NodePath("Armature/Skeleton3D:Bone.006")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
-tracks/8/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.33921695, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/9/type = "bezier"
+tracks/8/keys = PackedFloat32Array(0.5, 1, 0.023552207, -0.043346383, 0.070814766, 0.9962689)
+tracks/9/type = "rotation_3d"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Armature/Skeleton3D:Bone.004:y")
+tracks/9/path = NodePath("Armature/Skeleton3D:Bone.007")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
-tracks/9/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.2102414, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/10/type = "bezier"
+tracks/9/keys = PackedFloat32Array(0.5, 1, -0.03028715, 0.0066333255, -0.08097926, 0.9962335)
+tracks/10/type = "rotation_3d"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Armature/Skeleton3D:Bone.004:z")
+tracks/10/path = NodePath("Armature/Skeleton3D:Bone.008")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
-tracks/10/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9110941, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/11/type = "bezier"
+tracks/10/keys = PackedFloat32Array(0.5, 1, -0.058170807, 0.044673894, -0.24688463, 0.9662652)
+tracks/11/type = "rotation_3d"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Armature/Skeleton3D:Bone.004:w")
+tracks/11/path = NodePath("Armature/Skeleton3D:Bone.009")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
-tracks/11/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.10314009, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/12/type = "bezier"
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/path = NodePath("Armature/Skeleton3D:Bone.002:x")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.8713687, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/13/type = "bezier"
-tracks/13/imported = false
-tracks/13/enabled = true
-tracks/13/path = NodePath("Armature/Skeleton3D:Bone.002:y")
-tracks/13/interp = 1
-tracks/13/loop_wrap = true
-tracks/13/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.008491877, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/14/type = "bezier"
-tracks/14/imported = false
-tracks/14/enabled = true
-tracks/14/path = NodePath("Armature/Skeleton3D:Bone.002:z")
-tracks/14/interp = 1
-tracks/14/loop_wrap = true
-tracks/14/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.015282965, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/15/type = "bezier"
-tracks/15/imported = false
-tracks/15/enabled = true
-tracks/15/path = NodePath("Armature/Skeleton3D:Bone.002:w")
-tracks/15/interp = 1
-tracks/15/loop_wrap = true
-tracks/15/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.49031723, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/16/type = "bezier"
-tracks/16/imported = false
-tracks/16/enabled = true
-tracks/16/path = NodePath("Armature/Skeleton3D:Bone.003:x")
-tracks/16/interp = 1
-tracks/16/loop_wrap = true
-tracks/16/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.7084364, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/17/type = "bezier"
-tracks/17/imported = false
-tracks/17/enabled = true
-tracks/17/path = NodePath("Armature/Skeleton3D:Bone.003:y")
-tracks/17/interp = 1
-tracks/17/loop_wrap = true
-tracks/17/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.06757533, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/18/type = "bezier"
-tracks/18/imported = false
-tracks/18/enabled = true
-tracks/18/path = NodePath("Armature/Skeleton3D:Bone.003:z")
-tracks/18/interp = 1
-tracks/18/loop_wrap = true
-tracks/18/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.043425545, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/19/type = "bezier"
-tracks/19/imported = false
-tracks/19/enabled = true
-tracks/19/path = NodePath("Armature/Skeleton3D:Bone.003:w")
-tracks/19/interp = 1
-tracks/19/loop_wrap = true
-tracks/19/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.7011887, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/20/type = "bezier"
-tracks/20/imported = false
-tracks/20/enabled = true
-tracks/20/path = NodePath("Armature/Skeleton3D:Bone.010:x")
-tracks/20/interp = 1
-tracks/20/loop_wrap = true
-tracks/20/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.023278603, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/21/type = "bezier"
-tracks/21/imported = false
-tracks/21/enabled = true
-tracks/21/path = NodePath("Armature/Skeleton3D:Bone.010:y")
-tracks/21/interp = 1
-tracks/21/loop_wrap = true
-tracks/21/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.0021248062, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/22/type = "bezier"
-tracks/22/imported = false
-tracks/22/enabled = true
-tracks/22/path = NodePath("Armature/Skeleton3D:Bone.010:z")
-tracks/22/interp = 1
-tracks/22/loop_wrap = true
-tracks/22/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(4.435881e-05, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/23/type = "bezier"
-tracks/23/imported = false
-tracks/23/enabled = true
-tracks/23/path = NodePath("Armature/Skeleton3D:Bone.010:w")
-tracks/23/interp = 1
-tracks/23/loop_wrap = true
-tracks/23/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.99972683, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/24/type = "bezier"
-tracks/24/imported = false
-tracks/24/enabled = true
-tracks/24/path = NodePath("Armature/Skeleton3D:Bone.011:x")
-tracks/24/interp = 1
-tracks/24/loop_wrap = true
-tracks/24/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.38022384, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/25/type = "bezier"
-tracks/25/imported = false
-tracks/25/enabled = true
-tracks/25/path = NodePath("Armature/Skeleton3D:Bone.011:y")
-tracks/25/interp = 1
-tracks/25/loop_wrap = true
-tracks/25/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.063826814, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/26/type = "bezier"
-tracks/26/imported = false
-tracks/26/enabled = true
-tracks/26/path = NodePath("Armature/Skeleton3D:Bone.011:z")
-tracks/26/interp = 1
-tracks/26/loop_wrap = true
-tracks/26/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.024771776, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/27/type = "bezier"
-tracks/27/imported = false
-tracks/27/enabled = true
-tracks/27/path = NodePath("Armature/Skeleton3D:Bone.011:w")
-tracks/27/interp = 1
-tracks/27/loop_wrap = true
-tracks/27/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.92235696, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/28/type = "bezier"
-tracks/28/imported = false
-tracks/28/enabled = true
-tracks/28/path = NodePath("Armature/Skeleton3D:Bone.005:x")
-tracks/28/interp = 1
-tracks/28/loop_wrap = true
-tracks/28/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.7976116, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/29/type = "bezier"
-tracks/29/imported = false
-tracks/29/enabled = true
-tracks/29/path = NodePath("Armature/Skeleton3D:Bone.005:y")
-tracks/29/interp = 1
-tracks/29/loop_wrap = true
-tracks/29/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.021873154, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/30/type = "bezier"
-tracks/30/imported = false
-tracks/30/enabled = true
-tracks/30/path = NodePath("Armature/Skeleton3D:Bone.005:z")
-tracks/30/interp = 1
-tracks/30/loop_wrap = true
-tracks/30/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.60207784, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/31/type = "bezier"
-tracks/31/imported = false
-tracks/31/enabled = true
-tracks/31/path = NodePath("Armature/Skeleton3D:Bone.005:w")
-tracks/31/interp = 1
-tracks/31/loop_wrap = true
-tracks/31/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.028976802, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/32/type = "bezier"
-tracks/32/imported = false
-tracks/32/enabled = true
-tracks/32/path = NodePath("Armature/Skeleton3D:Bone.006:x")
-tracks/32/interp = 1
-tracks/32/loop_wrap = true
-tracks/32/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.023552207, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/33/type = "bezier"
-tracks/33/imported = false
-tracks/33/enabled = true
-tracks/33/path = NodePath("Armature/Skeleton3D:Bone.006:y")
-tracks/33/interp = 1
-tracks/33/loop_wrap = true
-tracks/33/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.043346383, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/34/type = "bezier"
-tracks/34/imported = false
-tracks/34/enabled = true
-tracks/34/path = NodePath("Armature/Skeleton3D:Bone.006:z")
-tracks/34/interp = 1
-tracks/34/loop_wrap = true
-tracks/34/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.070814766, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/35/type = "bezier"
-tracks/35/imported = false
-tracks/35/enabled = true
-tracks/35/path = NodePath("Armature/Skeleton3D:Bone.006:w")
-tracks/35/interp = 1
-tracks/35/loop_wrap = true
-tracks/35/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9962689, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/36/type = "bezier"
-tracks/36/imported = false
-tracks/36/enabled = true
-tracks/36/path = NodePath("Armature/Skeleton3D:Bone.007:x")
-tracks/36/interp = 1
-tracks/36/loop_wrap = true
-tracks/36/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.03028715, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/37/type = "bezier"
-tracks/37/imported = false
-tracks/37/enabled = true
-tracks/37/path = NodePath("Armature/Skeleton3D:Bone.007:y")
-tracks/37/interp = 1
-tracks/37/loop_wrap = true
-tracks/37/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.0066333255, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/38/type = "bezier"
-tracks/38/imported = false
-tracks/38/enabled = true
-tracks/38/path = NodePath("Armature/Skeleton3D:Bone.007:z")
-tracks/38/interp = 1
-tracks/38/loop_wrap = true
-tracks/38/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.08097926, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/39/type = "bezier"
-tracks/39/imported = false
-tracks/39/enabled = true
-tracks/39/path = NodePath("Armature/Skeleton3D:Bone.007:w")
-tracks/39/interp = 1
-tracks/39/loop_wrap = true
-tracks/39/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9962335, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/40/type = "bezier"
-tracks/40/imported = false
-tracks/40/enabled = true
-tracks/40/path = NodePath("Armature/Skeleton3D:Bone.008:x")
-tracks/40/interp = 1
-tracks/40/loop_wrap = true
-tracks/40/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.058170807, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/41/type = "bezier"
-tracks/41/imported = false
-tracks/41/enabled = true
-tracks/41/path = NodePath("Armature/Skeleton3D:Bone.008:y")
-tracks/41/interp = 1
-tracks/41/loop_wrap = true
-tracks/41/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.044673894, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/42/type = "bezier"
-tracks/42/imported = false
-tracks/42/enabled = true
-tracks/42/path = NodePath("Armature/Skeleton3D:Bone.008:z")
-tracks/42/interp = 1
-tracks/42/loop_wrap = true
-tracks/42/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.24688463, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/43/type = "bezier"
-tracks/43/imported = false
-tracks/43/enabled = true
-tracks/43/path = NodePath("Armature/Skeleton3D:Bone.008:w")
-tracks/43/interp = 1
-tracks/43/loop_wrap = true
-tracks/43/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9662652, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/44/type = "bezier"
-tracks/44/imported = false
-tracks/44/enabled = true
-tracks/44/path = NodePath("Armature/Skeleton3D:Bone.009:x")
-tracks/44/interp = 1
-tracks/44/loop_wrap = true
-tracks/44/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.026176125, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/45/type = "bezier"
-tracks/45/imported = false
-tracks/45/enabled = true
-tracks/45/path = NodePath("Armature/Skeleton3D:Bone.009:y")
-tracks/45/interp = 1
-tracks/45/loop_wrap = true
-tracks/45/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.02020988, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/46/type = "bezier"
-tracks/46/imported = false
-tracks/46/enabled = true
-tracks/46/path = NodePath("Armature/Skeleton3D:Bone.009:z")
-tracks/46/interp = 1
-tracks/46/loop_wrap = true
-tracks/46/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.12553096, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/47/type = "bezier"
-tracks/47/imported = false
-tracks/47/enabled = true
-tracks/47/path = NodePath("Armature/Skeleton3D:Bone.009:w")
-tracks/47/interp = 1
-tracks/47/loop_wrap = true
-tracks/47/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9915384, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
+tracks/11/keys = PackedFloat32Array(0.5, 1, 0.026176125, -0.02020988, 0.12553096, 0.9915384)
 
 [sub_resource type="Animation" id="Animation_263wr"]
 resource_name = "walk"
@@ -1994,534 +1196,90 @@ tracks/23/keys = PackedFloat32Array(0, 1, 0.026176125, -0.02020988, 0.12553097, 
 
 [sub_resource type="Animation" id="Animation_1gb0s"]
 resource_name = "what"
-tracks/0/type = "bezier"
+tracks/0/type = "rotation_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Armature/Skeleton3D:Bone:x")
+tracks/0/path = NodePath("Armature/Skeleton3D:Bone")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.094751224, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/1/type = "bezier"
+tracks/0/keys = PackedFloat32Array(0.5, 1, 0.094751224, -0.00010941644, -1.0414202e-05, 0.995501)
+tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Armature/Skeleton3D:Bone:y")
+tracks/1/path = NodePath("Armature/Skeleton3D:Bone.001")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.00010941644, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/2/type = "bezier"
+tracks/1/keys = PackedFloat32Array(0.5, 1, 0.6043312, 0.46526903, 0.24163947, 0.59993243)
+tracks/2/type = "rotation_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Armature/Skeleton3D:Bone:z")
+tracks/2/path = NodePath("Armature/Skeleton3D:Bone.004")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-1.0414202e-05, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/3/type = "bezier"
+tracks/2/keys = PackedFloat32Array(0.5, 1, -0.12601772, 0.27036378, -0.7175562, 0.62939346)
+tracks/3/type = "rotation_3d"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Armature/Skeleton3D:Bone:w")
+tracks/3/path = NodePath("Armature/Skeleton3D:Bone.002")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.995501, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/4/type = "bezier"
+tracks/3/keys = PackedFloat32Array(0.5, 1, 0.34654447, 0.6939861, -0.59010106, -0.22376531)
+tracks/4/type = "rotation_3d"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Armature/Skeleton3D:Bone.001:x")
+tracks/4/path = NodePath("Armature/Skeleton3D:Bone.003")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.6043312, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/5/type = "bezier"
+tracks/4/keys = PackedFloat32Array(0.5, 1, 0.61349666, 0.16572583, 0.60913485, -0.4744592)
+tracks/5/type = "rotation_3d"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Armature/Skeleton3D:Bone.001:y")
+tracks/5/path = NodePath("Armature/Skeleton3D:Bone.010")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
-tracks/5/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.46526903, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/6/type = "bezier"
+tracks/5/keys = PackedFloat32Array(0.5, 1, 0.023278603, 0.0021248062, 4.435881e-05, 0.99972683)
+tracks/6/type = "rotation_3d"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Armature/Skeleton3D:Bone.001:z")
+tracks/6/path = NodePath("Armature/Skeleton3D:Bone.011")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
-tracks/6/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.24163947, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/7/type = "bezier"
+tracks/6/keys = PackedFloat32Array(0.5, 1, -0.38022384, -0.063826814, 0.024771776, 0.92235696)
+tracks/7/type = "rotation_3d"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Armature/Skeleton3D:Bone.001:w")
+tracks/7/path = NodePath("Armature/Skeleton3D:Bone.005")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
-tracks/7/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.59993243, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/8/type = "bezier"
+tracks/7/keys = PackedFloat32Array(0.5, 1, 0.7976116, -0.021873154, 0.60207784, -0.028976802)
+tracks/8/type = "rotation_3d"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Armature/Skeleton3D:Bone.004:x")
+tracks/8/path = NodePath("Armature/Skeleton3D:Bone.006")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
-tracks/8/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.12601772, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/9/type = "bezier"
+tracks/8/keys = PackedFloat32Array(0.5, 1, 0.023552207, -0.043346383, 0.070814766, 0.9962689)
+tracks/9/type = "rotation_3d"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Armature/Skeleton3D:Bone.004:y")
+tracks/9/path = NodePath("Armature/Skeleton3D:Bone.007")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
-tracks/9/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.27036378, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/10/type = "bezier"
+tracks/9/keys = PackedFloat32Array(0.5, 1, -0.03028715, 0.0066333255, -0.08097926, 0.9962335)
+tracks/10/type = "rotation_3d"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Armature/Skeleton3D:Bone.004:z")
+tracks/10/path = NodePath("Armature/Skeleton3D:Bone.008")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
-tracks/10/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.7175562, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/11/type = "bezier"
+tracks/10/keys = PackedFloat32Array(0.5, 1, -0.058170807, 0.044673894, -0.24688463, 0.9662652)
+tracks/11/type = "rotation_3d"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Armature/Skeleton3D:Bone.004:w")
+tracks/11/path = NodePath("Armature/Skeleton3D:Bone.009")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
-tracks/11/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.62939346, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/12/type = "bezier"
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/path = NodePath("Armature/Skeleton3D:Bone.002:x")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.34654447, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/13/type = "bezier"
-tracks/13/imported = false
-tracks/13/enabled = true
-tracks/13/path = NodePath("Armature/Skeleton3D:Bone.002:y")
-tracks/13/interp = 1
-tracks/13/loop_wrap = true
-tracks/13/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.6939861, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/14/type = "bezier"
-tracks/14/imported = false
-tracks/14/enabled = true
-tracks/14/path = NodePath("Armature/Skeleton3D:Bone.002:z")
-tracks/14/interp = 1
-tracks/14/loop_wrap = true
-tracks/14/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.59010106, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/15/type = "bezier"
-tracks/15/imported = false
-tracks/15/enabled = true
-tracks/15/path = NodePath("Armature/Skeleton3D:Bone.002:w")
-tracks/15/interp = 1
-tracks/15/loop_wrap = true
-tracks/15/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.22376531, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/16/type = "bezier"
-tracks/16/imported = false
-tracks/16/enabled = true
-tracks/16/path = NodePath("Armature/Skeleton3D:Bone.003:x")
-tracks/16/interp = 1
-tracks/16/loop_wrap = true
-tracks/16/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.61349666, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/17/type = "bezier"
-tracks/17/imported = false
-tracks/17/enabled = true
-tracks/17/path = NodePath("Armature/Skeleton3D:Bone.003:y")
-tracks/17/interp = 1
-tracks/17/loop_wrap = true
-tracks/17/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.16572583, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/18/type = "bezier"
-tracks/18/imported = false
-tracks/18/enabled = true
-tracks/18/path = NodePath("Armature/Skeleton3D:Bone.003:z")
-tracks/18/interp = 1
-tracks/18/loop_wrap = true
-tracks/18/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.60913485, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/19/type = "bezier"
-tracks/19/imported = false
-tracks/19/enabled = true
-tracks/19/path = NodePath("Armature/Skeleton3D:Bone.003:w")
-tracks/19/interp = 1
-tracks/19/loop_wrap = true
-tracks/19/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.4744592, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/20/type = "bezier"
-tracks/20/imported = false
-tracks/20/enabled = true
-tracks/20/path = NodePath("Armature/Skeleton3D:Bone.010:x")
-tracks/20/interp = 1
-tracks/20/loop_wrap = true
-tracks/20/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.023278603, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/21/type = "bezier"
-tracks/21/imported = false
-tracks/21/enabled = true
-tracks/21/path = NodePath("Armature/Skeleton3D:Bone.010:y")
-tracks/21/interp = 1
-tracks/21/loop_wrap = true
-tracks/21/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.0021248062, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/22/type = "bezier"
-tracks/22/imported = false
-tracks/22/enabled = true
-tracks/22/path = NodePath("Armature/Skeleton3D:Bone.010:z")
-tracks/22/interp = 1
-tracks/22/loop_wrap = true
-tracks/22/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(4.435881e-05, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/23/type = "bezier"
-tracks/23/imported = false
-tracks/23/enabled = true
-tracks/23/path = NodePath("Armature/Skeleton3D:Bone.010:w")
-tracks/23/interp = 1
-tracks/23/loop_wrap = true
-tracks/23/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.99972683, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/24/type = "bezier"
-tracks/24/imported = false
-tracks/24/enabled = true
-tracks/24/path = NodePath("Armature/Skeleton3D:Bone.011:x")
-tracks/24/interp = 1
-tracks/24/loop_wrap = true
-tracks/24/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.38022384, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/25/type = "bezier"
-tracks/25/imported = false
-tracks/25/enabled = true
-tracks/25/path = NodePath("Armature/Skeleton3D:Bone.011:y")
-tracks/25/interp = 1
-tracks/25/loop_wrap = true
-tracks/25/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.063826814, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/26/type = "bezier"
-tracks/26/imported = false
-tracks/26/enabled = true
-tracks/26/path = NodePath("Armature/Skeleton3D:Bone.011:z")
-tracks/26/interp = 1
-tracks/26/loop_wrap = true
-tracks/26/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.024771776, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/27/type = "bezier"
-tracks/27/imported = false
-tracks/27/enabled = true
-tracks/27/path = NodePath("Armature/Skeleton3D:Bone.011:w")
-tracks/27/interp = 1
-tracks/27/loop_wrap = true
-tracks/27/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.92235696, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/28/type = "bezier"
-tracks/28/imported = false
-tracks/28/enabled = true
-tracks/28/path = NodePath("Armature/Skeleton3D:Bone.005:x")
-tracks/28/interp = 1
-tracks/28/loop_wrap = true
-tracks/28/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.7976116, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/29/type = "bezier"
-tracks/29/imported = false
-tracks/29/enabled = true
-tracks/29/path = NodePath("Armature/Skeleton3D:Bone.005:y")
-tracks/29/interp = 1
-tracks/29/loop_wrap = true
-tracks/29/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.021873154, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/30/type = "bezier"
-tracks/30/imported = false
-tracks/30/enabled = true
-tracks/30/path = NodePath("Armature/Skeleton3D:Bone.005:z")
-tracks/30/interp = 1
-tracks/30/loop_wrap = true
-tracks/30/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.60207784, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/31/type = "bezier"
-tracks/31/imported = false
-tracks/31/enabled = true
-tracks/31/path = NodePath("Armature/Skeleton3D:Bone.005:w")
-tracks/31/interp = 1
-tracks/31/loop_wrap = true
-tracks/31/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.028976802, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/32/type = "bezier"
-tracks/32/imported = false
-tracks/32/enabled = true
-tracks/32/path = NodePath("Armature/Skeleton3D:Bone.006:x")
-tracks/32/interp = 1
-tracks/32/loop_wrap = true
-tracks/32/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.023552207, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/33/type = "bezier"
-tracks/33/imported = false
-tracks/33/enabled = true
-tracks/33/path = NodePath("Armature/Skeleton3D:Bone.006:y")
-tracks/33/interp = 1
-tracks/33/loop_wrap = true
-tracks/33/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.043346383, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/34/type = "bezier"
-tracks/34/imported = false
-tracks/34/enabled = true
-tracks/34/path = NodePath("Armature/Skeleton3D:Bone.006:z")
-tracks/34/interp = 1
-tracks/34/loop_wrap = true
-tracks/34/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.070814766, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/35/type = "bezier"
-tracks/35/imported = false
-tracks/35/enabled = true
-tracks/35/path = NodePath("Armature/Skeleton3D:Bone.006:w")
-tracks/35/interp = 1
-tracks/35/loop_wrap = true
-tracks/35/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9962689, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/36/type = "bezier"
-tracks/36/imported = false
-tracks/36/enabled = true
-tracks/36/path = NodePath("Armature/Skeleton3D:Bone.007:x")
-tracks/36/interp = 1
-tracks/36/loop_wrap = true
-tracks/36/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.03028715, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/37/type = "bezier"
-tracks/37/imported = false
-tracks/37/enabled = true
-tracks/37/path = NodePath("Armature/Skeleton3D:Bone.007:y")
-tracks/37/interp = 1
-tracks/37/loop_wrap = true
-tracks/37/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.0066333255, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/38/type = "bezier"
-tracks/38/imported = false
-tracks/38/enabled = true
-tracks/38/path = NodePath("Armature/Skeleton3D:Bone.007:z")
-tracks/38/interp = 1
-tracks/38/loop_wrap = true
-tracks/38/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.08097926, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/39/type = "bezier"
-tracks/39/imported = false
-tracks/39/enabled = true
-tracks/39/path = NodePath("Armature/Skeleton3D:Bone.007:w")
-tracks/39/interp = 1
-tracks/39/loop_wrap = true
-tracks/39/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9962335, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/40/type = "bezier"
-tracks/40/imported = false
-tracks/40/enabled = true
-tracks/40/path = NodePath("Armature/Skeleton3D:Bone.008:x")
-tracks/40/interp = 1
-tracks/40/loop_wrap = true
-tracks/40/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.058170807, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/41/type = "bezier"
-tracks/41/imported = false
-tracks/41/enabled = true
-tracks/41/path = NodePath("Armature/Skeleton3D:Bone.008:y")
-tracks/41/interp = 1
-tracks/41/loop_wrap = true
-tracks/41/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.044673894, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/42/type = "bezier"
-tracks/42/imported = false
-tracks/42/enabled = true
-tracks/42/path = NodePath("Armature/Skeleton3D:Bone.008:z")
-tracks/42/interp = 1
-tracks/42/loop_wrap = true
-tracks/42/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.24688463, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/43/type = "bezier"
-tracks/43/imported = false
-tracks/43/enabled = true
-tracks/43/path = NodePath("Armature/Skeleton3D:Bone.008:w")
-tracks/43/interp = 1
-tracks/43/loop_wrap = true
-tracks/43/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9662652, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/44/type = "bezier"
-tracks/44/imported = false
-tracks/44/enabled = true
-tracks/44/path = NodePath("Armature/Skeleton3D:Bone.009:x")
-tracks/44/interp = 1
-tracks/44/loop_wrap = true
-tracks/44/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.026176125, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/45/type = "bezier"
-tracks/45/imported = false
-tracks/45/enabled = true
-tracks/45/path = NodePath("Armature/Skeleton3D:Bone.009:y")
-tracks/45/interp = 1
-tracks/45/loop_wrap = true
-tracks/45/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-0.02020988, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/46/type = "bezier"
-tracks/46/imported = false
-tracks/46/enabled = true
-tracks/46/path = NodePath("Armature/Skeleton3D:Bone.009:z")
-tracks/46/interp = 1
-tracks/46/loop_wrap = true
-tracks/46/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.12553096, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
-tracks/47/type = "bezier"
-tracks/47/imported = false
-tracks/47/enabled = true
-tracks/47/path = NodePath("Armature/Skeleton3D:Bone.009:w")
-tracks/47/interp = 1
-tracks/47/loop_wrap = true
-tracks/47/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.9915384, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0.5)
-}
+tracks/11/keys = PackedFloat32Array(0.5, 1, 0.026176125, -0.02020988, 0.12553096, 0.9915384)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_aw1cm"]
 _data = {
@@ -2530,6 +1288,8 @@ _data = {
 &"heroic": SubResource("Animation_uyh4k"),
 &"idle": SubResource("Animation_kgjx3"),
 &"lean": SubResource("Animation_xgmfv"),
+&"point": SubResource("Animation_fnseh"),
+&"pose": SubResource("Animation_odanv"),
 &"shock": SubResource("Animation_7v4qi"),
 &"stare": SubResource("Animation_a4l6c"),
 &"think": SubResource("Animation_63ml7"),
@@ -2587,7 +1347,7 @@ faces = Dictionary[String, Texture]({
 })
 
 [node name="Armature" type="Node3D" parent="." unique_id=476645805]
-transform = Transform3D(-0.41671965, 0, 0.6989822, 0, 0.813776, 0, -0.6989822, 0, -0.41671965, 0, 1.9566417, 0)
+transform = Transform3D(-0.41671962, 0, 0.6989822, 0, 0.813776, 0, -0.6989822, 0, -0.41671962, 0, 1.9566417, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Armature" unique_id=836702170]
 transform = Transform3D(0.8415184, 0, -0.54022855, 0, 1, 0, 0.54022855, 0, 0.8415184, 0, 0, 0)
@@ -2597,63 +1357,63 @@ bones/0/rest = Transform3D(1, 1.6370903e-11, -0.00021982186, -4.146938e-05, 0.98
 bones/0/enabled = true
 bones/0/position = Vector3(0.0016385758, -0.15068316, 0.014128468)
 bones/0/rotation = Quaternion(0.094751224, -0.00010941644, -1.0414202e-05, 0.995501)
-bones/0/scale = Vector3(1, 0.9999999, 0.99999994)
+bones/0/scale = Vector3(1, 0.9999999, 1.0000001)
 bones/1/name = "Bone.001"
 bones/1/parent = 0
 bones/1/rest = Transform3D(0.991983, 0.00020505855, -0.12637043, -0.11782407, -0.36000493, -0.92548054, -0.04568374, 0.9329504, -0.35709468, -8.731149e-11, 1.0163263, -3.2369286e-08)
 bones/1/enabled = true
 bones/1/position = Vector3(-8.731149e-11, 1.0163263, -3.2369286e-08)
 bones/1/rotation = Quaternion(0.8229646, -0.035730284, -0.052266568, 0.5645536)
-bones/1/scale = Vector3(1.000001, 1.0000013, 1.0000006)
+bones/1/scale = Vector3(1.0000007, 1.0000013, 1.0000011)
 bones/2/name = "Bone.004"
 bones/2/parent = 1
 bones/2/rest = Transform3D(0.94152546, 0.09777794, -0.32244265, -0.30886248, 0.6329146, -0.7099458, 0.13466164, 0.7680224, 0.62610525, 2.0023435e-08, 0.80161613, -1.7054845e-07)
 bones/2/enabled = true
 bones/2/position = Vector3(2.0023435e-08, 0.80161613, -1.7054845e-07)
 bones/2/rotation = Quaternion(0.41306955, -0.12775365, -0.11364977, 0.8945034)
-bones/2/scale = Vector3(1, 1.000001, 1.0000002)
+bones/2/scale = Vector3(0.9999995, 1.0000012, 1.0000002)
 bones/3/name = "Bone.002"
 bones/3/parent = 0
 bones/3/rest = Transform3D(0.9993886, -0.00018789065, -0.034961622, 0.02978611, -0.5190339, 0.8542346, -0.018306764, -0.8547538, -0.5187109, -8.731149e-11, 1.0163263, -3.2369286e-08)
 bones/3/enabled = true
 bones/3/position = Vector3(-8.731149e-11, 1.0163263, -3.2369286e-08)
 bones/3/rotation = Quaternion(0.8713687, 0.008491877, -0.015282965, -0.49031723)
-bones/3/scale = Vector3(1.0000007, 1, 1.0000002)
+bones/3/scale = Vector3(1.0000006, 1, 1.0000002)
 bones/4/name = "Bone.003"
 bones/4/parent = 3
 bones/4/rest = Transform3D(0.9870957, -0.034846645, 0.15629458, -0.15664466, -0.0075359344, 0.9876263, -0.033237632, -0.9993645, -0.012897225, 7.683411e-09, 1.1425159, 2.988345e-07)
 bones/4/enabled = true
 bones/4/position = Vector3(7.683411e-09, 1.1425159, 2.988345e-07)
 bones/4/rotation = Quaternion(-0.7084364, 0.06757533, -0.043425545, 0.7011887)
-bones/4/scale = Vector3(1.0000008, 0.99999994, 0.99999917)
+bones/4/scale = Vector3(1.0000006, 0.99999994, 0.999999)
 bones/5/name = "Bone.010"
 bones/5/parent = 0
 bones/5/rest = Transform3D(0.9999909, 1.0231627e-05, 0.0042505157, 0.00018761834, 0.9989163, -0.046544287, -0.0042463844, 0.046544667, 0.9989072, -8.731149e-11, 1.0163263, -3.2369286e-08)
 bones/5/enabled = true
 bones/5/position = Vector3(-8.731149e-11, 1.0163263, -3.2369286e-08)
 bones/5/rotation = Quaternion(0.023278603, 0.0021248062, 4.435881e-05, 0.99972683)
-bones/5/scale = Vector3(0.99999964, 1.0000005, 1.0000002)
+bones/5/scale = Vector3(0.9999997, 1.0000004, 1.0000001)
 bones/6/name = "Bone.011"
 bones/6/parent = 5
 bones/6/rest = Transform3D(0.99062496, 0.002840106, -0.13657984, 0.094233796, 0.7096324, 0.69824195, 0.098904565, -0.7045665, 0.7027119, -1.1641532e-10, 0.9032732, -1.303356e-07)
 bones/6/enabled = true
 bones/6/position = Vector3(-1.1641532e-10, 0.9032732, -1.303356e-07)
 bones/6/rotation = Quaternion(-0.38022384, -0.063826814, 0.024771776, 0.92235696)
-bones/6/scale = Vector3(1, 1, 0.99999994)
+bones/6/scale = Vector3(0.9999998, 1.0000001, 1.0000001)
 bones/7/name = "Bone.005"
 bones/7/parent = -1
 bones/7/rest = Transform3D(0.2740477, 2.4393561e-08, 0.961716, -0.06978513, -0.9973638, 0.019885786, 0.9591807, -0.07256314, -0.27332526, 0.0016385758, -0.15068316, 0.014128468)
 bones/7/enabled = true
 bones/7/position = Vector3(0.0016385758, -0.15068316, 0.014128468)
 bones/7/rotation = Quaternion(0.7976116, -0.021873154, 0.60207784, -0.028976802)
-bones/7/scale = Vector3(0.9999998, 1, 0.9999999)
+bones/7/scale = Vector3(0.9999998, 1, 0.99999976)
 bones/8/name = "Bone.006"
 bones/8/parent = 7
 bones/8/rest = Transform3D(0.8166716, -0.5768115, -0.018333262, 0.560356, 0.8001703, -0.2138432, 0.13801691, 0.1643665, 0.97669613, 1.839362e-08, 0.5991158, -5.005859e-09)
 bones/8/enabled = true
 bones/8/position = Vector3(2.4926047e-08, 0.5991159, -6.867322e-09)
 bones/8/rotation = Quaternion(0.023552207, -0.043346383, 0.070814766, 0.9962689)
-bones/8/scale = Vector3(1, 1.0000001, 1.0000001)
+bones/8/scale = Vector3(1, 1.0000002, 1.0000001)
 bones/9/name = "Bone.007"
 bones/9/parent = 8
 bones/9/rest = Transform3D(0.99242824, 0.1217706, 0.016058184, -0.122378595, 0.9914698, 0.044844475, -0.010460467, -0.04647011, 0.9988648, 7.916242e-09, 0.90210384, 4.528556e-08)
@@ -2667,7 +1427,7 @@ bones/10/rest = Transform3D(0.8741044, 0.47191462, 0.11505661, -0.48230946, 0.87
 bones/10/enabled = true
 bones/10/position = Vector3(1.839362e-08, 0.5991158, -5.005859e-09)
 bones/10/rotation = Quaternion(-0.058170807, 0.044673894, -0.24688463, 0.9662652)
-bones/10/scale = Vector3(0.9999999, 1, 1)
+bones/10/scale = Vector3(1, 1.0000001, 1)
 bones/11/name = "Bone.009"
 bones/11/parent = 10
 bones/11/rest = Transform3D(0.97574717, -0.21602537, -0.035363227, 0.21419683, 0.9755486, -0.049240183, 0.04513567, 0.04047127, 0.99816084, 5.3463737e-08, 0.7122193, -1.2805685e-08)
@@ -2694,7 +1454,7 @@ secondary_limit_angle = 6.2831855
 secondary_damp_threshold = 1.0
 
 [node name="ModifierBoneTarget3D" type="ModifierBoneTarget3D" parent="Armature/Skeleton3D" unique_id=104038774]
-transform = Transform3D(0.99999154, 1.2460077e-10, 0.0040309355, 0.0009438604, 0.97219974, -0.2341525, -0.003918871, 0.23415443, 0.97219175, 0.0016385757, 0.8473943, 0.20585823)
+transform = Transform3D(0.9999916, 1.2278178e-10, 0.004030935, 0.00094386056, 0.9721996, -0.23415253, -0.0039188713, 0.23415442, 0.9721918, 0.0016385757, 0.8473943, 0.20585823)
 bone_name = "Bone.010"
 bone = 5
 
