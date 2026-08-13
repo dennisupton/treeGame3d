@@ -62,6 +62,8 @@ func _process(delta: float) -> void:
 	if health <= 0 and not chopped:
 		freeze = false
 		chopped = true
+		if not SaveManager.getItem("player","choppedTree"):
+			SaveManager.saveItem("player","choppedTree",true)
 		$growthTimer.stop()
 		angular_velocity.x += PI
 		for child in get_children():

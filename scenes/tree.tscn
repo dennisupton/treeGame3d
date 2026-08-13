@@ -330,7 +330,7 @@ shader_parameter/bendieness_multiplier = 0.0
 shader_parameter/albedo_texture = SubResource("GradientTexture1D_7mycd")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nnvrw"]
-size = Vector3(0.46887207, 4.0322266, 0.5079956)
+size = Vector3(0.46887207, 5.199524, 0.5079956)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
 vertex_color_use_as_albedo = true
@@ -356,7 +356,7 @@ max_contacts_reported = 1
 script = ExtResource("1_nnvrw")
 
 [node name="Hole" type="MeshInstance3D" parent="." unique_id=976937364]
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09964186, 0)
 mesh = SubResource("ArrayMesh_40q6a")
 
 [node name="age1" type="MeshInstance3D" parent="." unique_id=664691267]
@@ -392,7 +392,7 @@ mesh = SubResource("ArrayMesh_du7gb")
 surface_material_override/0 = SubResource("ShaderMaterial_272bh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1081729470]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.120743394, 2.086164, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.120743394, 2.3732429, 0)
 shape = SubResource("BoxShape3D_nnvrw")
 
 [node name="particles" type="CPUParticles3D" parent="." unique_id=1211526162]

@@ -1,0 +1,161 @@
+[gd_scene format=3 uid="uid://dsvg8r28f6lky"]
+
+[ext_resource type="Texture2D" uid="uid://bwfc6nwobvm0p" path="res://images/controls/keyboardGlyph.png" id="1_sdcwn"]
+[ext_resource type="Texture2D" uid="uid://25bjaqc8ipnt" path="res://images/controls/controllerGlyphs.png" id="2_kq4y4"]
+[ext_resource type="Texture2D" uid="uid://csmlbuodiw237" path="res://images/controls/mouse.png" id="3_a7a8g"]
+[ext_resource type="Script" uid="uid://duulybm3i11cy" path="res://scripts/glyph.gd" id="4_rb3or"]
+[ext_resource type="Texture2D" uid="uid://cm113arsaxhe4" path="res://images/controls/a.png" id="5_1ufgj"]
+[ext_resource type="Texture2D" uid="uid://cr72oup6eg24a" path="res://images/controls/Acontroller.png" id="6_3q0ne"]
+[ext_resource type="Texture2D" uid="uid://c3ptxhpphsyba" path="res://images/controls/B.png" id="7_o6o0v"]
+[ext_resource type="Texture2D" uid="uid://cpigf2kancdr5" path="res://images/controls/d.png" id="8_aqmjd"]
+[ext_resource type="Texture2D" uid="uid://de12dnxkm46pp" path="res://images/controls/e.png" id="9_61hpg"]
+[ext_resource type="Texture2D" uid="uid://c7vpgmawj38cf" path="res://images/controls/left.png" id="10_0yp5k"]
+[ext_resource type="Texture2D" uid="uid://car8ftte86bs" path="res://images/controls/O.png" id="11_x7yae"]
+[ext_resource type="Texture2D" uid="uid://58hciaoc1c41" path="res://images/controls/q.png" id="12_dgodt"]
+[ext_resource type="Texture2D" uid="uid://qqnaxtxt3atu" path="res://images/controls/right.png" id="13_wrt7x"]
+[ext_resource type="Texture2D" uid="uid://3en12kjblywh" path="res://images/controls/s.png" id="14_2pcah"]
+[ext_resource type="Texture2D" uid="uid://bswmtq372rduy" path="res://images/controls/square.png" id="15_vn540"]
+[ext_resource type="Texture2D" uid="uid://cnyy3i7sj862r" path="res://images/controls/tri.png" id="16_vtbe1"]
+[ext_resource type="Texture2D" uid="uid://ds3i65ukp13m8" path="res://images/controls/w.png" id="17_6q1hm"]
+[ext_resource type="Texture2D" uid="uid://dep5i55d4yr06" path="res://images/controls/X.png" id="18_tini2"]
+[ext_resource type="Texture2D" uid="uid://dl3m1bco1mmj2" path="res://images/controls/Y.png" id="19_ebk8q"]
+[ext_resource type="Texture2D" uid="uid://b2tilu4a3w3jc" path="res://images/controls/joystick.png" id="20_713ag"]
+[ext_resource type="Theme" uid="uid://cyi4xq6uvrdq6" path="res://theme.tres" id="21_mmeqr"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ffcr4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_sdcwn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_kq4y4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_a7a8g")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7xd8p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_1ufgj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_3q0ne")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_o6o0v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_aqmjd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_61hpg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_0yp5k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_x7yae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_dgodt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_wrt7x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_2pcah")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_vn540")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_vtbe1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_6q1hm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_tini2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_ebk8q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_713ag")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ffcr4"]
+font_size = 41
+
+[sub_resource type="Animation" id="Animation_2s0kr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("glyph:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_xaipn"]
+resource_name = "spin"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("glyph:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 3.1415927, 4.712389, 6.283185307179586]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ndrjj"]
+_data = {
+&"RESET": SubResource("Animation_2s0kr"),
+&"spin": SubResource("Animation_xaipn")
+}
+
+[node name="glyph" type="AnimatedSprite2D" unique_id=396460998]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_ffcr4")
+frame = 1
+script = ExtResource("4_rb3or")
+
+[node name="glyph" type="AnimatedSprite2D" parent="." unique_id=1138046085]
+sprite_frames = SubResource("SpriteFrames_7xd8p")
+
+[node name="Label" type="Label" parent="." unique_id=383901000]
+visible = false
+offset_left = -19.0
+offset_top = -38.0
+offset_right = 19.0
+offset_bottom = 22.0
+theme = ExtResource("21_mmeqr")
+text = "d"
+label_settings = SubResource("LabelSettings_ffcr4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=818189714]
+libraries/ = SubResource("AnimationLibrary_ndrjj")

@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://bchq8ig6hkb4w"]
+
+[ext_resource type="Texture2D" uid="uid://cohxaqrfmolkw" path="res://images/footstep.png" id="1_5s6n3"]
+
+[sub_resource type="Animation" id="Animation_augu2"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:upper_fade")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.3, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:lower_fade")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.3, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_tm6hj"]
+resource_name = "footstep"
+length = 5.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:upper_fade")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0.3, -0.25, 0, 0.25, 0, 0.3, -0.125, 0, 0, 0, 10.651844, -0.041666668, -1.7253073, 0, 0),
+"times": PackedFloat32Array(0, 0.43333334, 5)
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:lower_fade")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2, 0),
+"points": PackedFloat32Array(0.3, -0.25, 0, 0.25, 0, 0.3, -0.07333334, 0, 0, 0, 16.714539, -0.093333334, -2.7357566, 0, 0),
+"times": PackedFloat32Array(0, 0.44, 5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kf5aa"]
+_data = {
+&"RESET": SubResource("Animation_augu2"),
+&"footstep": SubResource("Animation_tm6hj")
+}
+
+[node name="footstep" type="Decal" unique_id=1164124514]
+transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.99999994, 0, 0, 0)
+size = Vector3(0.4, 0.406, 0.4)
+texture_albedo = ExtResource("1_5s6n3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=888979642]
+libraries/ = SubResource("AnimationLibrary_kf5aa")
+autoplay = &"footstep"

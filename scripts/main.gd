@@ -7,6 +7,9 @@ var tree
 var treePositions = []
 var seperation = 3**2
 
+@onready var theme = preload("res://theme.tres")
+@onready var glyph = preload("res://scenes/glyph.tscn")
+
 func tooClose(pos):
 	for i in treePositions:
 		if i.distance_squared_to(pos) < seperation:
@@ -30,7 +33,12 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	$CanvasLayer/bubbles.visible = not $player.freeze
-	
+	spawnGlyphs()
+func trySpawnTree(pos):
+	if not tooClose(pos):
+		spawnTree(pos)
+		return true
+	return false
 func spawnTree(pos):
 	var child = tree.instantiate()
 	pos.y = 0
@@ -53,3 +61,42 @@ func getArea():
 	elif $player in $fashionHouse/Area3D.get_overlapping_bodies():
 		return "fashionHouse"
 	return false
+
+var shownGlyphs = ["Chop","Enter","Plant"]
+var glyphState = []
+
+func spawnGlyphs():
+	var state = [InputManager.current_device, InputManager.controllerType, shownGlyphs.duplicate()]
+	if state == glyphState:
+		return
+	glyphState = state
+	for i in $CanvasLayer/glyphs.get_children():
+		i.queue_free()
+	for i in shownGlyphs:
+		var child = glyph.instantiate()
+		var events = InputMap.action_get_events(i)
+		for event in events:
+			if InputManager.current_device == InputManager.Device.KEYBOARD_MOUSE:
+				if event is InputEventMouseButton:
+					child.type = "mouse"
+				elif event is InputEventKey:
+					child.type = "keyboard"
+				else:
+					continue
+			elif InputManager.current_device == InputManager.Device.GAMEPAD:
+				if event is InputEventJoypadMotion:
+					child.joystick = true
+				elif not (event is InputEventJoypadButton):
+					continue
+				child.type = InputManager.controllerType
+			child.glyph = event
+			break
+		var label = Label.new()
+		label.theme = theme
+		label.add_child(child)
+		child.position = Vector2(-32,35)
+		label.name = i
+		label.text = i
+		label.label_settings = LabelSettings.new()
+		label.label_settings.font_size = 50
+		$CanvasLayer/glyphs.add_child(label)

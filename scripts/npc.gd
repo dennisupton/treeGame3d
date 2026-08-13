@@ -256,7 +256,9 @@ func shutUp() -> void:
 	bubbleShown = false
 	lookAway()
 	stopPose()
-	if bubble: bubble.hideNow()
+	if bubble:
+		bubble.clear()
+		bubble.hideNow()
 
 func sceneStopped() -> bool:
 	return scene != null and scene.stopped
@@ -310,9 +312,12 @@ func stopMove(decel):
 # ---------- idling ----------
 
 # stood at the marker they walk to for their own shop, however they got there — their
-# starting activity, a cutscene goto, or just never having left
+# starting activity, a cutscene goto, or just never having left. being near it isn't
+# enough: walking in still counts as away until they've actually stopped, otherwise
+# they'd read as open for business while crossing the last few metres, or while a path
+# to somewhere else happened to take them past their own door.
 func atShop() -> bool:
-	if not shop in HOUSES:
+	if not shop in HOUSES or not nav.is_navigation_finished():
 		return false
 	# flat, because the shop markers sit well above the floor by varying amounts
 	return flatTo(navPoint(shop)).length() < shopRange

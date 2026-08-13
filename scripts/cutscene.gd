@@ -16,16 +16,31 @@ func _init(d, who: String) -> void:
 	sceneName = who
 	player = d.get_parent().get_node_or_null("player")
 
-# Claim the npcs this scene drives. Gating only applies to these, so a second scene
-# elsewhere on the map keeps running at full speed.
+
+
 func take(npcs: Array) -> void:
+	if stopped:
+		return   # a dying scene doesn't get to steal anyone on its way out
+	# stopping someone takes a few frames, and another scene can claim them while we
+	# wait — so keep clearing until nobody else is holding anyone we asked for
+	while true:
+		var dying = []
+		for npc in npcs:
+			if npc.scene != null and npc.scene != self and not npc.scene in dying:
+				dying.append(npc.scene)
+		if dying.is_empty():
+			break
+		for other in dying:
+			await other.stop()
+		if stopped:
+			return   # something killed us while we waited
 	for npc in npcs:
-		if npc.scene != null and npc.scene != self:
-			push_warning("cutscene '%s' took %s while '%s' still had them" % [
-				sceneName, npc.name, npc.scene.sceneName])
-		npc.scene = self
 		if not npc in cast:
+			npc.shutUp()   # start clean: no half-typed line, no bubble left hanging
 			cast.append(npc)
+		npc.scene = self
+		npc.speedScale = speed
+
 
 # stop this scene where it stands; every lane unwinds on its next frame.
 # the cast stays bound for a few frames afterwards on purpose: a stopped scene's

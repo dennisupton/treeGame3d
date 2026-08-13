@@ -16,9 +16,12 @@ var driving = false
 var controlling = self
 var defaultCamBasis  # follow-camera orientation, restored when leaving a fixed-cam area
 
+var legFlip = false
 var whistling = false
 @onready var camPos = false
 var shop = false
+
+@onready var footstep = preload("res://scenes/footstep.tscn")
 
 func _ready() -> void:
 	defaultCamBasis = $camPivot/Camera3D.transform.basis
@@ -53,7 +56,18 @@ func getClosestTameable():
 			return i
 	return false
 
+func spawnFootstep(side):
+	var child = footstep.instantiate()
+	get_parent().add_child(child)
+	if side == "right":
+		child.global_position = $player/Rleg/foot.global_position
+		child.global_rotation = $player/Rleg/foot.global_rotation
+	else:
+		child.global_position = $player/Lleg/foot.global_position
+		child.global_rotation = $player/Lleg/foot.global_rotation
+
 func _physics_process(delta: float) -> void:
+	$"..".shownGlyphs = []
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -63,7 +77,10 @@ func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("Left", "Right", "Forward", "Back")
 	if input_dir and not freeze:
 		$player/Axe.hide()
-		$AnimationPlayer.play("walk")
+		if not $AnimationPlayer.current_animation == "walk":
+			$AnimationPlayer.play("walk")
+			if legFlip:
+				$AnimationPlayer.seek(0.41, true)
 		if controlling == self:
 			if input_dir.y > 0:
 				$player.rotation.y = lerp_angle($player.rotation.y,PI + input_dir.x * 0.5*PI,rotationSpeed)
@@ -73,6 +90,7 @@ func _physics_process(delta: float) -> void:
 			$player.rotation.y = lerp_angle($player.rotation.y, 0.0, rotationSpeed)
 	elif $AnimationPlayer.current_animation == "walk":
 		$AnimationPlayer.stop()
+		legFlip = not legFlip
 		
 	if Input.is_action_pressed("Chop") and not holding:
 		var isItem = false
@@ -85,6 +103,7 @@ func _physics_process(delta: float) -> void:
 			elif i.is_in_group("acorn") and not holding:
 				pickup(i)
 				holding = "acorn"
+				i.held = true
 			elif i.name == "wheelbarrow":
 				driving = "wheelbarrow"
 				controlling = i
@@ -109,6 +128,7 @@ func _physics_process(delta: float) -> void:
 			get_parent().add_child(item) 
 			item.position = $player/hold.global_position
 			item.rotation = $player/hold.global_rotation
+			item.held = false
 		item.freeze = false
 		item.set_collision_layer_value(1, true)
 		item.linear_velocity = velocity*4 + Vector3.UP*2
@@ -116,9 +136,7 @@ func _physics_process(delta: float) -> void:
 		$player/hands.hide()
 	if Input.is_action_just_pressed("Enter") and not freeze:
 		if hasBodyInGroup($player/Area3D.get_overlapping_areas(),"shop") and not freeze:
-			freeze = true
 			var place = hasBodyInGroup($player/Area3D.get_overlapping_areas(),"shop")
-			camPos = place.get_parent().get_node("talking")
 			if place.get_parent().name == "fashionHouse":
 				$"../CanvasLayer/shop".person = $"../NPCs/enriquez"
 			if place.get_parent().name == "blacksmithHouse":
@@ -127,8 +145,14 @@ func _physics_process(delta: float) -> void:
 				$"../CanvasLayer/shop".person = $"../NPCs/dylan"
 			if place.get_parent().name == "townhall":
 				$"../CanvasLayer/shop".person = $"../NPCs/mayor"
-			$"../CanvasLayer/shop".start()
-		elif holding and holding == "acorn" and not $"..".tooClose(position):
+			if $"../CanvasLayer/shop".person and $"../CanvasLayer/shop".person.atShop():
+				freeze = true
+				camPos = place.get_parent().get_node("talking")
+				$"../CanvasLayer/shop".start()
+			else:
+				$"../CanvasLayer/shop".person = null
+	if Input.is_action_just_pressed("Plant") and not freeze:
+		if holding and holding == "acorn" and not $"..".tooClose(position):
 			var item = $player/hold.get_child(0)
 			item.queue_free()
 			holding = false

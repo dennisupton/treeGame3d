@@ -39,13 +39,61 @@ func stop():
 
 func mayor(dialouge = false):
 	if dialouge:
-		pass
+		match dialouge:
+			"cantFindPeople":
+				if not SaveManager.getItem("kids","met"):
+					await say("not everyone in the village lives in a shop")
+					await say("maybe try looking around the village area?")
+				else:
+					await say("i dont know what to tell you sorry")
+					await say("i cant magically locate people")
+				await say("good luck!")
+				stop()
+			"meetingGood":
+				await say("im glad")
+				await say("come back when you've met everyone!")
+				await say("i think you will like what i have to tell you")
+				stop()
+			"meetingBad":
+				await say("im sorry to hear that")
+				await say("it can be hard to fit in")
+				await say("especially when people are so protective of their commuinity")
+				await say("but thats what makes a community like this so valluble")
+				if SaveManager.getItem("toby","met"):
+					await say("and hey listen")
+					await say("i know toby can be a little ... rude")
+					await say("but just give him a bit and he will lighten up")
+					await say("trust me")
+				await say("just stay determined")
+				stop()
 	else:
-		pass
-
+		if SaveManager.getItem("toby","met") and SaveManager.getItem("enriquez","met") and SaveManager.getItem("dylan","met") and SaveManager.getItem("kids","met"):
+			await say("good job! you met everyone")
+			await say("now for my end of the deal")
+			$"../../audio".overrideMusic(60)
+			$"../../audio/music".get_stream_playback().switch_to_clip_by_name("mainTheme")
+			await say("you may be wondering why so many people would gather in the middle of nowhere and start a village")
+			await say("so allow me to let you in on a secret")
+			await say("the well , which stands at the center of it all...")
+			await say("has the power to change organic material into money")
+			await say("the reason i had you meet all the villagers first is because in the wrong hands this well could be bad")
+			await say("but you have proven your worth to me")
+			await say("so i allow you to use it")
+			await say("but you should never let the knowledge of this well leave the village")
+			await say("anyway")
+			await say("go try it out!")
+			await wait(1)
+			stop()
+		else:
+			await say("hey")
+			await say("hows meeting everyone going")
+			if SaveManager.getItem("toby","met"):
+				await say("i know toby can be a little ... rude")
+				await say("but just give him a bit and he will lighten up")
+				await say("trust me")
+			makeButtons(["i havent met all of them yet?","good","bad"],["cantFindPeople","meetingGood","meetingBad"],mayor)
 
 func enriquez(dialouge = false):
-	dialouge = "who"
 	if dialouge:
 		match dialouge:
 			"bye":
@@ -149,8 +197,8 @@ func enriquez(dialouge = false):
 			await say("other than your desperate need for clothes")
 			person.setFace("normal")
 			await say("what brings you to my humble abode?")
-			SaveManager.saveItem("enriquez","metEnriquez",true)
-			makeButtons(["who are you?","how can i be fasionable then"],["who","fasionable"],enriquez)
+			SaveManager.saveItem("enriquez","met",true)
+			makeButtons(["who are you?"],["who"],enriquez)
 
 
 var tobyIntroTimes = 0
@@ -162,7 +210,7 @@ func toby(dialouge = false):
 		if tobyIntroTimes == 0:
 			await say("...")
 			await say("sorry but were closed")
-			SaveManager.saveItem("toby","metToby",true)
+			SaveManager.saveItem("toby","met",true)
 			#await say("this town already has enough [color=#3D94C0][wave]weird folk[/wave][/color]")
 		elif tobyIntroTimes == 1:
 			await say("...")
@@ -177,6 +225,9 @@ func toby(dialouge = false):
 func dylan(dialouge = false):
 	if dialouge:
 		match dialouge:
+			"bye":
+				await say("see ya!")
+				stop()
 			"youGood":
 				await say("okay yay!")
 				await say("that must mean holly's advice is working!")
@@ -195,7 +246,7 @@ func dylan(dialouge = false):
 				await say("of course youre joking!")
 				await say("[shake rate=20.0 level=5][font s=60]i hope[/font][/shake]")
 				await say("so how can i help you with destorying me?")
-				makeButtons(["what do you get up to"],["whatDoYouDo"],dylan)
+				makeButtons(["what do you do around here"],["whatDoYouDo"],dylan)
 			"escape":
 				await say("yeah we all did")
 				await say("no one comes here for no reason")
@@ -205,7 +256,7 @@ func dylan(dialouge = false):
 				await say("right")
 				await say("anyway enough of that spooky stuff")
 				await say("is there anything i can help you with?")
-				makeButtons(["what do you get up to"],["whatDoYouDo"],dylan)
+				makeButtons(["what do you do around here"],["whatDoYouDo"],dylan)
 			"whatDoYouDo":
 				await say("oh me?")
 				await say("its kinda weird")
@@ -216,19 +267,28 @@ func dylan(dialouge = false):
 				await say("so if you ever need something to help you out")
 				await say("let me know!")
 				await say("and il see what i can cook up")
-				makeButtons(["bye"],["bye"],dylan)
+				await say("have you got anything i can help you with?")
+				await say("its okay if you dont")
+				await say("i mean you just got here")
+				makeButtons(["not really"],["bye"],dylan)
 
 	else:
-		await say("[shake rate=20.0 level=5]hello![/shake]")
-		await wait(1)
-		await say("[shake rate=20.0 level=5]nice to meet you![/shake]")
-		await wait(1)
-		await say("[shake rate=20.0 level=5]my name is dylan[/shake]")
-		await say("sorry")
-		await say("i get nervous meeting new people") 
-		await say("[font s=60]did i do good?[/font]")
-		SaveManager.saveItem("dylan","metDylan",true)         
-		makeButtons(["you did fine","it was kinda awkward"],["youGood","youBad"],dylan)
+		if SaveManager.getItem("dylan","met"):
+			await say("welcome back!") 
+			await say("so is there anything i can help you with?")
+			makeButtons(["not yet"],["bye"],dylan)
+
+		else:
+			await say("[shake rate=20.0 level=5]hello![/shake]")
+			await wait(1)
+			await say("[shake rate=20.0 level=5]nice to meet you![/shake]")
+			await wait(1)
+			await say("[shake rate=20.0 level=5]my name is dylan[/shake]")
+			await say("sorry")
+			await say("i get nervous meeting new people") 
+			await say("[font s=60]did i do good?[/font]")
+			SaveManager.saveItem("dylan","met",true)
+			makeButtons(["you did fine","it was kinda awkward"],["youGood","youBad"],dylan)
 
 
 func makeButtons(text,binds,function):

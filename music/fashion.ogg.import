@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/fashion.ogg-16178e7669e0019ecc7029d7ac97093b.
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

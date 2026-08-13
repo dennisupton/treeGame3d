@@ -809,7 +809,6 @@ libraries/ = SubResource("AnimationLibrary_gqmmt")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=902313369]
 target_desired_distance = 2.0
-debug_enabled = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1440888788]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.230525, 0)

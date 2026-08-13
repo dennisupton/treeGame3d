@@ -6,7 +6,7 @@ const SAVE_PATH = "user://save.cfg"
 func _ready() -> void:
 	pass
 
-
+var playerName = "dennis"
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

@@ -1,5 +1,7 @@
 [gd_scene format=4 uid="uid://dc2o7i4b433jt"]
 
+[ext_resource type="Script" uid="uid://coqwcqcq6w7qk" path="res://scenes/acorn.gd" id="1_7v76u"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qxtty"]
 resource_name = "Material.001"
 cull_mode = 2
@@ -42,9 +44,16 @@ shadow_mesh = SubResource("ArrayMesh_qi3yw")
 size = Vector3(0.6329651, 0.52923584, 0.5723877)
 
 [node name="Acorn" type="RigidBody3D" unique_id=1823038880 groups=["acorn"]]
+script = ExtResource("1_7v76u")
 
 [node name="Icosphere" type="MeshInstance3D" parent="." unique_id=721050028]
 mesh = SubResource("ArrayMesh_i72ho")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1631717642]
 shape = SubResource("BoxShape3D_w48qg")
+
+[node name="Timer" type="Timer" parent="." unique_id=892200762]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

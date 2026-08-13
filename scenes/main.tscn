@@ -10,11 +10,12 @@
 [ext_resource type="AudioStream" uid="uid://0aiub25u6dm8" path="res://sfx/animalCallSuccessful.ogg" id="6_fuf3a"]
 [ext_resource type="Shader" uid="uid://bb3rer421dyo2" path="res://shaders/leaf_tornado.gdshader" id="8_c6pm6"]
 [ext_resource type="Shader" uid="uid://b88j6pdvcej6l" path="res://shaders/leaf.gdshader" id="9_5he1u"]
+[ext_resource type="AudioStream" uid="uid://dcqis07vt5jcg" path="res://sfx/Grass1.wav" id="10_tm6hj"]
+[ext_resource type="AudioStream" uid="uid://cd0lrkgnmra1m" path="res://sfx/Grass2.wav" id="11_kf5aa"]
 [ext_resource type="AudioStream" uid="uid://cpuokoctnjj18" path="res://sfx/money.mp3" id="12_og1vs"]
+[ext_resource type="AudioStream" uid="uid://cihs1n85jjrvd" path="res://sfx/Grass3.wav" id="12_t5ykj"]
 [ext_resource type="Script" uid="uid://2bt4l5gq6av6" path="res://scripts/cutsceneManager.gd" id="12_yc10j"]
 [ext_resource type="PackedScene" uid="uid://brvfodu7inwvf" path="res://scenes/mayor.tscn" id="14_c6pm6"]
-[ext_resource type="Script" uid="uid://btixab8ew2p70" path="res://scripts/wheelbarrow.gd" id="15_jbj1t"]
-[ext_resource type="PackedScene" uid="uid://cf74tyvmd0awy" path="res://models/wheelbarrow.blend" id="15_jkv2x"]
 [ext_resource type="Script" uid="uid://b5bnggvoacso1" path="res://scripts/multimesh_scatter.gd" id="18_bcirc"]
 [ext_resource type="AudioStream" uid="uid://demco5jdmuljq" path="res://music/the nature surrounds you.ogg" id="20_gqmmt"]
 [ext_resource type="AudioStream" uid="uid://bu1gi47nkibmu" path="res://music/mayor.ogg" id="20_yc10j"]
@@ -27,7 +28,9 @@
 [ext_resource type="AudioStream" uid="uid://dh1kp2v735k1a" path="res://sfx/may/talk5.mp3" id="26_o7ddy"]
 [ext_resource type="PackedScene" uid="uid://bulke46l0qkna" path="res://models/townhall.blend" id="28_2f3dj"]
 [ext_resource type="AudioStream" uid="uid://mwi3xu2vgb4e" path="res://music/engineer.ogg" id="28_dgi5k"]
+[ext_resource type="Shader" uid="uid://bu2aocogv1do0" path="res://shaders/shake.gdshader" id="28_dnhof"]
 [ext_resource type="AudioStream" uid="uid://igyirbe4x88" path="res://music/blacksmith.ogg" id="28_qkpxi"]
+[ext_resource type="Script" uid="uid://0t2sp1nnq2as" path="res://scenes/money.gd" id="29_ids8r"]
 [ext_resource type="PackedScene" uid="uid://br0m1lo6au37a" path="res://models/blacksmithHouse.blend" id="30_fv21b"]
 [ext_resource type="FontFile" uid="uid://c6cuksw1a28go" path="res://DarumadropOne-Regular.ttf" id="30_vc5cj"]
 [ext_resource type="Script" uid="uid://cf0qpcy6amv3a" path="res://scripts/shop.gd" id="32_ty1g6"]
@@ -46,12 +49,16 @@
 [ext_resource type="AudioStream" uid="uid://bbau1eb76lkm4" path="res://sfx/colin/talk3.mp3" id="39_txyw0"]
 [ext_resource type="AudioStream" uid="uid://dfcyl4nbpptpo" path="res://sfx/colin/talk4.mp3" id="40_vc5cj"]
 [ext_resource type="AudioStream" uid="uid://b12iffa54q3mn" path="res://sfx/colin/talk5.mp3" id="41_nvyfr"]
+[ext_resource type="AudioStream" uid="uid://dwk15syq6ctx" path="res://music/intoducingOrc.ogg" id="43_o7ddy"]
 [ext_resource type="PackedScene" uid="uid://b450ljon0m8ui" path="res://scenes/toby.tscn" id="45_ty1g6"]
 [ext_resource type="PackedScene" uid="uid://df5ky4ud2bw0a" path="res://scenes/dylan.tscn" id="46_j2jfr"]
 [ext_resource type="PackedScene" uid="uid://2fu0a436g36v" path="res://scenes/outfitter.tscn" id="47_bjg73"]
 [ext_resource type="ArrayMesh" uid="uid://cw1ootssmaiyh" path="res://models/enriquezCurtain.obj" id="48_bjg73"]
 [ext_resource type="Script" uid="uid://cf3lkrp3cim34" path="res://scenes/curtain.gd" id="49_bu4jf"]
 [ext_resource type="Texture2D" uid="uid://dnna1tkuhftyf" path="res://images/stone test.png" id="50_j2jfr"]
+[ext_resource type="Texture2D" uid="uid://tdycfnt23la8" path="res://images/moneyParticle.png" id="53_dnhof"]
+[ext_resource type="Shader" uid="uid://bpkieats7at7m" path="res://shaders/moneyFlow.gdshader" id="60_mflow"]
+[ext_resource type="Script" uid="uid://baxg6ns6b4625" path="res://scripts/moneyFlow.gd" id="62_mfscr"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_muem4"]
 transparency = 1
@@ -95,13 +102,17 @@ sky_material = SubResource("PanoramaSkyMaterial_lquwl")
 background_mode = 2
 sky = SubResource("Sky_o7ddy")
 tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 1.2
+glow_bloom = 0.05
+glow_hdr_threshold = 1.1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7xd8p"]
 albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h2yge"]
 radius = 0.43896484
-height = 1.5864258
+height = 2.2367554
 
 [sub_resource type="Animation" id="Animation_0xm2m"]
 length = 0.001
@@ -564,6 +575,30 @@ tracks/40/keys = {
 "update": 1,
 "values": [1]
 }
+tracks/41/type = "value"
+tracks/41/imported = false
+tracks/41/enabled = true
+tracks/41/path = NodePath("dirtParticles:emitting")
+tracks/41/interp = 1
+tracks/41/loop_wrap = true
+tracks/41/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/42/type = "value"
+tracks/42/imported = false
+tracks/42/enabled = true
+tracks/42/path = NodePath("dirtParticles2:emitting")
+tracks/42/interp = 1
+tracks/42/loop_wrap = true
+tracks/42/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_1bvp3"]
 resource_name = "new_animation"
@@ -947,6 +982,64 @@ tracks/17/keys = {
 "points": PackedFloat32Array(-0.00024113059, -0.25, 0, 0.1, 0.043057486, 0.08632198, -0.055, -0.014, 0, 0, 0.08632198, -0.20333338, 0.0060266852, 0, 0, -0.00024113059, -0.12164074, 0.08708621, 0.1, 0.043057486),
 "times": PackedFloat32Array(0, 0.20233412, 0.6, 0.75)
 }
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("dirtParticles:emitting")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("dirtParticles2:emitting")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0.4070382),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/20/type = "method"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("..")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": ["leftr"],
+"method": &"spawnFootstep"
+}, {
+"args": ["right"],
+"method": &"spawnFootstep"
+}]
+}
+tracks/21/type = "method"
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/path = NodePath("../footsteps")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_pibwh"]
 resource_name = "whistle"
@@ -1241,6 +1334,16 @@ _data = {
 &"whistleSuccess": SubResource("Animation_kmb1v")
 }
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1v6qk"]
+transparency = 1
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_jod2s"]
+material = SubResource("StandardMaterial3D_1v6qk")
+size = Vector2(0.2, 0.2)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v680q"]
 resource_name = "Material.001"
 cull_mode = 2
@@ -1534,6 +1637,14 @@ size = Vector2(3, 3)
 render_priority = 0
 shader = ExtResource("6_0ld40")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7xd8p"]
+random_pitch = 1.076178
+random_volume_offset_db = 2.35
+streams_count = 3
+stream_0/stream = ExtResource("10_tm6hj")
+stream_1/stream = ExtResource("11_kf5aa")
+stream_2/stream = ExtResource("12_t5ykj")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4c57u"]
 emission_shape = 3
 emission_box_extents = Vector3(24.41, 6.84, 14.99)
@@ -1563,12 +1674,6 @@ billboard_mode = 1
 [sub_resource type="QuadMesh" id="QuadMesh_efxa6"]
 material = SubResource("StandardMaterial3D_4c57u")
 size = Vector2(0.2, 0.2)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_jbj1t"]
-size = Vector3(1, 1.1816406, 0.9428711)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_jkv2x"]
-size = Vector3(0.8494873, 1, 1.1176758)
 
 [sub_resource type="Animation" id="Animation_jkv2x"]
 length = 0.001
@@ -1753,12 +1858,18 @@ filter_baking_aabb = AABB(-260, -10, -260, 520, 40, 520)
 render_priority = 0
 shader = ExtResource("6_0ld40")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ids8r"]
+shader = ExtResource("28_dnhof")
+shader_parameter/amplitude = 0.0800000038
+shader_parameter/speed = 0.0
+
 [sub_resource type="LabelSettings" id="LabelSettings_4c57u"]
 font = ExtResource("30_vc5cj")
 font_size = 71
 font_color = Color(0.27450982, 0.49803922, 0.3254902, 1)
 outline_size = 12
 outline_color = Color(0, 0, 0, 1)
+shadow_color = Color(0.45800048, 0.75510764, 0.52629733, 0.5411765)
 
 [sub_resource type="LabelSettings" id="LabelSettings_a8y0u"]
 font = ExtResource("2_jkv2x")
@@ -1787,7 +1898,7 @@ shader = ExtResource("25_2f3dj")
 shader_parameter/pixel_size = 4.0
 
 [sub_resource type="AudioStreamInteractive" id="AudioStreamInteractive_34ba7"]
-clip_count = 5
+clip_count = 6
 clip_0/name = &"mayor"
 clip_0/stream = ExtResource("20_yc10j")
 clip_0/auto_advance = 0
@@ -1803,13 +1914,16 @@ clip_3/auto_advance = 0
 clip_4/name = &"thenaturesurroundsyou"
 clip_4/stream = ExtResource("20_gqmmt")
 clip_4/auto_advance = 0
+clip_5/name = &"mainTheme"
+clip_5/stream = ExtResource("43_o7ddy")
+clip_5/auto_advance = 0
 initial_clip = 4
 _transitions = {
 Vector2i(-1, -1): {
 "fade_beats": 1.0,
 "fade_mode": 3,
 "from_time": 0,
-"to_time": 0
+"to_time": 1
 }
 }
 
@@ -1818,6 +1932,9 @@ size = Vector3(7.5207586, 11.412476, 13.900085)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qkpxi"]
 size = Vector3(9.33423, 11.436218, 5.157345)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7xd8p"]
+size = Vector3(2.7909927, 1.5898438, 5.202881)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dgi5k"]
 size = Vector3(16.717346, 1.3166504, 10.143936)
@@ -1830,9 +1947,6 @@ material = SubResource("StandardMaterial3D_ffcr4")
 
 [sub_resource type="Gradient" id="Gradient_2cjbq"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_7xd8p"]
-size = Vector3(5.1688538, 1.5898438, 2.5581055)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_r0ljo"]
 size = Vector3(6.9810257, 2.4683838, 7.556329)
@@ -1967,6 +2081,35 @@ _data = {
 &"close": SubResource("Animation_o7ddy"),
 &"open": SubResource("Animation_bu4jf")
 }
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mflowProc"]
+shader = ExtResource("60_mflow")
+shader_parameter/target = Vector3(0, 0, 0)
+shader_parameter/spread = 0.6
+shader_parameter/rise = 0.18
+shader_parameter/windRadius = 0.05
+shader_parameter/winds = 2.0
+shader_parameter/windVary = 0.6
+shader_parameter/arrive = 1.7
+shader_parameter/sizeMin = 0.16
+shader_parameter/sizeMax = 0.3
+shader_parameter/endScale = 0.55
+shader_parameter/fadeStart = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dnhof"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("53_dnhof")
+emission_enabled = true
+emission = Color(0.35, 1, 0.45, 1)
+emission_energy_multiplier = 1.6
+emission_texture = ExtResource("53_dnhof")
+uv1_scale = Vector3(1.085, 1.085, 1.085)
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_mflow"]
+material = SubResource("StandardMaterial3D_dnhof")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7xd8p"]
 size = Vector2(40, 40)
@@ -2894,11 +3037,11 @@ sides = 16
 material = SubResource("StandardMaterial3D_7xd8p")
 
 [node name="player" type="CharacterBody3D" parent="." unique_id=1284337863]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0604725, 0.16015995, 2.4276485)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.582611, 0.16015995, -1.6489964)
 script = ExtResource("4_muem4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="player" unique_id=1758776442]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72506475, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0502295, 0)
 shape = SubResource("CapsuleShape3D_h2yge")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="player" unique_id=1244173043]
@@ -2907,6 +3050,36 @@ libraries/ = SubResource("AnimationLibrary_1bvp3")
 
 [node name="player" type="Node3D" parent="player" unique_id=1885324098]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47562933, 0)
+
+[node name="dirtParticles" type="CPUParticles3D" parent="player/player" unique_id=1562223214]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27452487, 0.37700522)
+visible = false
+amount = 20
+lifetime = 0.2
+one_shot = true
+speed_scale = 0.8
+explosiveness = 0.5
+mesh = SubResource("QuadMesh_jod2s")
+emission_shape = 3
+emission_box_extents = Vector3(0.42, 0.155, 0.15)
+direction = Vector3(0, 0, 5.495)
+spread = 10.35
+color = Color(0.43137255, 0.34117648, 0.2784314, 1)
+
+[node name="dirtParticles2" type="CPUParticles3D" parent="player/player" unique_id=1504856021]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27452487, 0.37700522)
+visible = false
+amount = 20
+lifetime = 0.2
+one_shot = true
+speed_scale = 0.8
+explosiveness = 0.5
+mesh = SubResource("QuadMesh_jod2s")
+emission_shape = 3
+emission_box_extents = Vector3(0.42, 0.155, 0.15)
+direction = Vector3(0, 0, 5.495)
+spread = 10.35
+color = Color(0.43137255, 0.34117648, 0.2784314, 1)
 
 [node name="main body" type="MeshInstance3D" parent="player/player" unique_id=1837599609]
 transform = Transform3D(1, 0, 4.371139e-08, 0, 1, 0, -4.371139e-08, 0, 1, 0, 0, 0)
@@ -2920,9 +3093,15 @@ mesh = SubResource("ArrayMesh_h2d6w")
 transform = Transform3D(-4.2975348e-08, 7.987354e-09, -1, 0.18272935, 0.98316145, 0, 0.98316145, -0.18272935, -4.371139e-08, 0.0014277995, 0, -0.00024113059)
 mesh = SubResource("ArrayMesh_2ogoa")
 
+[node name="foot" type="Marker3D" parent="player/player/Rleg" unique_id=773021196]
+transform = Transform3D(0.9999999, 2.9802322e-08, 0, -2.9802322e-08, 0.9999999, 7.1054274e-15, -3.5527137e-14, -1.687539e-14, 1, -0.030072093, -0.48650163, -0.15006828)
+
 [node name="Lleg" type="MeshInstance3D" parent="player/player" unique_id=925263161]
 transform = Transform3D(7.576291e-08, -5.1808335e-11, -0.99999994, 0.08425145, 0.9964445, 6.33151e-09, 0.9964445, -0.08425145, 7.5497894e-08, 0.0014277995, 0, -0.00024113059)
 mesh = SubResource("ArrayMesh_nsvic")
+
+[node name="foot" type="Marker3D" parent="player/player/Lleg" unique_id=1966281794]
+transform = Transform3D(0.99999994, 4.4703484e-08, 7.1054274e-15, -4.4703484e-08, 0.99999994, 6.217249e-15, -1.4210855e-14, -1.4210855e-14, 1, 0.014041543, -0.4939707, 0.18934822)
 
 [node name="hands" type="MeshInstance3D" parent="player/player" unique_id=349664389]
 visible = false
@@ -2987,6 +3166,13 @@ visible = false
 mesh = SubResource("QuadMesh_h2yge")
 surface_material_override/0 = SubResource("ShaderMaterial_lquwl")
 
+[node name="footsteps" type="AudioStreamPlayer" parent="player" unique_id=205481611]
+stream = SubResource("AudioStreamRandomizer_7xd8p")
+volume_db = -20.322
+pitch_scale = 0.8
+max_polyphony = 12
+bus = &"SFX"
+
 [node name="CPUParticles3D" type="GPUParticles3D" parent="." unique_id=847710345]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.450497, 0)
 visible = false
@@ -2999,31 +3185,6 @@ collision_base_size = 11.53
 trail_lifetime = 4.08
 process_material = SubResource("ParticleProcessMaterial_4c57u")
 draw_pass_1 = SubResource("QuadMesh_efxa6")
-
-[node name="wheelbarrow" type="CharacterBody3D" parent="." unique_id=348208305]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.1131525, 0, 0)
-script = ExtResource("15_jbj1t")
-
-[node name="player" type="Marker3D" parent="wheelbarrow" unique_id=1683707430]
-
-[node name="wheelbarrow" parent="wheelbarrow" unique_id=356860668 instance=ExtResource("15_jkv2x")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="wheelbarrow" unique_id=1014275244]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.70475847, -0.9171015)
-shape = SubResource("BoxShape3D_jbj1t")
-
-[node name="Area3D" type="Area3D" parent="wheelbarrow" unique_id=1227145216]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.56179786, -1.1265533)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="wheelbarrow/Area3D" unique_id=88322008]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0028686523, -0.010872364, 0.069762945)
-shape = SubResource("BoxShape3D_jkv2x")
-
-[node name="log1" type="Marker3D" parent="wheelbarrow" unique_id=1551782171]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26641464, 0.9169543, -1.3746262)
-
-[node name="log2" type="Marker3D" parent="wheelbarrow" unique_id=1017348110]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17275038, 0.94428146, -1.4439595)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1463872936]
 libraries/ = SubResource("AnimationLibrary_muem4")
@@ -3062,20 +3223,21 @@ shop = "fashionHouse"
 shopIdle = "lean"
 
 [node name="mayor" parent="NPCs" unique_id=394498642 instance=ExtResource("14_c6pm6")]
-transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 1.6765616, 0, 40.507286)
+transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 1.6765616, 0, 60.10798)
+activity = "townHall"
 shop = "townHall"
 target = NodePath("../colin")
 startsIt = true
 
 [node name="colin" parent="NPCs" unique_id=662328038 instance=ExtResource("36_fuf3a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2162786, 0.10247016, 36.927666)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.864658, 0.10247016, -5.0166245)
 activity = "idle"
 syllables = Array[AudioStream]([ExtResource("37_cjqg0"), ExtResource("38_vchkt"), ExtResource("39_txyw0"), ExtResource("40_vc5cj"), ExtResource("41_nvyfr")])
 pitchRange = Vector2(1.2, 1.4)
 talkSpeed = 50
 
 [node name="may" parent="NPCs" unique_id=1577209910 instance=ExtResource("37_pibwh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.486098, 0.10224944, 36.150276)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.594839, 0.10224944, -5.794014)
 activity = "idle"
 syllables = Array[AudioStream]([ExtResource("22_ty1g6"), ExtResource("23_j2jfr"), ExtResource("24_bjg73"), ExtResource("25_bu4jf"), ExtResource("26_o7ddy")])
 pitchRange = Vector2(1.2, 1.4)
@@ -3094,14 +3256,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control" unique_id=1903224049]
+[node name="money" type="Label" parent="CanvasLayer/Control" unique_id=1903224049]
+material = SubResource("ShaderMaterial_ids8r")
 layout_mode = 0
 offset_left = 24.0
 offset_right = 188.0
 offset_bottom = 98.0
+offset_transform_enabled = true
 text = "$0"
 label_settings = SubResource("LabelSettings_4c57u")
 vertical_alignment = 1
+script = ExtResource("29_ids8r")
 
 [node name="CenterContainer" type="CenterContainer" parent="CanvasLayer" unique_id=473438823]
 visible = false
@@ -3126,6 +3291,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="shop" type="Control" parent="CanvasLayer" unique_id=844114144]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -3171,6 +3337,19 @@ offset_bottom = 1065.0
 [node name="click" type="AudioStreamPlayer" parent="CanvasLayer/shop/speechOptions" unique_id=788760633]
 stream = ExtResource("33_ty1g6")
 
+[node name="glyphs" type="VBoxContainer" parent="CanvasLayer" unique_id=1621288726]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -340.0
+offset_top = -212.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=46500486]
 material = SubResource("ShaderMaterial_epphy")
 anchors_preset = 15
@@ -3199,6 +3378,9 @@ bus = &"Music"
 [node name="whistle" type="AudioStreamPlayer" parent="audio" unique_id=1079419356]
 bus = &"Magic"
 
+[node name="musicOverride" type="Timer" parent="audio" unique_id=2083250185]
+wait_time = 60.0
+
 [node name="townhall" parent="." unique_id=1745547440 instance=ExtResource("28_2f3dj")]
 transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, -0.54919434, -0.10858631, -14.956333)
 
@@ -3226,6 +3408,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0842667, 5.9201274, -0.0659
 
 [node name="Marker3D" type="Marker3D" parent="townhall" unique_id=248718082]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.766695, 0.95633006, 0)
+
+[node name="talking" type="Marker3D" parent="townhall" unique_id=557922562]
+transform = Transform3D(0.028484795, 0, 0.99959433, 0, 1, 0, -0.99959433, 0, 0.028484795, 0.47550678, 2.7268758, -1.5115459)
+
+[node name="shop" type="Area3D" parent="townhall" unique_id=1754326366 groups=["shop"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1450195, 1.5514619, 0.77309483)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="townhall/shop" unique_id=645922358]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0967064, -0.29492188, -0.33874524)
+shape = SubResource("BoxShape3D_7xd8p")
 
 [node name="blacksmithHouse" parent="." unique_id=146781361 instance=ExtResource("30_fv21b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.270821, 0.1024971, 10.096216)
@@ -3362,12 +3554,29 @@ libraries/ = SubResource("AnimationLibrary_o7ddy")
 [node name="well" parent="." unique_id=747520905 instance=ExtResource("38_pibwh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13863756, -0.5823933, -0.4296255)
 
+[node name="moneyFlow" type="GPUParticles3D" parent="well" unique_id=91854470]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19.818834, 0)
+emitting = false
+amount = 152
+lifetime = 1.1
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+visibility_aabb = AABB(-60, -30, -60, 120, 90, 120)
+process_material = SubResource("ShaderMaterial_mflowProc")
+draw_pass_1 = SubResource("QuadMesh_mflow")
+script = ExtResource("62_mfscr")
+labelPath = NodePath("../../CanvasLayer/Control/money")
+camPath = NodePath("../../player/camPivot/Camera3D")
+moneyHolder = NodePath("../..")
+
 [node name="woodpecker" parent="." unique_id=1455443308 instance=ExtResource("37_fuf3a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.99515, 0.099794686, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=491876197]
+[node name="path" type="MeshInstance3D" parent="." unique_id=491876197]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0590184, 0.19714165, 9.136213)
 mesh = SubResource("PlaneMesh_7xd8p")
 surface_material_override/0 = SubResource("StandardMaterial3D_jod2s")
 
 [connection signal="animation_finished" from="player/AnimationPlayer" to="player" method="animDone"]
+[connection signal="timeout" from="audio/musicOverride" to="audio" method="_on_music_override_timeout"]
