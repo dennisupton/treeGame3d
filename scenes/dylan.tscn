@@ -2,6 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://oxk30l0s7xom" path="res://models/dylanColor.png" id="1_3k1tc"]
 [ext_resource type="Script" uid="uid://kdlfpheao3m1" path="res://scripts/npc.gd" id="1_bp5ku"]
+[ext_resource type="AudioStream" uid="uid://bs67dovd486ml" path="res://sfx/dylan/talk.mp3" id="2_qc4fk"]
+[ext_resource type="AudioStream" uid="uid://c7f2uvrog8nxp" path="res://sfx/dylan/talk2.mp3" id="3_3td50"]
+[ext_resource type="AudioStream" uid="uid://xc5fkucd1v4g" path="res://sfx/dylan/talk3.mp3" id="4_wu06x"]
+[ext_resource type="AudioStream" uid="uid://cf4yjybibhdsb" path="res://sfx/dylan/talk4.mp3" id="5_aoxns"]
+[ext_resource type="AudioStream" uid="uid://xd6okt20565t" path="res://sfx/dylan/talk5.mp3" id="6_xkyb8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2v30w"]
 resource_name = "Material.001"
@@ -689,6 +694,10 @@ _data = {
 script = ExtResource("1_bp5ku")
 lookAtPlayer = true
 shopIdle = "idleShop"
+syllables = Array[AudioStream]([ExtResource("2_qc4fk"), ExtResource("3_3td50"), ExtResource("4_wu06x"), ExtResource("5_aoxns"), ExtResource("6_xkyb8")])
+pitchRange = Vector2(0.9, 1)
+soundSpeed = 260
+volume = -10.0
 
 [node name="Armature" type="Node3D" parent="." unique_id=130719831]
 transform = Transform3D(-4.3711385e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.3711385e-08, 0, 1.2860621, 0)

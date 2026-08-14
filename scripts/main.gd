@@ -62,11 +62,11 @@ func getArea():
 		return "fashionHouse"
 	return false
 
-var shownGlyphs = ["Chop","Enter","Plant"]
+var shownGlyphs = []
 var glyphState = []
 
 func spawnGlyphs():
-	var state = [InputManager.current_device, InputManager.controllerType, shownGlyphs.duplicate()]
+	var state = [InputManager.current_device, InputManager.controllerType, shownGlyphs.duplicate(true)]
 	if state == glyphState:
 		return
 	glyphState = state
@@ -74,7 +74,7 @@ func spawnGlyphs():
 		i.queue_free()
 	for i in shownGlyphs:
 		var child = glyph.instantiate()
-		var events = InputMap.action_get_events(i)
+		var events = InputMap.action_get_events(i[0])
 		for event in events:
 			if InputManager.current_device == InputManager.Device.KEYBOARD_MOUSE:
 				if event is InputEventMouseButton:
@@ -91,12 +91,15 @@ func spawnGlyphs():
 				child.type = InputManager.controllerType
 			child.glyph = event
 			break
+		if not child.glyph:
+			child.queue_free()
+			continue
 		var label = Label.new()
 		label.theme = theme
 		label.add_child(child)
 		child.position = Vector2(-32,35)
-		label.name = i
-		label.text = i
+		label.name = i[0]
+		label.text = i[1]
 		label.label_settings = LabelSettings.new()
 		label.label_settings.font_size = 50
 		$CanvasLayer/glyphs.add_child(label)

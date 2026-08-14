@@ -39,7 +39,7 @@ var joystick = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if type and glyph:
-		if not base.has(type): # InputManager can report "nintendo", which has no art
+		if not base.has(type):
 			type = "xbox"
 		frame = base[type]
 		if joystick:
@@ -63,5 +63,5 @@ func _ready() -> void:
 		print("invalid glyph params")
 		queue_free()
 
-func keycodeOf(event: InputEventKey) -> int:
+func keycodeOf(event):
 	return event.physical_keycode if event.physical_keycode != 0 else event.keycode

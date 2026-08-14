@@ -5,14 +5,12 @@ extends CharacterBody3D
 @export_enum("idle", "tag", "townHall","blacksmithHouse","dylansHouse","fashionHouse") var activity: String = "idle"
 @export var moveSpeed = 5.0
 @export var rotationSpeed = 0.5
-@export var lookAtPlayer = false   # head-tracks the player with IK when within lookRange
+@export var lookAtPlayer = false  
 @export var lookRange = 6.0
 @export var bodyTurnAngle = 60.0   # degrees off-forward before the body turns to help the head
 @export var animBlendTime = 0.3
 
 @export_category("Idle")
-# which house this npc runs, if any. while they're stood at it they use shopIdle —
-# behind the counter, ready to serve — and anywhere else they use idleAnim.
 @export_enum("none", "townHall", "blacksmithHouse", "dylansHouse", "fashionHouse") var shop: String = "none"
 @export var idleAnim = "idle"
 @export var shopIdle = "shopIdle"
@@ -30,8 +28,7 @@ extends CharacterBody3D
 @export var talkSpeed = 80    # ms between letters — lower = faster typing
 @export var soundSpeed = 160  # ms between speaking blips — lower = faster sounds
 @export var faces: Dictionary[String,Texture]
-# after the last letter lands, a line keeps the floor for a beat so it can actually be
-# read before the next one starts: readBase + readPerLetter per character, capped.
+@export var volume: float
 @export var readBase = 0.35
 @export var readPerLetter = 0.025
 @export var readPauseMax = 1.5
@@ -407,6 +404,7 @@ func playBlip():
 	if not audioPlayer:
 		return
 	audioPlayer.stream = syllables.pick_random()
+	audioPlayer.volume_db = volume
 	audioPlayer.pitch_scale = randf_range(pitchRange.x, pitchRange.y) + tone / 10.0
 	audioPlayer.play()
 

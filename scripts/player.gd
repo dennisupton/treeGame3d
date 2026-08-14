@@ -56,6 +56,51 @@ func getClosestTameable():
 			return i
 	return false
 
+var shopPeople = {
+	"fashionHouse": "enriquez",
+	"blacksmithHouse": "toby",
+	"dylansHouse": "dylan",
+	"townhall": "mayor",
+}
+
+func shopPerson():
+	var place = hasBodyInGroup($player/Area3D.get_overlapping_areas(),"shop")
+	if not place:
+		return null
+	var house = place.get_parent().name
+	if not house in shopPeople:
+		return null
+	var person = $"../NPCs".get_node_or_null(shopPeople[house])
+	if person and person.atShop():
+		return person
+	return null
+
+func chopPrompt():
+	if holding:
+		return "Drop"
+	for i in $player/Area3D.get_overlapping_bodies():
+		if i.is_in_group("tree") and i.getForceSum() < 0.5:
+			return "Pick up" if i.chopped else "Chop"
+		elif i.is_in_group("acorn"):
+			return "Pick up"
+		elif i.name == "wheelbarrow" and controlling == self:
+			return "Drive"
+	return ""
+
+func updateGlyphs():
+	var prompts = []
+	if not freeze:
+		var chop = chopPrompt()
+		if chop:
+			prompts.append(["Chop", chop])
+		if shopPerson():
+			prompts.append(["Enter", "Talk"])
+		if holding and holding == "acorn" and not $"..".tooClose(position):
+			prompts.append(["Plant", "Plant"])
+		if not holding and not whistling and getClosestTameable():
+			prompts.append(["whistle", "Whistle"])
+	$"..".shownGlyphs = prompts
+
 func spawnFootstep(side):
 	var child = footstep.instantiate()
 	get_parent().add_child(child)
@@ -67,7 +112,11 @@ func spawnFootstep(side):
 		child.global_rotation = $player/Lleg/foot.global_rotation
 
 func _physics_process(delta: float) -> void:
-	$"..".shownGlyphs = []
+	if self in $"../fashionHouse/changingRoom".get_overlapping_bodies():
+		$"../CanvasLayer/selector".open("fashion")
+	else:
+		$"../CanvasLayer/selector".close()
+
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -135,22 +184,15 @@ func _physics_process(delta: float) -> void:
 		holding = false
 		$player/hands.hide()
 	if Input.is_action_just_pressed("Enter") and not freeze:
-		if hasBodyInGroup($player/Area3D.get_overlapping_areas(),"shop") and not freeze:
+		var person = shopPerson()
+		if person:
 			var place = hasBodyInGroup($player/Area3D.get_overlapping_areas(),"shop")
-			if place.get_parent().name == "fashionHouse":
-				$"../CanvasLayer/shop".person = $"../NPCs/enriquez"
-			if place.get_parent().name == "blacksmithHouse":
-				$"../CanvasLayer/shop".person = $"../NPCs/toby"
-			if place.get_parent().name == "dylansHouse":
-				$"../CanvasLayer/shop".person = $"../NPCs/dylan"
-			if place.get_parent().name == "townhall":
-				$"../CanvasLayer/shop".person = $"../NPCs/mayor"
-			if $"../CanvasLayer/shop".person and $"../CanvasLayer/shop".person.atShop():
-				freeze = true
-				camPos = place.get_parent().get_node("talking")
-				$"../CanvasLayer/shop".start()
-			else:
-				$"../CanvasLayer/shop".person = null
+			freeze = true
+			camPos = place.get_parent().get_node("talking")
+			$"../CanvasLayer/shop".person = person
+			$"../CanvasLayer/shop".start()
+		else:
+			$"../CanvasLayer/shop".person = null
 	if Input.is_action_just_pressed("Plant") and not freeze:
 		if holding and holding == "acorn" and not $"..".tooClose(position):
 			var item = $player/hold.get_child(0)
@@ -176,7 +218,9 @@ func _physics_process(delta: float) -> void:
 	elif InputManager.current_device == InputManager.Device.GAMEPAD and not get_viewport().gui_get_focus_owner() and $"../CanvasLayer/Control/Shop/Items".get_child_count()>0:
 		$"../CanvasLayer/Control/Shop/Items".get_child(0).grab_focus()
 	'''
-	
+
+	updateGlyphs()
+
 	var moveSpeed = (CARRY_SPEED if holding else SPEED) * speedMulti
 	
 	if controlling == self:

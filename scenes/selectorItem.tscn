@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://ryyihiqj3ou2"]
+
+[ext_resource type="Theme" uid="uid://cyi4xq6uvrdq6" path="res://theme.tres" id="1_2w4p6"]
+[ext_resource type="Texture2D" uid="uid://d0tnjlx02sx4s" path="res://images/shoes.png" id="2_glhth"]
+
+[node name="item" type="CheckBox" unique_id=1643769535]
+theme = ExtResource("1_2w4p6")
+theme_override_constants/h_separation = -48
+button_pressed = true
+text = "Trainers"
+icon = ExtResource("2_glhth")

@@ -30,7 +30,7 @@
 [ext_resource type="AudioStream" uid="uid://mwi3xu2vgb4e" path="res://music/engineer.ogg" id="28_dgi5k"]
 [ext_resource type="Shader" uid="uid://bu2aocogv1do0" path="res://shaders/shake.gdshader" id="28_dnhof"]
 [ext_resource type="AudioStream" uid="uid://igyirbe4x88" path="res://music/blacksmith.ogg" id="28_qkpxi"]
-[ext_resource type="Script" uid="uid://0t2sp1nnq2as" path="res://scenes/money.gd" id="29_ids8r"]
+[ext_resource type="Script" uid="uid://0t2sp1nnq2as" path="res://scripts/money.gd" id="29_ids8r"]
 [ext_resource type="PackedScene" uid="uid://br0m1lo6au37a" path="res://models/blacksmithHouse.blend" id="30_fv21b"]
 [ext_resource type="FontFile" uid="uid://c6cuksw1a28go" path="res://DarumadropOne-Regular.ttf" id="30_vc5cj"]
 [ext_resource type="Script" uid="uid://cf0qpcy6amv3a" path="res://scripts/shop.gd" id="32_ty1g6"]
@@ -43,9 +43,11 @@
 [ext_resource type="PackedScene" uid="uid://dj8c5ejlteqew" path="res://scenes/woodpecker.tscn" id="37_fuf3a"]
 [ext_resource type="PackedScene" uid="uid://bjrlj4cik6iys" path="res://scenes/may.tscn" id="37_pibwh"]
 [ext_resource type="PackedScene" uid="uid://cwqvmhpfvmuu0" path="res://models/fashionHouse.blend" id="38_5he1u"]
+[ext_resource type="PackedScene" uid="uid://ryyihiqj3ou2" path="res://scenes/selectorItem.tscn" id="38_kf5aa"]
 [ext_resource type="PackedScene" uid="uid://dyyftxa3v7qcc" path="res://models/well.blend" id="38_pibwh"]
+[ext_resource type="Script" uid="uid://m45ewbjd5at1" path="res://scripts/selector.gd" id="38_t5ykj"]
 [ext_resource type="AudioStream" uid="uid://omrossmamwki" path="res://sfx/colin/talk2.mp3" id="38_vchkt"]
-[ext_resource type="Script" uid="uid://3gy7hxcgbg2y" path="res://scenes/treeCycle.gd" id="39_c6pm6"]
+[ext_resource type="Script" uid="uid://3gy7hxcgbg2y" path="res://scripts/treeCycle.gd" id="39_c6pm6"]
 [ext_resource type="AudioStream" uid="uid://bbau1eb76lkm4" path="res://sfx/colin/talk3.mp3" id="39_txyw0"]
 [ext_resource type="AudioStream" uid="uid://dfcyl4nbpptpo" path="res://sfx/colin/talk4.mp3" id="40_vc5cj"]
 [ext_resource type="AudioStream" uid="uid://b12iffa54q3mn" path="res://sfx/colin/talk5.mp3" id="41_nvyfr"]
@@ -54,7 +56,7 @@
 [ext_resource type="PackedScene" uid="uid://df5ky4ud2bw0a" path="res://scenes/dylan.tscn" id="46_j2jfr"]
 [ext_resource type="PackedScene" uid="uid://2fu0a436g36v" path="res://scenes/outfitter.tscn" id="47_bjg73"]
 [ext_resource type="ArrayMesh" uid="uid://cw1ootssmaiyh" path="res://models/enriquezCurtain.obj" id="48_bjg73"]
-[ext_resource type="Script" uid="uid://cf3lkrp3cim34" path="res://scenes/curtain.gd" id="49_bu4jf"]
+[ext_resource type="Script" uid="uid://cf3lkrp3cim34" path="res://scripts/curtain.gd" id="49_bu4jf"]
 [ext_resource type="Texture2D" uid="uid://dnna1tkuhftyf" path="res://images/stone test.png" id="50_j2jfr"]
 [ext_resource type="Texture2D" uid="uid://tdycfnt23la8" path="res://images/moneyParticle.png" id="53_dnhof"]
 [ext_resource type="Shader" uid="uid://bpkieats7at7m" path="res://shaders/moneyFlow.gdshader" id="60_mflow"]
@@ -1893,6 +1895,93 @@ corner_radius_bottom_right = 70
 corner_radius_bottom_left = 70
 corner_detail = 2
 
+[sub_resource type="LabelSettings" id="LabelSettings_jod2s"]
+font_size = 78
+
+[sub_resource type="Animation" id="Animation_t5ykj"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(617, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1176, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_e755i"]
+resource_name = "in"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2, 0),
+"points": PackedFloat32Array(627, 0, 0, 0.16666667, -1.6666667, 617, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(2, 0),
+"points": PackedFloat32Array(1176, 0, 0, 0.16666667, -130.83334, 391, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_ro3en"]
+resource_name = "out"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(617, -0.25, 0, 0.25, 0, 627, 0, 0, 0.16666667, -1.6666667),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(391, -0.25, 0, 0.25, 0, 1176, 0, 0, 0.16666667, -130.83334),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_od4ux"]
+_data = {
+&"RESET": SubResource("Animation_t5ykj"),
+&"in": SubResource("Animation_e755i"),
+&"out": SubResource("Animation_ro3en")
+}
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_epphy"]
 shader = ExtResource("25_2f3dj")
 shader_parameter/pixel_size = 4.0
@@ -2081,6 +2170,9 @@ _data = {
 &"close": SubResource("Animation_o7ddy"),
 &"open": SubResource("Animation_bu4jf")
 }
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jod2s"]
+size = Vector3(1.7991943, 1.5424805, 1.0578918)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mflowProc"]
 shader = ExtResource("60_mflow")
@@ -3350,6 +3442,38 @@ grow_vertical = 0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 
+[node name="selector" type="PanelContainer" parent="CanvasLayer" unique_id=161902324]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -343.0
+offset_top = 636.0
+offset_right = 343.00024
+offset_bottom = 934.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme = ExtResource("33_vc5cj")
+script = ExtResource("38_t5ykj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/selector" unique_id=763092655]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/selector/VBoxContainer" unique_id=1910430699]
+layout_mode = 2
+theme = ExtResource("33_vc5cj")
+text = "Dressing Room"
+label_settings = SubResource("LabelSettings_jod2s")
+horizontal_alignment = 1
+
+[node name="item" parent="CanvasLayer/selector/VBoxContainer" unique_id=1643769535 groups=["shoe"] instance=ExtResource("38_kf5aa")]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/selector" unique_id=510498502]
+libraries/ = SubResource("AnimationLibrary_od4ux")
+
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=46500486]
 material = SubResource("ShaderMaterial_epphy")
 anchors_preset = 15
@@ -3550,6 +3674,13 @@ shape = SubResource("BoxShape3D_ffcr4")
 [node name="curtainAnim" type="AnimationPlayer" parent="fashionHouse/openCurtain" unique_id=1112763484]
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_o7ddy")
+
+[node name="changingRoom" type="Area3D" parent="fashionHouse" unique_id=298688609]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6164064, 0, -4.966073)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="fashionHouse/changingRoom" unique_id=357927601]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.06854248, 0.27124023, -0.012496948)
+shape = SubResource("BoxShape3D_jod2s")
 
 [node name="well" parent="." unique_id=747520905 instance=ExtResource("38_pibwh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13863756, -0.5823933, -0.4296255)

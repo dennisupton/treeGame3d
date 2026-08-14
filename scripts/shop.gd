@@ -350,6 +350,7 @@ func playBlip() -> void:
 	if not audioPlayer or person.syllables.is_empty():
 		return
 	audioPlayer.stream = person.syllables.pick_random()
+	audioPlayer.volume_db = person.volume
 	audioPlayer.pitch_scale = randf_range(person.pitchRange.x, person.pitchRange.y) + person.tone / 10.0
 	audioPlayer.play()
 	person.pop()
