@@ -12,15 +12,15 @@
 			"title": "Todo",
 			"tasks": [
 				"2416b44b-f934-48f1-8dfc-7226727cde25",
-				"041429f9-98b2-4081-9a50-c29d0d1c0305",
-				"256adb4d-3fa1-42c3-b571-85b35534c640",
-				"ca18f57a-8053-424e-ba96-6ed983a241a9"
+				"041429f9-98b2-4081-9a50-c29d0d1c0305"
 			]
 		},
 		{
 			"uuid": "9ee0dca1-f1d8-4a35-9c01-059ad2617136",
 			"title": "Doing",
-			"tasks": []
+			"tasks": [
+				"ca18f57a-8053-424e-ba96-6ed983a241a9"
+			]
 		},
 		{
 			"uuid": "590b61b6-6343-4a87-9bb0-e3aa17e35500",
@@ -31,7 +31,8 @@
 				"b2fb0f60-2885-46e1-83d0-6176f38e113b",
 				"8d781b77-4c96-42ac-bd42-86daf79ec185",
 				"334ccd9f-00a3-498b-87fc-e9bd1ef5ca71",
-				"114b1a63-b11d-4cf0-85b3-35224c822ef4"
+				"114b1a63-b11d-4cf0-85b3-35224c822ef4",
+				"256adb4d-3fa1-42c3-b571-85b35534c640"
 			]
 		}
 	],
@@ -80,7 +81,7 @@
 		},
 		{
 			"uuid": "041429f9-98b2-4081-9a50-c29d0d1c0305",
-			"title": "building playground",
+			"title": "building slide",
 			"description": "",
 			"category": "5751decc-7ebc-4c88-8a8f-c132b06c759d",
 			"steps": []

@@ -30,6 +30,10 @@ uniform float windRadius = 0.14; // how wide the helix opens at its middle
 uniform float winds = 2.0;       // full turns around the travel axis over one trip
 uniform float windVary = 0.6;    // per-circle variation in that turn count
 uniform float arrive = 1.7;      // >1 eases IN: they hang about the well, then whip into the counter
+// they start this far below the emitter, down inside the shaft, and rise to it before any
+// lateral travel begins — otherwise they simply appear on the rim and leave
+uniform float climb = 1.3;       // world units below the mouth that they rise from
+uniform float climbTime = 0.3;   // fraction of life spent climbing out
 uniform float sizeMin = 0.16;
 uniform float sizeMax = 0.30;
 uniform float endScale = 0.55;   // circles shrink as they close on the counter
@@ -73,13 +77,19 @@ void process() {
 	vec3 line = target - from;
 	float len = length(line);
 
+	// two phases: rise out of the shaft, then fly. lateral progress is pinned at 0 until
+	// they've cleared the mouth, so the climb reads as coming up from the bottom.
+	float rising = clamp(t / climbTime, 0.0, 1.0);
+	float travel = clamp((t - climbTime) / max(1.0 - climbTime, 0.001), 0.0, 1.0);
+
 	// ease IN, so the weave plays out over the well where the circles are small and
 	// readable, then they accelerate into the counter. easing OUT instead parks them on
 	// the counter for the back half of the flight, which just looks like they spawned there.
-	float e = pow(t, arrive);
+	float e = pow(travel, arrive);
 
 	vec3 straight = from + line * e;
-	straight.y += rise * len * sin(t * PI) * (0.6 + sTurns * 0.8);
+	straight.y -= climb * (1.0 - smoothstep(0.0, 1.0, rising));
+	straight.y += rise * len * sin(travel * PI) * (0.6 + sTurns * 0.8);
 
 	// a frame perpendicular to the direction of travel to wind around
 	vec3 dir = normalize(line);
@@ -92,7 +102,7 @@ void process() {
 	float turns = winds * (1.0 + (sTurns - 0.5) * 2.0 * windVary);
 	float spin = sDir < 0.5 ? -1.0 : 1.0;
 	float ang = (t * turns * TAU + sPhase * TAU) * spin;
-	float radius = windRadius * len * sin(t * PI) * (0.45 + sTurns);
+	float radius = windRadius * len * sin(travel * PI) * (0.45 + sTurns);
 
 	TRANSFORM[3].xyz = straight + (side * cos(ang) + up * sin(ang)) * radius;
 
@@ -103,5 +113,6 @@ void process() {
 	TRANSFORM[1] = vec4(0.0, s, 0.0, 0.0);
 	TRANSFORM[2] = vec4(0.0, 0.0, s, 0.0);
 
-	COLOR.a = 1.0 - smoothstep(fadeStart, 1.0, t);
+	// fade in over the first breath too, so they well up out of the dark rather than pop in
+	COLOR.a = smoothstep(0.0, 0.12, t) * (1.0 - smoothstep(fadeStart, 1.0, t));
 }
