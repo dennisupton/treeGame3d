@@ -63,14 +63,26 @@ func _ready() -> void:
 		selectors["resolution"].selected = int(config.get_value("video", "resolution", 0))
 		selectors["fullscreen"].button_pressed = bool(config.get_value("video", "fullscreen", 1))
 		selectors["mainVolume"].value = config.get_value("audio", "mainVolume", 50)
-	
-	AudioServer.set_bus_volume_db(0, config.get_value("audio", "mainVolume", 50)-50)
+		selectors["music"].value = config.get_value("audio", "music", 50)
+		selectors["SFX"].value = config.get_value("audio", "SFX", 50)
+
+	applyBus("Master", config.get_value("audio", "mainVolume", 50))
+	applyBus("Music", config.get_value("audio", "music", 50))
+	applyBus("SFX", config.get_value("audio", "SFX", 50))
+
+	selectors["music"].value_changed.connect(musicChanged)
+	selectors["SFX"].value_changed.connect(sfxChanged)
+
 	DisplayServer.window_set_size(resolutions[selectors["resolution"].selected])
 	DisplayServer.window_set_mode(fullscreen[int(selectors["fullscreen"].button_pressed)])
 func saveVal(category, field, val):
 	var config = ConfigFile.new()
+	config.load("user://settings.cfg")   # keep the other settings, only change this one
 	config.set_value(category, field, val)
 	config.save("user://settings.cfg")
+
+func applyBus(busName, value):
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(busName), value - 50)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -89,7 +101,15 @@ func _on_apply_pressed() -> void:
 
 func volumeChanged(_value):
 	saveVal("audio","mainVolume",selectors["mainVolume"].value)
-	AudioServer.set_bus_volume_db(0, selectors["mainVolume"].value-50)
+	applyBus("Master", selectors["mainVolume"].value)
+
+func musicChanged(_value):
+	saveVal("audio","music",selectors["music"].value)
+	applyBus("Music", selectors["music"].value)
+
+func sfxChanged(_value):
+	saveVal("audio","SFX",selectors["SFX"].value)
+	applyBus("SFX", selectors["SFX"].value)
 
 
 func _on_back_pressed() -> void:

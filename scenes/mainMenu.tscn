@@ -336,6 +336,7 @@ alignment = 1
 [node name="continue" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer" unique_id=1770226697 node_paths=PackedStringArray("audio")]
 material = ExtResource("1_3d1i7")
 layout_mode = 2
+disabled = true
 theme = ExtResource("3_48ign")
 text = "Continue"
 script = ExtResource("6_tov5d")
@@ -684,6 +685,7 @@ mouse_filter = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1286806300]
 libraries/ = SubResource("AnimationLibrary_vt84v")
 
+[connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer/newGame" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer/settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer/quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="settings/MarginContainer/PanelContainer/VBoxContainer/Control/Back" to="settings" method="_on_back_pressed"]

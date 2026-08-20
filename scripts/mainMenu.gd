@@ -31,6 +31,11 @@ func _process(delta: float) -> void:
 	$Node3D/Path3D/PathFollow3D.progress += 0.005
 
 
+func _on_new_game_pressed() -> void:
+	SaveManager.makeSave()
+	get_tree().change_scene_to_file("res://scenes/office.tscn")
+
+
 func _on_quit_pressed() -> void:
 	get_tree().quit()
 

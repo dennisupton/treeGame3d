@@ -3148,7 +3148,7 @@ sides = 16
 material = SubResource("StandardMaterial3D_7xd8p")
 
 [node name="player" type="CharacterBody3D" parent="." unique_id=1284337863]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.582611, 0.16015995, -1.6489964)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.03597212, 0.16015995, 389.96643)
 script = ExtResource("4_muem4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="player" unique_id=1758776442]
@@ -3334,8 +3334,7 @@ shop = "fashionHouse"
 shopIdle = "lean"
 
 [node name="mayor" parent="NPCs" unique_id=394498642 instance=ExtResource("14_c6pm6")]
-transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 1.6765616, 0, 60.10798)
-activity = "townHall"
+transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 1.6765616, 0, 192.67111)
 shop = "townHall"
 target = NodePath("../colin")
 startsIt = true
