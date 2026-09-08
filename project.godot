@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="incrementalProto"
-run/main_scene="uid://b0ay7uv2djtul"
+config/name="tree game"
+run/main_scene="uid://bvt5dbjc8q05o"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://images/icon.svg"
 

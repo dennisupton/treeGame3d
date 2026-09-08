@@ -18,22 +18,22 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_ei2s5"]
 font = ExtResource("2_k578b")
-font_size = 40
+font_size = 60
 font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_u8nhc"]
 font = ExtResource("2_k578b")
-font_size = 40
+font_size = 60
 font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_43ocd"]
 font = ExtResource("2_k578b")
-font_size = 40
+font_size = 60
 font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_wruqr"]
 font = ExtResource("2_k578b")
-font_size = 40
+font_size = 60
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u8nhc"]
 shader = ExtResource("6_jp1e5")
@@ -564,11 +564,15 @@ autowrap_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="OS/split/Content/Content" unique_id=882378068]
 z_index = 2
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 36
+theme_override_font_sizes/bold_font_size = 36
 bbcode_enabled = true
 fit_content = true
 
 [node name="response" type="RichTextLabel" parent="OS/split/Content/Content" unique_id=882378069]
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 36
+theme_override_font_sizes/bold_font_size = 36
 size_flags_vertical = 3
 bbcode_enabled = true
 fit_content = true
@@ -577,6 +581,7 @@ fit_content = true
 visible = false
 layout_mode = 2
 theme = ExtResource("2_ujkv6")
+theme_override_font_sizes/font_size = 36
 text = "RESPOND"
 
 [node name="Read" type="Button" parent="OS/split/Content/Content" unique_id=1534792160]
@@ -584,6 +589,7 @@ visible = false
 z_index = 2
 layout_mode = 2
 theme = ExtResource("2_ujkv6")
+theme_override_font_sizes/font_size = 36
 text = "READ"
 
 [node name="go" type="Button" parent="OS/split/Content/Content" unique_id=307067629]
@@ -591,6 +597,7 @@ visible = false
 z_index = 2
 layout_mode = 2
 theme = ExtResource("2_ujkv6")
+theme_override_font_sizes/font_size = 36
 theme_override_colors/icon_normal_color = Color(0.18039216, 0.49019608, 0.19607843, 1)
 theme_override_colors/icon_focus_color = Color(0.18039216, 0.49019608, 0.19607843, 1)
 theme_override_colors/icon_pressed_color = Color(0.18039216, 0.49019608, 0.19607843, 1)
