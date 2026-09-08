@@ -357,6 +357,7 @@ script = ExtResource("1_nnvrw")
 
 [node name="Hole" type="MeshInstance3D" parent="." unique_id=976937364]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09964186, 0)
+visible = false
 mesh = SubResource("ArrayMesh_40q6a")
 
 [node name="age1" type="MeshInstance3D" parent="." unique_id=664691267]
@@ -418,10 +419,9 @@ color_ramp = SubResource("Gradient_7mycd")
 hue_variation_min = -0.49
 hue_variation_max = 0.38
 
-[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="."]
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." unique_id=69626112]
 radius = 0.55
 height = 3.0
-affect_navigation_mesh = false
 vertices = PackedVector3Array(-0.45, 0, -0.45, 0.45, 0, -0.45, 0.45, 0, 0.45, -0.45, 0, 0.45)
 avoidance_enabled = false
 
