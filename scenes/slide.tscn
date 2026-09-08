@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://b8o1pf4rok5tm"]
+
+[ext_resource type="Script" uid="uid://cg7eefalw61md" path="res://scenes/slide.gd" id="1_tk4gx"]
+[ext_resource type="Material" uid="uid://b73xtc8rgqt8" path="res://sketch.material" id="2_xi4xi"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tk4gx"]
+albedo_color = Color(0.8673401, 0.899073, 0.8771776, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7xd8p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_844jt"]
+size = Vector3(1.6445313, 1.5469971, 1.5566406)
+
+[node name="slide" type="StaticBody3D" unique_id=1953637316]
+script = ExtResource("1_tk4gx")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=341981461]
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="CSGCombiner3D" unique_id=31587075]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27826214, 0)
+sides = 64
+ring_sides = 32
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D" unique_id=2105538137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2211912, 0.68229085, -0.010831565)
+operation = 2
+size = Vector3(2.57481, 1.0954808, 2.441835)
+material = SubResource("StandardMaterial3D_tk4gx")
+
+[node name="CSGTorus3D2" type="CSGTorus3D" parent="CSGCombiner3D" unique_id=1344709252]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28101638, 0)
+inner_radius = 0.51
+outer_radius = 0.95
+sides = 64
+ring_sides = 32
+material = ExtResource("2_xi4xi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1886700810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5025979, 0)
+shape = SubResource("BoxShape3D_7xd8p")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1727124500]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1385709180]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.80324316, 0)
+shape = SubResource("BoxShape3D_844jt")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1497140514]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9513019, 0)
+text = "slider here"
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

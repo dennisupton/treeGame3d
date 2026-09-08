@@ -15,7 +15,8 @@ func tooClose(pos):
 		if i.distance_squared_to(pos) < seperation:
 			return true
 	return false
-
+func reloadCollision():
+	$NavigationRegion3D.bake_navigation_mesh(true)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	tree = preload("res://scenes/tree.tscn")
@@ -30,7 +31,9 @@ func _ready() -> void:
 		treePositions.append(pos)
 		add_child(child)
 		child.setAge(4)
-
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	#$NavigationRegion3D.bake_navigation_mesh(true)
 func _process(delta: float) -> void:
 	$CanvasLayer/bubbles.visible = not $player.freeze
 	spawnGlyphs()

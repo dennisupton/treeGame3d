@@ -348,7 +348,7 @@ point_count = 2
 [sub_resource type="Gradient" id="Gradient_7mycd"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[node name="tree" type="RigidBody3D" unique_id=1333644917 groups=["tree"]]
+[node name="tree" type="RigidBody3D" unique_id=1333644917 groups=["nav", "tree"]]
 mass = 750.0
 freeze = true
 contact_monitor = true
@@ -417,6 +417,13 @@ scale_amount_curve = SubResource("Curve_nnvrw")
 color_ramp = SubResource("Gradient_7mycd")
 hue_variation_min = -0.49
 hue_variation_max = 0.38
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="."]
+radius = 0.55
+height = 3.0
+affect_navigation_mesh = false
+vertices = PackedVector3Array(-0.45, 0, -0.45, 0.45, 0, -0.45, 0.45, 0, 0.45, -0.45, 0, 0.45)
+avoidance_enabled = false
 
 [node name="fall" type="AudioStreamPlayer3D" parent="." unique_id=1640826595]
 stream = ExtResource("3_gvmkm")

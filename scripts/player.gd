@@ -15,16 +15,31 @@ var damage = 1.0
 var driving = false
 var controlling = self
 var defaultCamBasis  # follow-camera orientation, restored when leaving a fixed-cam area
-
 var legFlip = false
 var whistling = false
 @onready var camPos = false
 var shop = false
 
 @onready var footstep = preload("res://scenes/footstep.tscn")
+@onready var slide = preload("res://scenes/slide.tscn")
 
 func _ready() -> void:
 	defaultCamBasis = $camPivot/Camera3D.transform.basis
+	reloadEquipped()
+	$player/sketchMesh.hide()
+func reloadEquipped():
+	if SaveManager.getItem("Trainers","selected"):
+		SPEED = 7
+	else:
+		SPEED = 5
+	if SaveManager.getItem("Metal Axe","selected") or true:
+		damage = 2
+		$player/Axe/metalAxe.show()
+		$player/Axe/Axe.hide()
+	else:
+		damage = 1
+		$player/Axe/metalAxe.hide()
+		$player/Axe/Axe.show()
 func chop():
 	for i in $player/Area3D.get_overlapping_bodies():
 		if i.is_in_group("tree"):
@@ -40,12 +55,17 @@ func hasBodyInGroup(bodies,group):
 
 func pickup(object):
 	object.freeze = true
-	#object.set_collision_layer_value(1, false)
-	$player/hands.show()
+	object.set_collision_layer_value(1, false)
 	get_parent().remove_child(object)
 	if object.is_in_group("tree"):
+		$player/hands.show()
 		$player/treeHold.add_child(object)
+	elif object.is_in_group("sketch"):
+		$player/hands2.show()
+		$player/sketchMesh.show()
+		$player/sketchHold.add_child(object)
 	else:
+		$player/hands.show()
 		$player/hold.add_child(object)
 	object.position = Vector3.ZERO
 	object.rotation = Vector3.ZERO
@@ -94,11 +114,13 @@ func updateGlyphs():
 		if chop:
 			prompts.append(["Chop", chop])
 		if shopPerson():
-			prompts.append(["Enter", "Talk"])
+			prompts.append(["Enter", "talk"])
 		if holding and holding == "acorn" and not $"..".tooClose(position):
-			prompts.append(["Plant", "Plant"])
+			prompts.append(["Plant", "plant"])
+		if holding and holding == "sketch" and len($player/sketchMesh/Area3D.get_overlapping_bodies()) == 0:
+			prompts.append(["Plant", "place"])
 		if not holding and not whistling and getClosestTameable():
-			prompts.append(["whistle", "Whistle"])
+			prompts.append(["whistle", "whistle"])
 	$"..".shownGlyphs = prompts
 
 func spawnFootstep(side):
@@ -114,6 +136,8 @@ func spawnFootstep(side):
 func _physics_process(delta: float) -> void:
 	if self in $"../fashionHouse/changingRoom".get_overlapping_bodies():
 		$"../CanvasLayer/selector".open("fashion")
+	elif self in $"../blacksmithHouse/changingRoom".get_overlapping_bodies():
+		$"../CanvasLayer/selector".open("axe")
 	else:
 		$"../CanvasLayer/selector".close()
 
@@ -141,22 +165,30 @@ func _physics_process(delta: float) -> void:
 		$AnimationPlayer.stop()
 		legFlip = not legFlip
 		
-	if Input.is_action_pressed("Chop") and not holding:
+	if Input.is_action_just_pressed("Chop") and not holding:
 		var isItem = false
 		for i in $player/Area3D.get_overlapping_bodies():
-			if i.is_in_group("tree") and i.getForceSum()< 0.5 and not holding:
+			if i.is_in_group("tree") and i.getForceSum()< 0.5:
 				isItem = true
 				if i.chopped:
 					pickup(i)
 					holding = "tree"
-			elif i.is_in_group("acorn") and not holding:
+					break
+			elif i.is_in_group("acorn"):
 				pickup(i)
 				holding = "acorn"
 				i.held = true
+				break
+			elif i.is_in_group("sketch"):
+				pickup(i)
+				holding = "sketch"
+				i.held = true
+				break
 			elif i.name == "wheelbarrow":
 				driving = "wheelbarrow"
 				controlling = i
 				set_collision_layer_value(1, false)
+				break
 		if isItem and not holding and not $AnimationPlayer.current_animation:
 			$AnimationPlayer.stop()
 			$"../audio/chop".pitch_scale = random.randf_range(0.8,1.2)
@@ -171,6 +203,12 @@ func _physics_process(delta: float) -> void:
 			get_parent().add_child(item)
 			item.position = $player/treeHold.global_position
 			item.rotation = $player/treeHold.global_rotation
+		elif holding == "sketch":
+			item = $player/sketchHold.get_child(0)
+			$player/sketchHold.remove_child(item)
+			get_parent().add_child(item)
+			item.position = $player/sketchHold.global_position
+			item.rotation = $player/sketchHold.global_rotation
 		else:
 			item = $player/hold.get_child(0)
 			$player/hold.remove_child(item)
@@ -180,9 +218,11 @@ func _physics_process(delta: float) -> void:
 			item.held = false
 		item.freeze = false
 		item.set_collision_layer_value(1, true)
-		item.linear_velocity = velocity*4 + Vector3.UP*2
+		item.linear_velocity = velocity*1.5 + Vector3.UP*2
 		holding = false
 		$player/hands.hide()
+		$player/hands2.hide()
+		$player/sketchMesh.hide()
 	if Input.is_action_just_pressed("Enter") and not freeze:
 		var person = shopPerson()
 		if person:
@@ -200,7 +240,19 @@ func _physics_process(delta: float) -> void:
 			holding = false
 			$player/hands.hide()
 			$"..".spawnTree(position)
-	
+		if holding and holding == "sketch":
+			var item = $player/sketchHold.get_child(0)
+			item.queue_free()
+			holding = false
+			$player/hands2.hide()
+			$player/sketchMesh.hide()
+			var child = slide.instantiate()
+			$"..".add_child(child)
+			child.position = $player/sketchMesh.global_position
+			
+	if holding:
+		if holding == "sketch":
+			$player/sketchMesh.visible = len($player/sketchMesh/Area3D.get_overlapping_bodies()) == 0
 	if Input.is_action_pressed("whistle") and not holding and not whistling:
 		freeze = true
 		whistling = true
@@ -221,7 +273,7 @@ func _physics_process(delta: float) -> void:
 
 	updateGlyphs()
 
-	var moveSpeed = (CARRY_SPEED if holding else SPEED) * speedMulti
+	var moveSpeed = (SPEED/2 if holding else SPEED) * speedMulti
 	
 	if controlling == self:
 		if input_dir and not freeze:

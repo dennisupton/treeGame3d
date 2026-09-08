@@ -30,6 +30,10 @@ window/stretch/mode="viewport"
 
 enabled=PackedStringArray("res://addons/anthonyec.camera_preview/plugin.cfg", "res://addons/godot_super-wakatime/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg")
 
+[global_group]
+
+nav=""
+
 [input]
 
 ui_accept={

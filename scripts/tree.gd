@@ -40,6 +40,8 @@ func setAge(newAge):
 		$age1.show()
 	elif age == 2:
 		$CollisionShape3D.disabled = false
+		# only grown trees need this; the startup ones are already in the baked navmesh
+		$NavigationObstacle3D.affect_navigation_mesh = true
 		$Hole.show()
 		$age2.show()
 		$age2leaves.show()
@@ -54,7 +56,6 @@ func setAge(newAge):
 		$trunk.show()
 		$leaves.show()
 		$growthTimer.stop()
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if still:

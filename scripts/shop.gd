@@ -162,7 +162,20 @@ func enriquez(dialouge = false):
 					await say("just come back when you got a bit more money")
 					makeButtons(["bye"],["bye"],enriquez)
 				else:
-					await say("thank you so much")
+					person.setFace("stare")
+					person.playAnim("what")
+					await say("wow you actually had the money")
+					person.setFace("normal")
+					person.playAnim("lean")
+					await say("to be honest with you")
+					await say("i didnt think you were gonna have enough")
+					await say("considering your clothing situation")
+					await say("but anyway")
+					await say("i left the shoes in that dressing room over there")
+					await say("have fun!")
+					SaveManager.saveItem("Trainers","has",true)
+					makeButtons(["bye"],["bye"],enriquez)
+
 	else:
 		if SaveManager.getItem("enriquez","offeredShoes"):
 			person.playAnim("lean")
