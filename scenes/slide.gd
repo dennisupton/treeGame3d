@@ -8,9 +8,12 @@ var clearY
 
 func _ready() -> void:
 	var box = $CSGCombiner3D/CSGBox3D2
+	var torus = $CSGCombiner3D/CSGTorus3D
 	startY = box.position.y
-	# lifting the cutting box its own height clears the torus entirely
-	clearY = startY + box.size.y
+	# the box only has to rise until its underside clears the top of the mesh it
+	# hides — travelling its own height overshoots and finishes the fill early
+	var top = torus.position.y + (torus.outer_radius - torus.inner_radius) / 2.0
+	clearY = top + box.size.y / 2.0
 	reveal()
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
