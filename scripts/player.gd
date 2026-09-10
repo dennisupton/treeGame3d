@@ -6,6 +6,8 @@ extends CharacterBody3D
 @export var speedMulti = 1.0
 @export var axeSpeed = 1.0
 @export var wheelbarrowTurnSpeed = 5.0  # how fast the wheelbarrow pivots toward a new direction
+@export var dragDistance = 1.6   # how far behind the player a dragged sheet sits
+@export var dragPull = 6.0       # how hard it is yanked back into place
 
 const JUMP_VELOCITY = 4.5
 var holding = false
@@ -14,6 +16,7 @@ var freeze = false
 var damage = 1.0
 var driving = false
 var controlling = self
+var dragging = null   # the sheet trailing behind, if any
 var defaultCamBasis  # follow-camera orientation, restored when leaving a fixed-cam area
 var legFlip = false
 var whistling = false
@@ -56,7 +59,7 @@ func hasBodyInGroup(bodies,group):
 func pickup(object):
 	object.freeze = true
 	object.set_collision_layer_value(1, false)
-	get_parent().remove_child(object)
+	object.get_parent().remove_child(object)
 	if object.is_in_group("tree"):
 		$player/hands.show()
 		$player/treeHold.add_child(object)
@@ -69,6 +72,27 @@ func pickup(object):
 		$player/hold.add_child(object)
 	object.position = Vector3.ZERO
 	object.rotation = Vector3.ZERO
+
+func carrierInReach():
+	for i in $player/Area3D.get_overlapping_bodies():
+		if i.is_in_group("carrier"):
+			return i
+	return null
+
+func letGo():
+	if dragging:
+		dragging.velocity = Vector3.ZERO
+		dragging.remove_collision_exception_with(self)
+		dragging = null
+		return
+	var barrow = controlling
+	controlling = self
+	driving = false
+	set_collision_layer_value(1, true)
+	# step out to the side, or we are left standing inside the barrow
+	global_position = barrow.global_position + barrow.global_basis.x * 1.2
+	velocity = Vector3.ZERO
+	barrow.velocity = Vector3.ZERO
 
 func getClosestTameable():
 	for i in $player/tameRange.get_overlapping_bodies():
@@ -96,6 +120,8 @@ func shopPerson():
 	return null
 
 func chopPrompt():
+	if controlling != self or dragging:
+		return "Let go"
 	if holding:
 		return "Drop"
 	for i in $player/Area3D.get_overlapping_bodies():
@@ -103,8 +129,8 @@ func chopPrompt():
 			return "Pick up" if i.chopped else "Chop"
 		elif i.is_in_group("acorn"):
 			return "Pick up"
-		elif i.name == "wheelbarrow" and controlling == self:
-			return "Drive"
+		elif i.is_in_group("carrier") and controlling == self:
+			return "Drag" if i.dragged else "Drive"
 	return ""
 
 func updateGlyphs():
@@ -119,6 +145,10 @@ func updateGlyphs():
 			prompts.append(["Plant", "plant"])
 		if holding and holding == "sketch" and len($player/sketchMesh/Area3D.get_overlapping_bodies()) == 0:
 			prompts.append(["Plant", "place"])
+		if not holding and controlling == self:
+			var barrow = carrierInReach()
+			if barrow and barrow.topLog():
+				prompts.append(["Plant", "take log"])
 		if not holding and not whistling and getClosestTameable():
 			prompts.append(["whistle", "whistle"])
 	$"..".shownGlyphs = prompts
@@ -165,7 +195,9 @@ func _physics_process(delta: float) -> void:
 		$AnimationPlayer.stop()
 		legFlip = not legFlip
 		
-	if Input.is_action_just_pressed("Chop") and not holding:
+	if Input.is_action_just_pressed("Chop") and not freeze and (controlling != self or dragging):
+		letGo()
+	elif Input.is_action_just_pressed("Chop") and not freeze and not holding:
 		var isItem = false
 		for i in $player/Area3D.get_overlapping_bodies():
 			if i.is_in_group("tree") and i.getForceSum()< 0.5:
@@ -184,10 +216,16 @@ func _physics_process(delta: float) -> void:
 				holding = "sketch"
 				i.held = true
 				break
-			elif i.name == "wheelbarrow":
-				driving = "wheelbarrow"
-				controlling = i
-				set_collision_layer_value(1, false)
+			elif i.is_in_group("carrier"):
+				if i.dragged:
+					dragging = i
+					# it trails right behind us; without this it keeps shunting into
+					# the player, and move_and_slide zeroes its velocity every time
+					i.add_collision_exception_with(self)
+				else:
+					driving = i.name
+					controlling = i
+					set_collision_layer_value(1, false)
 				break
 		if isItem and not holding and not $AnimationPlayer.current_animation:
 			$AnimationPlayer.stop()
@@ -195,7 +233,7 @@ func _physics_process(delta: float) -> void:
 			$AnimationPlayer.speed_scale = axeSpeed
 			$AnimationPlayer.play("chop")
 			$AnimationPlayer.speed_scale = 1
-	elif Input.is_action_just_pressed("Chop") and holding:
+	elif Input.is_action_just_pressed("Chop") and not freeze and holding:
 		var item
 		if holding == "tree":
 			item = $player/treeHold.get_child(0)
@@ -249,6 +287,11 @@ func _physics_process(delta: float) -> void:
 			var child = slide.instantiate()
 			$"..".add_child(child)
 			child.position = $player/sketchMesh.global_position
+		if not holding and controlling == self:
+			var barrow = carrierInReach()
+			if barrow and barrow.topLog():
+				pickup(barrow.topLog())
+				holding = "tree"
 			
 	if holding:
 		if holding == "sketch":
@@ -273,7 +316,7 @@ func _physics_process(delta: float) -> void:
 
 	updateGlyphs()
 
-	var moveSpeed = (SPEED/2 if holding else SPEED) * speedMulti
+	var moveSpeed = (SPEED/2 if (holding or dragging) else SPEED) * speedMulti
 	
 	if controlling == self:
 		if input_dir and not freeze:
@@ -302,6 +345,23 @@ func _physics_process(delta: float) -> void:
 	if not controlling == self:
 		position = controlling.get_node("player").global_position
 		$player.rotation = controlling.get_node("player").global_rotation
+
+	if dragging:
+		var back = Vector3(sin($player.rotation.y), 0, cos($player.rotation.y)) * dragDistance
+		var to = (global_position + back) - dragging.global_position
+		to.y = 0
+		dragging.velocity.x = to.x * dragPull
+		dragging.velocity.z = to.z * dragPull
+		if dragging.is_on_floor():
+			dragging.velocity.y = 0
+		else:
+			dragging.velocity.y += get_gravity().y * delta
+		dragging.move_and_slide()
+		# long axis lines up with the rope back to the player
+		var face = global_position - dragging.global_position
+		face.y = 0
+		if face.length() > 0.05:
+			dragging.rotation.y = lerp_angle(dragging.rotation.y, atan2(-face.x, -face.z), 8.0 * delta)
 
 	# CAMERA
 	var area = $"..".getArea()

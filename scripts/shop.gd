@@ -11,6 +11,7 @@ extends Control
 var person   # the npc being shopped from; owns the voice and the AudioStreamPlayer3D
 
 var sayId = 0   # bumped per line, so a superseded say() stops waiting
+var skipWanted = false   # a click waiting to be spent on the current line
 var fx
 
 @onready var label = $talking/MarginContainer/RichTextLabel
@@ -20,6 +21,16 @@ func _ready() -> void:
 	label.install_effect(fx)
 	label.text = ""
 	hide()
+
+func _input(event):
+	if visible and event.is_action_pressed("Chop"):
+		skipWanted = true
+
+func takeSkip() -> bool:
+	if not skipWanted:
+		return false
+	skipWanted = false
+	return true
 
 func start():
 	if person:
@@ -70,7 +81,7 @@ func mayor(dialouge = false):
 		if SaveManager.getItem("toby","met") and SaveManager.getItem("enriquez","met") and SaveManager.getItem("dylan","met") and SaveManager.getItem("kids","met"):
 			await say("good job! you met everyone")
 			await say("now for my end of the deal")
-			$"../../audio".overrideMusic(60)
+			$"../../audio".overrideMusic(90)
 			$"../../audio/music".get_stream_playback().switch_to_clip_by_name("mainTheme")
 			await say("you may be wondering why so many people would gather in the middle of nowhere and start a village")
 			await say("so allow me to let you in on a secret")
@@ -83,6 +94,13 @@ func mayor(dialouge = false):
 			await say("anyway")
 			await say("go try it out!")
 			await wait(1)
+			await say("hold on")
+			await say("before you go")
+			await say("colin and may left something for you")
+			var child = load("res://scenes/sketch.tscn").instantiate()
+			$"../..".add_child(child)
+			child.position = $"../../townhall/itemSpawn".global_position
+			await say("some kind of drawing?")
 			stop()
 		else:
 			await say("hey")
@@ -219,21 +237,44 @@ func toby(dialouge = false):
 	if dialouge:
 		pass
 	else:
-		person.playAnim("lean")
-		if tobyIntroTimes == 0:
-			await say("...")
-			await say("sorry but were closed")
-			SaveManager.saveItem("toby","met",true)
-			#await say("this town already has enough [color=#3D94C0][wave]weird folk[/wave][/color]")
-		elif tobyIntroTimes == 1:
-			await say("...")
-			await say("please leave")
-		elif tobyIntroTimes == 2:
-			await say("leave...")
-		elif tobyIntroTimes >= 3:
-			await say("leave.")
-		tobyIntroTimes += 1
-		stop()
+		if SaveManager.getItem("kids","seenSlide"):
+			await say("thank you")
+			await say("i heard you made my kids that slide")
+			await say("i dont think you will ever understand the importance of your action")
+			await say("its not just about the kindness")
+			await say("its just ...")
+			await say("ever since my wife holly got ill")
+			await say("and you")
+			await say("are the lighthouse")
+			await say("showing me that these still land")
+			#await say("holly used to say 'a flower to a fox is a peculiar sight but a flower for a bee is food for its whole family'")
+			await say("sorry to get all fancy with my words")
+			await say("i tend to get like this in situations like these")
+			await say("i would like to appologize for before")
+			await say("i wasnt having the best time")
+			await say("but thats no excuse to be rude to a customer")
+			await say("how about i replace that that axe of yours")
+			await say("i dont think ive ever seen an axe only made of wood before")
+			await say("how does that even function?")
+			await say("anyway ive left an axe on the rack over there for you")
+			await say("i know i said it before but...")
+			await say("thank you")
+		else:
+			person.playAnim("lean")
+			if tobyIntroTimes == 0:
+				await say("...")
+				await say("sorry but were closed")
+				SaveManager.saveItem("toby","met",true)
+				#await say("this town already has enough [color=#3D94C0][wave]weird folk[/wave][/color]")
+			elif tobyIntroTimes == 1:
+				await say("...")
+				await say("please leave")
+			elif tobyIntroTimes == 2:
+				await say("leave...")
+			elif tobyIntroTimes >= 3:
+				await say("leave.")
+			tobyIntroTimes += 1
+			stop()
 
 func dylan(dialouge = false):
 	if dialouge:
@@ -284,12 +325,46 @@ func dylan(dialouge = false):
 				await say("its okay if you dont")
 				await say("i mean you just got here")
 				makeButtons(["not really"],["bye"],dylan)
-
+			"carryingSlow":
+				await say("i have just the thing for you!")
+				await say("a true marvel of engineering")
+				await say("it is called ...")
+				await say("a sheet")
+				await say("hehe im just kidding")
+				await say("but its actually quite useful")
+				await say("basically you can use it to carry two logs along at once")
+				await say("genius right?")
+				await say("anywho its gonna set you back [color=green][wave]60[/wave][/color]")
+				SaveManager.saveItem("dylan","offeredSheet",true)
+				makeButtons(["sounds good!","im good"],["buySheet","bye"],dylan)
+			"buySheet":
+				if $"../..".money > 60:
+					$"../..".money -= 60
+					await say("okie doke thank you very much")
+					await say("ive left it outside for you!")
+					var child = load("res://scenes/sheet.tscn").instantiate()
+					$"../..".add_child(child)
+					child.position = $"../../dylansHouse2/itemSpawn".global_position
+					await say("hope it helps")
+					await say("and remember")
+					await say("if you run into any more problems")
+					await say("im your guy!")
+					stop()
+				else:
+					await say("sorry i dont think thats enough")
+					await say("dont worry though")
+					await say("i know youl get there eventually!")
+					stop()
 	else:
-		if SaveManager.getItem("dylan","met"):
+		if SaveManager.getItem("dylan","offeredSheet"):
+			await say("you ready to buy that sheet?")
+			makeButtons(["yes! (30$)","im good"],["buySheet","bye"],dylan)
+		elif SaveManager.getItem("dylan","met"):
 			await say("welcome back!") 
 			await say("so is there anything i can help you with?")
 			makeButtons(["not yet"],["bye"],dylan)
+			if SaveManager.getItem("Trainers","has") and SaveManager.getItem("slide","done"):
+				makeButtons(["carrying logs is so slow"],["carryingSlow"],dylan)
 
 		else:
 			await say("[shake rate=20.0 level=5]hello![/shake]")
@@ -324,6 +399,7 @@ func wait(seconds: float) -> void:
 
 func say(text: String) -> void:
 	fx.reset()
+	skipWanted = false
 	sayId += 1
 	var id = sayId
 
@@ -338,6 +414,9 @@ func say(text: String) -> void:
 	var soundTimer = 0.0
 	while revealed < totalVisible and sayId == id:
 		await get_tree().process_frame
+		# first click fills the line in, but it still gets its full read beat
+		if takeSkip():
+			break
 		var delta = get_process_delta_time()
 		soundTimer += delta * 1000.0
 		if soundTimer > soundSpeed:
@@ -354,6 +433,9 @@ func say(text: String) -> void:
 	var readTimer = minf(readBase + text.length() * readPerLetter, readPauseMax)
 	while readTimer > 0.0 and sayId == id:
 		await get_tree().process_frame
+		# a second click cuts the beat short and moves on
+		if takeSkip():
+			return
 		readTimer -= get_process_delta_time()
 
 func playBlip() -> void:

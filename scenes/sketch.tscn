@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://dvh6tbihpil6k"]
+
+[ext_resource type="Script" uid="uid://etsa6coq3ah8" path="res://scenes/sketch.gd" id="1_ysbar"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ro3en"]
+size = Vector3(1, 0.001953125, 0.8671875)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ba0ro"]
+size = Vector3(0.9885254, 0.06808472, 0.7611084)
+
+[node name="sketch" type="RigidBody3D" unique_id=775577464 groups=["sketch"]]
+script = ExtResource("1_ysbar")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=835017271]
+mesh = SubResource("BoxMesh_ro3en")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=578300811]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005126953, -0.026382446, -0.011047363)
+shape = SubResource("BoxShape3D_ba0ro")

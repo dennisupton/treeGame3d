@@ -60,7 +60,6 @@
 [ext_resource type="Script" uid="uid://cf3lkrp3cim34" path="res://scripts/curtain.gd" id="49_bu4jf"]
 [ext_resource type="Texture2D" uid="uid://dnna1tkuhftyf" path="res://images/stone test.png" id="50_j2jfr"]
 [ext_resource type="PackedScene" uid="uid://db0e6en2ubc3w" path="res://scenes/wheelbarrow.tscn" id="50_od4ux"]
-[ext_resource type="PackedScene" uid="uid://bq4sheetdrg7n" path="res://scenes/sheet.tscn" id="51_sheet"]
 [ext_resource type="Texture2D" uid="uid://tdycfnt23la8" path="res://images/moneyParticle.png" id="53_dnhof"]
 [ext_resource type="Shader" uid="uid://bpkieats7at7m" path="res://shaders/moneyFlow.gdshader" id="60_mflow"]
 [ext_resource type="Script" uid="uid://baxg6ns6b4625" path="res://scripts/moneyFlow.gd" id="62_mfscr"]
@@ -2458,9 +2457,6 @@ transform = Transform3D(-4.2221956e-08, 0.5144196, 0.85753864, -1.1313343e-08, 0
 size = Vector3(5.6960187, 0.38760376, 4.7741165)
 material = SubResource("StandardMaterial3D_muem4")
 
-[node name="itemSpawn" type="Marker3D" parent="dylansHouse2" unique_id=1546436631]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.961611, 0.2730559, 0)
-
 [node name="fashionHouse2" type="CSGCombiner3D" parent="." unique_id=1730086147 groups=["nav"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.733932, 0, -14.611072)
 use_collision = true
@@ -3627,9 +3623,6 @@ wait_time = 60.0
 
 [node name="wheelbarrow" parent="." unique_id=72515036 instance=ExtResource("50_od4ux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.183249, 0.17557113, 16.019838)
-
-[node name="sheet" parent="." unique_id=1110533590 instance=ExtResource("51_sheet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6, 0.2, 16)
 
 [node name="townhall" parent="." unique_id=1745547440 instance=ExtResource("28_2f3dj")]
 transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, -0.54919434, -0.10858631, -14.956333)

@@ -7,6 +7,8 @@ var tree
 var treePositions = []
 var seperation = 3**2
 
+
+
 @onready var theme = preload("res://theme.tres")
 @onready var glyph = preload("res://scenes/glyph.tscn")
 

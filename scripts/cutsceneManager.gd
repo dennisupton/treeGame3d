@@ -20,12 +20,16 @@ func _ready() -> void:
 	await get_tree().process_frame
 	if not SaveManager.getItem("mayor","introPlayed"):
 		play("introduction")
+	
 	if SaveManager.getItem("kids","met"):
-		play("kidsPlayTag")
+		if not SaveManager.getItem("kids","seenSlide") and SaveManager.getItem("slide","done"):
+			play("kidsThanksForSlide")
+		else:
+			play("kidsPlayTag")
 	else:
 		play("kidsArgue")
 		play("kidsIntro")
-
+		play("kidsThanksForSlide")
 func _process(_delta: float) -> void:
 	for s in scenes:
 		s.tick()
@@ -96,7 +100,6 @@ func introduction(s) -> void:
 
 func kidsIntro(s):
 	await waitUntil(func(): return playerNear(colin))
-	SaveManager.saveItem("kids","met",true)
 	await s.take([colin, may])
 	await s.wait(1.5)   
 	s.gate = colin
@@ -227,3 +230,25 @@ func kidsPlayTag(s):
 	may.startsIt = true
 	colin.setActivity("tag")
 	may.setActivity("tag")
+
+func kidsThanksForSlide(s):
+	await waitUntil(func(): return SaveManager.getItem("slide","done"))
+	SaveManager.saveItem("kids","met",true)
+	await s.take([colin, may])
+	stopFacing(colin, may)
+	s.gate = colin
+	await colin.goto("player")
+	await may.goto("player")
+	await s.wait(1.5)
+	may.say("THANK YOU")
+	await colin.say("THANK YOU")
+	await may.say("you're the best tree guy!")
+	await colin.say("look how tall it is may!")
+	await may.say("i know right!")
+	await colin.say("oh by the way")
+	await colin.say("you should go see our dad")
+	await colin.say("he probably got over whatever he didnt like you for")
+	await colin.say("hes just like that sometimes")
+	await may.say("colin get on the slide with meeeeeee")
+	SaveManager.saveItem("kids","seenSlide",true)
+	# start slide play here

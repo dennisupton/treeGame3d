@@ -9,7 +9,7 @@ size = Vector3(1, 1.1816406, 0.9428711)
 [sub_resource type="BoxShape3D" id="BoxShape3D_jkv2x"]
 size = Vector3(0.8494873, 1, 1.1176758)
 
-[node name="wheelbarrow" type="CharacterBody3D" unique_id=72515036]
+[node name="wheelbarrow" type="CharacterBody3D" unique_id=72515036 groups=["carrier"]]
 script = ExtResource("1_kr6em")
 
 [node name="player" type="Marker3D" parent="." unique_id=161171308]

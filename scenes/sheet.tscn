@@ -1,0 +1,41 @@
+[gd_scene format=4 uid="uid://bq4sheetdrg7n"]
+
+[ext_resource type="Script" uid="uid://btixab8ew2p70" path="res://scripts/wheelbarrow.gd" id="1_sheet"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sheet"]
+albedo_color = Color(0.7137255, 0.6431373, 0.5058824, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_sheet"]
+material = SubResource("StandardMaterial3D_sheet")
+size = Vector3(1.35, 0.07, 1.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sheetBody"]
+size = Vector3(1.35, 0.14, 1.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sheetLoad"]
+size = Vector3(1.25, 0.9, 1.7)
+
+[node name="sheet" type="CharacterBody3D" groups=["carrier"]]
+script = ExtResource("1_sheet")
+dragged = true
+
+[node name="mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
+mesh = SubResource("BoxMesh_sheet")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, 0)
+shape = SubResource("BoxShape3D_sheetBody")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_sheetLoad")
+
+[node name="log1" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.18, 0)
+
+[node name="log2" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.18, 0)

@@ -5,3 +5,7 @@
 # Exported game builds (kept locally, not tracked)
 /builds/
 treegame.exe
+
+# Personal notes, kept locally
+fix.txt
+plan.txt

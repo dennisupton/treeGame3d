@@ -9,6 +9,9 @@ extends CharacterBody3D
 @export var lookRange = 6.0
 @export var bodyTurnAngle = 60.0   # degrees off-forward before the body turns to help the head
 @export var animBlendTime = 0.3
+@export var fallLimit = -5.0   # below this they have fallen out of the world
+
+var homePos = Vector3.ZERO
 
 @export_category("Idle")
 @export_enum("none", "townHall", "blacksmithHouse", "dylansHouse", "fashionHouse") var shop: String = "none"
@@ -87,6 +90,7 @@ var idlePlaying = ""   # the idle currently handed to the animation player, or "
 @onready var lookAt = get_node_or_null("Armature/Skeleton3D/LookAtModifier3D")
 
 func _ready() -> void:
+	homePos = global_position
 	applyActivity()
 	if lookAtPlayer and lookAt:
 		lookAway()
@@ -103,6 +107,9 @@ func stopPose() -> void:
 	idlePlaying = ""
 
 func _physics_process(delta: float) -> void:
+	if global_position.y < fallLimit:
+		global_position = homePos
+		velocity = Vector3.ZERO
 	handleTalking(delta)
 	updateBubble()
 
@@ -354,6 +361,14 @@ func navMove() -> bool:
 
 # ---------- helpers ----------
 
+# is there floor a step ahead, or are we about to run into a hole
+func groundAhead(dist):
+	var ahead = Vector3(-sin(rotation.y), 0, -cos(rotation.y)) * dist
+	var from = global_position + ahead + Vector3(0, 0.6, 0)
+	var q = PhysicsRayQueryParameters3D.create(from, from + Vector3(0, -2.0, 0))
+	q.exclude = [get_rid()]
+	return not get_world_3d().direct_space_state.intersect_ray(q).is_empty()
+
 func changeDir():
 	aimDir = randf_range(-PI, PI)
 
@@ -464,6 +479,12 @@ func tagStep():
 		playMove()
 		velocity.x = -sin(rotation.y) * speed
 		velocity.z = -cos(rotation.y) * speed
+		# tag steers by raw velocity, not the navmesh, so the well mouth is just
+		# open ground as far as it is concerned
+		if not groundAhead(1.2):
+			velocity.x = 0
+			velocity.z = 0
+			changeDir()
 	else:
 		stopMove(speed)
 	move_and_slide()
