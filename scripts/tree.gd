@@ -85,6 +85,22 @@ func _on_body_entered(body):
 	$fall.volume_db = lerp(-20.0, 0.0, clamp(impact / 10.0, 0.0, 1.0))
 	$fall.pitch_scale = randf_range(0.9, 1.1) 
 	$fall.play()
+# put a loaded tree straight into its saved state. deliberately does NOT run the
+# things that happen when one is actually felled: no acorns, no particles, no
+# first-chop flag, since none of that is happening again on a reload.
+func restore(savedAge, savedHealth, wasChopped):
+	chopped = false
+	setAge(int(savedAge))
+	health = savedHealth
+	if wasChopped:
+		chopped = true
+		freeze = false
+		$growthTimer.stop()
+		# stays in the "tree" group: that is what makes a felled log pickup-able
+		for child in get_children():
+			if child.is_in_group("leave"):
+				child.hide()
+
 func getForceSum():
 	return linear_velocity.length_squared() + angular_velocity.length_squared()
 

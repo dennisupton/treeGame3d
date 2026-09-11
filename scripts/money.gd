@@ -3,6 +3,11 @@ extends Label
 var dispAmount = 0
 var speed = 0.0
 
+# the counter ticks up 0.1 a frame, which is the point when you earn money and
+# very much not the point when a save is loaded. this jumps it to the total.
+func snap():
+	dispAmount = float($"../../..".money)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.

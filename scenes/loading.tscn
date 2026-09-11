@@ -1,0 +1,49 @@
+[gd_scene format=4 uid="uid://clealoadscrn2"]
+
+[ext_resource type="Script" path="res://scripts/loading.gd" id="1_load"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_status"]
+font_size = 28
+
+[node name="loading" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_load")
+
+[node name="bg" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.10196079, 0.13333334, 0.11764706, 1)
+
+[node name="center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="box" type="VBoxContainer" parent="center"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="title" type="Label" parent="center/box"]
+layout_mode = 2
+text = "loading"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="status" type="Label" parent="center/box"]
+layout_mode = 2
+text = "waking the forest"
+label_settings = SubResource("LabelSettings_status")
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="center/box"]
+custom_minimum_size = Vector2(520, 28)
+layout_mode = 2
+show_percentage = false

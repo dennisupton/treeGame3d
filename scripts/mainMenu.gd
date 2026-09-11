@@ -26,10 +26,21 @@ func _ready() -> void:
 		add_child(child)
 		child.setAge(4)
 		child.still = true
-	$VBoxContainer/CenterContainer/VBoxContainer/newGame.grab_focus(true)
+	# "continue" is a GDScript keyword, so this one has to be fetched by string
+	var cont = get_node("VBoxContainer/CenterContainer/VBoxContainer/continue")
+	var canContinue = SaveManager.hasWorld()
+	cont.disabled = not canContinue
+	if canContinue:
+		cont.grab_focus(true)
+	else:
+		$VBoxContainer/CenterContainer/VBoxContainer/newGame.grab_focus(true)
 func _process(delta: float) -> void:
 	$Node3D/Path3D/PathFollow3D.progress += 0.005
 
+
+func _on_continue_pressed() -> void:
+	# main.tscn rebuilds the saved world itself on _ready
+	get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _on_new_game_pressed() -> void:
 	SaveManager.makeSave()
