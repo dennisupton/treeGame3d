@@ -1,17 +1,27 @@
 extends RigidBody3D
 
 var held = false
+@export var type = "basic"
 
 func _ready() -> void:
-	pass # Replace with function body.
+	applyType()
 
+func applyType():
+	# the override material is shared by every acorn in the scene, so tint a copy
+	var mat = $Icosphere.get_surface_override_material(0)
+	if mat and type == "oak":
+		mat = mat.duplicate()
+		mat.albedo_color = Color("925a3e")
+		$Icosphere.set_surface_override_material(0, mat)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func save():
+	return {"type": type}
 
+func restore(d):
+	type = str(d.get("type", "basic"))
+	applyType()
 
 func _on_timer_timeout() -> void:
-	if not held and get_parent().trySpawnTree(position):
+	if not held and get_parent().trySpawnTree(position, type):
 		queue_free()
 	$Timer.start()

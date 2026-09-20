@@ -20,6 +20,13 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 		trees += 1
 		reveal()
 
+func save():
+	return {"trees": trees}
+
+func restore(d):
+	trees = int(d.get("trees", 0))
+	reveal()
+
 func reveal():
 	var t = float(trees) / max(treesNeeded,1)
 	$CSGCombiner3D/CSGBox3D2.position.y = lerp(startY, clearY, clampf(t, 0.0, 1.0))

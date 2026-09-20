@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://bkrypvg60ytf2"]
+
+[ext_resource type="Script" uid="uid://kdlfpheao3m1" path="res://scripts/npc.gd" id="1_15reh"]
+[ext_resource type="AudioStream" uid="uid://dk48m5scyvsm4" path="res://sfx/mayor/talk.mp3" id="2_c64co"]
+[ext_resource type="AudioStream" uid="uid://d2xiu8lkdvbxf" path="res://sfx/mayor/talk2.mp3" id="3_1prb0"]
+[ext_resource type="AudioStream" uid="uid://cc0gxb0qxprea" path="res://sfx/mayor/talk3.mp3" id="4_i7kt5"]
+[ext_resource type="AudioStream" uid="uid://cye6hiu4yx5k7" path="res://sfx/mayor/talk4.mp3" id="5_ssgbt"]
+[ext_resource type="AudioStream" uid="uid://cbfld16x7jn13" path="res://sfx/mayor/talk5.mp3" id="6_icrob"]
+[ext_resource type="AudioStream" uid="uid://cpor6svyl4k7g" path="res://sfx/mayor/talk6.mp3" id="7_k6w0r"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ffcr4"]
+albedo_color = Color(0.36862746, 0.29411766, 0.30980393, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_7xd8p"]
+material = SubResource("StandardMaterial3D_ffcr4")
+radius = 1.0
+height = 2.0
+radial_segments = 10
+rings = 10
+
+[sub_resource type="Animation" id="Animation_kjtvk"]
+resource_name = "idle"
+
+[sub_resource type="Animation" id="Animation_xaipn"]
+resource_name = "walk"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("mayor/MeshInstance3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.02327386, -3.1415925, -3.1415927)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ndrjj"]
+_data = {
+&"idle": SubResource("Animation_kjtvk"),
+&"walk": SubResource("Animation_xaipn")
+}
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0ld40"]
+radius = 0.44189453
+height = 3.3426514
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_epphy"]
+radius = 9.21781
+
+[node name="mrgray" type="CharacterBody3D" unique_id=402577276]
+transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 0, 0, 0)
+script = ExtResource("1_15reh")
+moveSpeed = 3.0
+shop = "townHall"
+shopIdle = ""
+target = NodePath("../colin")
+startsIt = true
+syllables = Array[AudioStream]([ExtResource("2_c64co"), ExtResource("3_1prb0"), ExtResource("4_i7kt5"), ExtResource("5_ssgbt"), ExtResource("6_icrob"), ExtResource("7_k6w0r")])
+pitchRange = Vector2(0.6, 0.65)
+
+[node name="mayor" type="Node3D" parent="." unique_id=1640354208]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mayor" unique_id=520908748]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 1.566606, 0)
+mesh = SubResource("SphereMesh_7xd8p")
+
+[node name="charAnim" type="AnimationPlayer" parent="mayor" unique_id=1383795161]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_ndrjj")
+autoplay = &"idle"
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1436519674]
+target_desired_distance = 2.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=438597933]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1937208, 0)
+shape = SubResource("CapsuleShape3D_0ld40")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1418501319]
+unit_size = 5.0
+max_distance = 20.0
+max_polyphony = 5
+bus = &"SFX"
+attenuation_filter_db = -14.0
+
+[node name="Area3D" type="Area3D" parent="." unique_id=21265392]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1401729834]
+shape = SubResource("SphereShape3D_epphy")
+
+[node name="textBoxPos" type="Marker3D" parent="." unique_id=1069637559]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.3472192, 0)

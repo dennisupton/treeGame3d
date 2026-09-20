@@ -32,3 +32,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26641464, 0.9169543, -1.374
 
 [node name="log2" type="Marker3D" parent="." unique_id=2097023166]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17275038, 0.94428146, -1.4439595)
+
+[node name="log3" type="Marker3D" parent="." unique_id=1520398471]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24118176, 0.9169543, -0.9246262)
+
+[node name="log4" type="Marker3D" parent="." unique_id=1783026594]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19751540, 0.94428146, -0.9939595)

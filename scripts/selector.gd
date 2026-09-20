@@ -12,6 +12,9 @@ func _ready() -> void:
 			"Trainers":{
 				"image": preload("res://images/shoes.png"),
 				},
+			"Gloves":{
+				"image": preload("res://images/shoes.png"),
+				},
 			},
 		},
 	"axe":{
@@ -20,7 +23,7 @@ func _ready() -> void:
 			"Wooden Axe":{
 				"image": preload("res://images/shoes.png"),
 				},
-			"Iron Axe":{
+			"Bronze Axe":{
 				"image": preload("res://images/shoes.png"),
 				},
 			},

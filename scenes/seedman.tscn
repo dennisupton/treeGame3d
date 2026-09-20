@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://w3gehfbam03y"]
+
+[ext_resource type="Script" uid="uid://kdlfpheao3m1" path="res://scripts/npc.gd" id="1_10xq4"]
+[ext_resource type="AudioStream" uid="uid://bdkdradhgrirl" path="res://sfx/seedman/talk.mp3" id="2_0t3pp"]
+[ext_resource type="AudioStream" uid="uid://be8u0qb4akya6" path="res://sfx/seedman/talk2.mp3" id="3_es3ta"]
+[ext_resource type="AudioStream" uid="uid://dcihjf23e8evn" path="res://sfx/seedman/talk3.mp3" id="4_1fcyj"]
+[ext_resource type="AudioStream" uid="uid://cj8cgq17hbudd" path="res://sfx/seedman/talk4.mp3" id="5_puus3"]
+[ext_resource type="AudioStream" uid="uid://14x7ilectmpg" path="res://sfx/seedman/talk5.mp3" id="6_4120a"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ffcr4"]
+height = 2.9226074
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ba0ro"]
+albedo_color = Color(0.36388668, 0.18860152, 0.07518149, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0m5d2"]
+radius = 0.49169922
+height = 3.269043
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_diay4"]
+radius = 9.21781
+
+[sub_resource type="Animation" id="Animation_10xq4"]
+resource_name = "idle"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mglhl"]
+_data = {
+&"idle": SubResource("Animation_10xq4")
+}
+
+[node name="seedman" type="CharacterBody3D" unique_id=782865430]
+transform = Transform3D(-0.93597466, 0, -0.35206735, 0, 1, 0, 0.35206735, 0, -0.93597466, 0, 0, 0)
+script = ExtResource("1_10xq4")
+lookAtPlayer = true
+syllables = Array[AudioStream]([ExtResource("2_0t3pp"), ExtResource("3_es3ta"), ExtResource("4_1fcyj"), ExtResource("5_puus3"), ExtResource("6_4120a")])
+pitchRange = Vector2(1, 2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1899640926]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5802016, 0)
+mesh = SubResource("CylinderMesh_ffcr4")
+surface_material_override/0 = SubResource("StandardMaterial3D_ba0ro")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1657575988]
+target_desired_distance = 2.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1153046285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0048151016, 1.7332551, 0.0018119812)
+shape = SubResource("CapsuleShape3D_0m5d2")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1825157471]
+unit_size = 5.0
+max_distance = 20.0
+max_polyphony = 26
+bus = &"SFX"
+attenuation_filter_db = -14.0
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1048942031]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1542564071]
+shape = SubResource("SphereShape3D_diay4")
+
+[node name="textBoxPos" type="Marker3D" parent="." unique_id=518162004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1468465, -0.9157693)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=220100378]
+libraries/ = SubResource("AnimationLibrary_mglhl")

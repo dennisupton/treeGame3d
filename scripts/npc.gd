@@ -40,6 +40,8 @@ var homePos = Vector3.ZERO
 
 
 const BubbleScene = preload("res://scenes/bubble.tscn")
+const NPC_LAYER = 2     # layer 2, so anything that wants npcs has to ask for them
+const WORLD_LAYER = 4   # layer 3, the ground and the buildings
 const HOUSES = ["townHall", "blacksmithHouse", "dylansHouse", "fashionHouse"]
 const NAV_TARGETS = {
 	"player": "player",
@@ -49,6 +51,8 @@ const NAV_TARGETS = {
 	"fashionHouse": "fashionHouse/Marker3D",
 	"may": "NPCs/may",
 	"colin": "NPCs/colin",
+	"mrgray": "NPCs/mrgray",
+	"npcExit": "NPCs/npcExit",
 }
 
 # ---- tag state ----
@@ -75,6 +79,9 @@ var remainingText = ""
 var typed = ""
 var tone = 0
 var moveAnim = "walk"
+var stuckFor = 0.0      # seconds spent pushing at something the path ran straight through
+var sideFor = 0.0       # seconds left of walking round it
+var sideWay = 1.0       # which way round they are trying
 var bubble
 
 # ---- idle state ----
@@ -85,11 +92,30 @@ var idlePlaying = ""   # the idle currently handed to the animation player, or "
 @onready var main = get_tree().current_scene
 @onready var player = main.get_node("player")
 @onready var audioPlayer = get_node_or_null("AudioStreamPlayer3D")
-# node names differ per character, so pick them once based on who this is
-@onready var animPlayer = ($mayor/charAnim if name == "mayor" else $AnimationPlayer)
+# rigs differ per character: most keep the AnimationPlayer as a direct child, the
+# mayor rig has it one level down as mayor/charAnim. found by shape rather than
+# by node name, or any npc copied from that rig comes up null.
+@onready var animPlayer = findAnimPlayer()
 @onready var lookAt = get_node_or_null("Armature/Skeleton3D/LookAtModifier3D")
 
+func findAnimPlayer():
+	for c in get_children():
+		if c is AnimationPlayer:
+			return c
+	for c in get_children():
+		for g in c.get_children():
+			if g is AnimationPlayer:
+				return g
+	push_warning("no AnimationPlayer found on npc " + str(name))
+	return null
+
 func _ready() -> void:
+	# npcs sit on their own layer and collide with nothing but the world, so they walk
+	# through each other, the trees, dropped logs and the player rather than wedging on
+	# them. gravity and floors are unaffected: the ground and the buildings carry the
+	# world layer as well as layer 1, so nothing else notices the split.
+	collision_layer = NPC_LAYER
+	collision_mask = WORLD_LAYER
 	homePos = global_position
 	applyActivity()
 	if lookAtPlayer and lookAt:
@@ -128,6 +154,13 @@ func _physics_process(delta: float) -> void:
 #activity
 
 # change what this npc is doing; safe to call any time during the game
+func save():
+	return {"activity": activity, "isIt": isIt}
+
+func restore(d):
+	isIt = bool(d.get("isIt", false))
+	setActivity(str(d.get("activity", "idle")))
+
 func setActivity(next: String):
 	activity = next
 	applyActivity()
@@ -275,9 +308,7 @@ func navPoint(where) -> Vector3:
 		return global_position
 	return node.global_position
 
-# ---------- shared movement ----------
 
-# flat (height-ignoring) offset from here to a world point
 func flatTo(pos: Vector3) -> Vector3:
 	var dir = pos - global_position
 	dir.y = 0
@@ -321,6 +352,8 @@ func stopMove(decel):
 # they'd read as open for business while crossing the last few metres, or while a path
 # to somewhere else happened to take them past their own door.
 func atShop() -> bool:
+	if shop == "none":
+		return true
 	if not shop in HOUSES or not nav.is_navigation_finished():
 		return false
 	# flat, because the shop markers sit well above the floor by varying amounts
@@ -351,12 +384,34 @@ func playIdle() -> bool:
 # walk along the current nav path; returns true while still travelling
 func navMove() -> bool:
 	if nav.is_navigation_finished():
+		stuckFor = 0.0
+		sideFor = 0.0
 		return false
+
+	var delta = get_physics_process_delta_time()
 	var dir = steer(rotationSpeed)
+	# the navmesh is baked once, so it knows nothing about dropped logs and goes stale
+	# whenever a building moves. a path can therefore run straight into something solid,
+	# and walking into it dead on leaves no edge to slide along, so they push at it
+	# forever. after half a second of getting nowhere they walk sideways instead until
+	# the way round opens up, and swap sides if that one is no better either.
+	if sideFor > 0.0:
+		sideFor -= delta
+		dir = Vector3(-dir.z, 0, dir.x) * sideWay
 	playMove()
 	velocity.x = dir.x * moveSpeed
 	velocity.z = dir.z * moveSpeed
+	var was = global_position
 	move_and_slide()
+	if flatTo(was).length() < moveSpeed * delta * 0.3:
+		stuckFor += delta
+		if stuckFor > 0.5:
+			stuckFor = 0.0
+			if sideFor > 0.0:
+				sideWay = -sideWay
+			sideFor = 1.0
+	else:
+		stuckFor = 0.0
 	return true
 
 # ---------- helpers ----------
@@ -367,6 +422,7 @@ func groundAhead(dist):
 	var from = global_position + ahead + Vector3(0, 0.6, 0)
 	var q = PhysicsRayQueryParameters3D.create(from, from + Vector3(0, -2.0, 0))
 	q.exclude = [get_rid()]
+	q.collision_mask = WORLD_LAYER
 	return not get_world_3d().direct_space_state.intersect_ray(q).is_empty()
 
 func changeDir():

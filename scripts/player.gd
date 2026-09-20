@@ -23,6 +23,8 @@ var whistling = false
 @onready var camPos = false
 var shop = false
 
+
+
 @onready var footstep = preload("res://scenes/footstep.tscn")
 @onready var slide = preload("res://scenes/slide.tscn")
 
@@ -30,6 +32,8 @@ func _ready() -> void:
 	defaultCamBasis = $camPivot/Camera3D.transform.basis
 	reloadEquipped()
 	$player/sketchMesh.hide()
+
+
 func reloadEquipped():
 	if SaveManager.getItem("Trainers","selected"):
 		SPEED = 7
@@ -73,6 +77,19 @@ func pickup(object):
 	object.position = Vector3.ZERO
 	object.rotation = Vector3.ZERO
 
+# whichever carrier is in hand right now, dragged or driven
+func activeCarrier():
+	if dragging:
+		return dragging
+	if controlling != self:
+		return controlling
+	return null
+
+# an empty barrow or sheet rolls along freely; only a load in it slows you down
+func carrierLoaded():
+	var car = activeCarrier()
+	return car != null and car.topLog() != null
+
 func carrierInReach():
 	for i in $player/Area3D.get_overlapping_bodies():
 		if i.is_in_group("carrier"):
@@ -105,6 +122,7 @@ var shopPeople = {
 	"blacksmithHouse": "toby",
 	"dylansHouse": "dylan",
 	"townhall": "mayor",
+	"seedmanAlley": "seedman",
 }
 
 func shopPerson():
@@ -112,7 +130,7 @@ func shopPerson():
 	if not place:
 		return null
 	var house = place.get_parent().name
-	if not house in shopPeople:
+	if not house in shopPeople or (house == "seedmanAlley" and not SaveManager.getItem("seedman","offeredOakSeed")):
 		return null
 	var person = $"../NPCs".get_node_or_null(shopPeople[house])
 	if person and person.atShop():
@@ -121,16 +139,16 @@ func shopPerson():
 
 func chopPrompt():
 	if controlling != self or dragging:
-		return "Let go"
+		return "let go"
 	if holding:
-		return "Drop"
+		return "drop"
 	for i in $player/Area3D.get_overlapping_bodies():
 		if i.is_in_group("tree") and i.getForceSum() < 0.5:
-			return "Pick up" if i.chopped else "Chop"
+			return "pick up" if i.chopped else "chop"
 		elif i.is_in_group("acorn"):
-			return "Pick up"
+			return "pick up"
 		elif i.is_in_group("carrier") and controlling == self:
-			return "Drag" if i.dragged else "Drive"
+			return "drag" if i.dragged else "drive"
 	return ""
 
 func updateGlyphs():
@@ -151,7 +169,10 @@ func updateGlyphs():
 				prompts.append(["Plant", "take log"])
 		if not holding and not whistling and getClosestTameable():
 			prompts.append(["whistle", "whistle"])
+		if not holding and $"../scaryHouse" in $player/Area3D.get_overlapping_bodies():
+			prompts.append(["Plant", "knock"])
 	$"..".shownGlyphs = prompts
+
 
 func spawnFootstep(side):
 	var child = footstep.instantiate()
@@ -219,13 +240,16 @@ func _physics_process(delta: float) -> void:
 			elif i.is_in_group("carrier"):
 				if i.dragged:
 					dragging = i
-					# it trails right behind us; without this it keeps shunting into
-					# the player, and move_and_slide zeroes its velocity every time
 					i.add_collision_exception_with(self)
 				else:
 					driving = i.name
 					controlling = i
 					set_collision_layer_value(1, false)
+				break
+			elif i.is_in_group("thing"):
+				pickup(i)
+				holding = "thing"
+				i.held = true
 				break
 		if isItem and not holding and not $AnimationPlayer.current_animation:
 			$AnimationPlayer.stop()
@@ -277,7 +301,7 @@ func _physics_process(delta: float) -> void:
 			item.queue_free()
 			holding = false
 			$player/hands.hide()
-			$"..".spawnTree(position)
+			$"..".spawnTree(position, item.type)
 		if holding and holding == "sketch":
 			var item = $player/sketchHold.get_child(0)
 			item.queue_free()
@@ -316,7 +340,7 @@ func _physics_process(delta: float) -> void:
 
 	updateGlyphs()
 
-	var moveSpeed = (SPEED/2 if (holding or dragging) else SPEED) * speedMulti
+	var moveSpeed = (SPEED/2 if (holding or carrierLoaded()) else SPEED) * speedMulti
 	
 	if controlling == self:
 		if input_dir and not freeze:
@@ -379,6 +403,8 @@ func _physics_process(delta: float) -> void:
 			desPos = $"../dylansHouse/Area3D/cam".global_position
 		elif area == "fashionHouse":
 			desPos = $"../fashionHouse/Area3D/cam".global_position
+		elif area == "seedmanAlley":
+			desPos = $"../seedmanAlley/Area3D/cam".global_position
 		desPos.x = global_position.x
 		if cam.global_position.distance_to(desPos) < 1:
 			cam.global_position = desPos
@@ -392,6 +418,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		cam.position = lerp(cam.position,Vector3(3.802,6.334,0),0.2)
 		cam.transform.basis = cam.transform.basis.slerp(defaultCamBasis, 0.2)
+
 
 
 func animDone(anim_name: StringName) -> void:

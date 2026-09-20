@@ -1,22 +1,23 @@
 extends CharacterBody3D
 
-const SLOTS = ["log1","log2"]
+# every log marker the scene has, in the order they appear in it: the barrow carries
+# four, the sheet two. giving a carrier more capacity is a marker, not a code change.
+@onready var slots = get_children().filter(func(c): return c.name.begins_with("log"))
 
 # false = pushed, the player rides it. true = dragged along behind them.
 @export var dragged = false
 
 func freeSlot():
-	for s in SLOTS:
-		if get_node(s).get_child_count() == 0:
-			return get_node(s)
+	for s in slots:
+		if s.get_child_count() == 0:
+			return s
 	return null
 
 # last one in is the one that comes back out
 func topLog():
-	for i in range(SLOTS.size() - 1, -1, -1):
-		var slot = get_node(SLOTS[i])
-		if slot.get_child_count() > 0:
-			return slot.get_child(0)
+	for i in range(slots.size() - 1, -1, -1):
+		if slots[i].get_child_count() > 0:
+			return slots[i].get_child(0)
 	return null
 
 func pickup(object):
@@ -29,6 +30,20 @@ func pickup(object):
 	slot.add_child(object)
 	object.position = Vector3.ZERO
 	object.rotation = Vector3.ZERO
+
+# the logs in the slots are saved as records of their own, so a half-grown or
+# half-chopped log comes back exactly as it went in
+func save():
+	var logs = []
+	for s in slots:
+		logs.append(get_parent().record(s.get_child(0)) if s.get_child_count() > 0 else null)
+	return {"logs": logs}
+
+func restore(d):
+	for rec in d.get("logs", []):
+		var l = get_parent().spawn(rec) if rec else null
+		if l:
+			pickup(l)
 
 func _physics_process(delta: float) -> void:
 	if not freeSlot():

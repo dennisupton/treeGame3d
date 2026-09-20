@@ -18,6 +18,8 @@ var scenes = []   # cutscenes currently running
 
 func _ready() -> void:
 	await get_tree().process_frame
+	while not get_parent().worldReady:
+		await get_tree().process_frame
 	if not SaveManager.getItem("mayor","introPlayed"):
 		play("introduction")
 	
@@ -30,10 +32,15 @@ func _ready() -> void:
 		play("kidsArgue")
 		play("kidsIntro")
 		play("kidsThanksForSlide")
+
+
 func _process(_delta: float) -> void:
 	for s in scenes:
 		s.tick()
-
+	if SaveManager.getItem("dylan","toldToGetWheel") and $"../player".position.distance_to($"../noTree/scaryHouse".position) < 25 and not SaveManager.getItem("mrgray","gathered"):
+		play("evil1")
+	if $"../player".position.distance_to($seedmanSpawn.position) > 25 and SaveManager.getItem("Copper Axe","has") and not SaveManager.getItem("seedman","introduced"):
+		play("seedmanIntro")
 func play(sceneName: String, loop = false) -> void:
 	while true:
 		var s = CutsceneScript.new(self, sceneName)
@@ -63,6 +70,44 @@ func faceEachOther(a, b) -> void:
 func stopFacing(a, b) -> void:
 	a.lookAway()
 	b.lookAway()
+
+
+
+func gather(s, crowd: Array, where: String, patience = 45.0) -> void:
+	var spacing = {}
+	var closest = {}
+	for i in crowd.size():
+		var npc = crowd[i]
+		spacing[npc] = npc.nav.target_desired_distance
+		npc.nav.target_desired_distance = 3.0 + i * 0.7
+		closest[npc] = INF
+		s.lane(func(): await npc.goto(where))
+
+	var left = patience
+	var still = 0.0   # seconds since anyone last made any ground
+	while left > 0.0 and still < 3.0 and not s.stopped:
+		await get_tree().process_frame
+		var step = get_process_delta_time()
+		left -= step
+		still += step
+		var spot = crowd[0].navPoint(where)
+		for npc in crowd:
+			# flat, so somebody stood below the navmesh doesn't read as short of it
+			var d = npc.flatTo(spot).length()
+			if d < closest[npc] - 0.1:
+				closest[npc] = d
+				still = 0.0
+
+	for npc in crowd:
+		stopWalking(npc)
+		npc.nav.target_desired_distance = spacing[npc]
+
+# drop a goto wherever they have got to, the same way arriving does
+func stopWalking(npc) -> void:
+	npc.whereTo = ""
+	npc.gotoPending = 0
+	npc.gotoId += 1
+	npc.nav.target_position = npc.global_position
 
 
 func waitUntil(cond: Callable) -> void:
@@ -252,3 +297,94 @@ func kidsThanksForSlide(s):
 	await may.say("colin get on the slide with meeeeeee")
 	SaveManager.saveItem("kids","seenSlide",true)
 	# start slide play here
+
+func evil1(s) -> void:
+	var mrgray = load("res://scenes/mrgray.tscn").instantiate()
+	add_child(mrgray)
+	mrgray.global_position = $graySpawn.global_position
+	SaveManager.saveItem("mrgray","gathered",true)
+	s.gate = mrgray
+	var crowd = [mayor, toby, dylan, enriquez]
+	await s.take(crowd + [mrgray])
+	for npc in crowd + [mrgray]:
+		npc.setActivity("idle")
+	await gather(s, crowd, "mrgray")
+	for npc in crowd:
+		npc.lookAtNode(mrgray)
+	mrgray.lookAtNode(s.player)
+	await s.wait(2.0)
+	await mrgray.say("what a lovely day it is today")
+	await mayor.say("then it should be obvious why we arent leaving")
+	await mrgray.say("oh come on")
+	await mrgray.say("stop acting like you guys have a choice")
+	await mrgray.say("as soon as i get the deed to the land it will be mine")
+	await dylan.say("you mean bribe the goverment into giving you protected land")
+	await mrgray.say("well either way the land will still be mine")
+	await mrgray.say("so you guys better get to packing")
+	await toby.say("we arent leaving")
+	await mrgray.say("and what makes you think that")
+	await toby.say("we built this town")
+	await toby.say("with our own two hands")
+	await mrgray.say("and im going to build even more")
+	await mrgray.say("with even more hands!")
+	await enriquez.say("mr gay read the room")
+	await enriquez.say("its time for you to leave")
+	await mrgray.say("MY NAME IS MY GRAY NOT MR GAY")
+	await enriquez.say("oops i guess i was getting the wrong vibe")
+	await enriquez.say("anyway")
+	await enriquez.say("its time for you to leave")
+	await mrgray.say("fine")
+	await mrgray.say("but il be back")
+	await mrgray.say("with bulldozers and trucks")
+	await mrgray.say("bye bye!")
+	for npc in crowd:
+		npc.lookAway()
+	mrgray.lookAway()
+	mrgray.goto("npcExit")
+	s.gate = null
+	for npc in crowd:
+		if npc != mayor and npc.shop in npc.HOUSES:
+			npc.setActivity(npc.shop)
+	await s.wait(2.0)
+	await mayor.goto("player")
+	s.gate = mayor
+	await mayor.say("im sorry you had to see that")
+	await mayor.say("weve tried everything")
+	await mayor.say("but their lawers are just too powerfull")
+	await mayor.say("and they just keep harrasing us")
+	await mayor.say("so at this point in time")
+	await mayor.say("i dont know what to do")
+	await mayor.say("anyway apollogies for the distubance")
+	await mayor.say("il let you get back to what you were doing")
+	s.gate = null
+	mayor.goto("townHall")
+	await mrgray.goto("npcExit")
+	mrgray.queue_free()
+
+
+func seedmanIntro(s) -> void:
+	var child = load("res://scenes/seedman.tscn").instantiate()
+	child.position = $seedmanSpawn.position
+	add_child(child)
+	SaveManager.saveItem("seedman","introduced",true)
+	var seedman = $seedman
+	await waitUntil(func(): return playerNear(seedman))
+	$"../audio".overrideMusic(10)
+	$"../audio/music".playing = false
+	await seedman.say("pssst")
+	await seedman.say("hey you")
+	await seedman.say("come over here")
+	await s.wait(2.0)
+	s.gate = seedman
+	await waitUntil(func(): return playerNear(seedman))
+	$"../audio".overrideMusic(20)
+	$"../audio/music".playing = false
+	await seedman.say("ive got a deal for you")
+	await seedman.say("a deal you cant turn down")
+	await s.wait(1.0)
+	await seedman.say("lets just say ive got some black market seeds")
+	await seedman.say("so come talk to me if you want to learn more")
+	s.gate = null
+	$"../audio/music".playing = true
+	$"../audio".stopOverride()
+	SaveManager.saveItem("seedman","offeredOakSeed",true)

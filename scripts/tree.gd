@@ -6,6 +6,7 @@ var health = 0
 var age = 0
 var growTime = 5
 var random = RandomNumberGenerator.new()
+var type = "basic"
 @export var still = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -74,7 +75,7 @@ func _process(delta: float) -> void:
 				child.emitting = true
 		$"..".treePositions.erase(position)
 		for i in range($"..".random.randi_range(0,2)):
-			$"..".spawnAcorn($acornSpawn.global_position)
+			$"..".spawnAcorn($acornSpawn.global_position, type)
 
 
 func _on_body_entered(body):
@@ -85,14 +86,18 @@ func _on_body_entered(body):
 	$fall.volume_db = lerp(-20.0, 0.0, clamp(impact / 10.0, 0.0, 1.0))
 	$fall.pitch_scale = randf_range(0.9, 1.1) 
 	$fall.play()
+func save():
+	return {"age": age, "health": health, "chopped": chopped, "type": type}
+
 # put a loaded tree straight into its saved state. deliberately does NOT run the
 # things that happen when one is actually felled: no acorns, no particles, no
 # first-chop flag, since none of that is happening again on a reload.
-func restore(savedAge, savedHealth, wasChopped):
+func restore(d):
+	type = str(d.get("type", "basic"))
 	chopped = false
-	setAge(int(savedAge))
-	health = savedHealth
-	if wasChopped:
+	setAge(int(d.get("age", 4)))
+	health = d.get("health", startingHealth)
+	if d.get("chopped", false):
 		chopped = true
 		freeze = false
 		$growthTimer.stop()
