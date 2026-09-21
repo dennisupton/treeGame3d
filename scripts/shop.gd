@@ -88,7 +88,9 @@ func mayor(dialouge = false):
 					await say("you seemed fine helping the kids with their slide")
 				stop()
 	else:
-		if SaveManager.getItem("mayor","metEveryone"):
+		if SaveManager.getItem("mrgray","gathered2"):
+			await say("thank you for coming")
+		elif SaveManager.getItem("mayor","metEveryone"):
 			await say("hey, whats up?")
 			makeButtons(["so whats the next secret","nothing much"],["whatSecret","bye"],mayor)
 		elif SaveManager.getItem("toby","met") and SaveManager.getItem("enriquez","met") and SaveManager.getItem("dylan","met") and SaveManager.getItem("kids","met"):
@@ -487,7 +489,12 @@ func toby(dialouge = false):
 					stop()
 				$"../../audio".stopOverride()
 	else:
-		if SaveManager.getItem("toby","donationOffered"):
+		if SaveManager.getItem("toby","donated"):
+			await say("thanks again for the money")
+			await say("the doctors said that its looking much better for her")
+			await say("staying alive wise")
+			stop()
+		elif SaveManager.getItem("toby","donationOffered"):
 			await say("hey um")
 			await say("did you manage to pull together any money for hollys medicine?")
 			makeButtons(["i would be glad (400)","i cant sorry"],["donate","cant donate"],toby)
@@ -687,7 +694,30 @@ func dylan(dialouge = false):
 				stop()
 
 	else:
-		if SaveManager.getItem("dylan","givenWheelbarrow"):
+		if SaveManager.getItem("extension","built"):
+			await say("it looks amazing!")
+			await say("thank you so much!")
+			await say("im gonna get to work with it immedeatly")
+			stop()
+		elif SaveManager.getItem("dylan","givenSketch"):
+			await say("so umm")
+			await say("i dont mean to uhh")
+			await say("hows the uhh extension going")
+			await say("okay sorry i shouldnt have asked")
+		elif SaveManager.getItem("toby","donated"):
+			await say("thank goodness your here")
+			await say("so ive been trying to design a better solution to help your carry stuff")
+			await say("but my workshop is just so cramped")
+			await say("and i know this is a lot to ask...")
+			await say("but could you help me build an extension")
+			await say("here i even have the design")
+			#give design
+			await say("also if you build this")
+			await say("i think i will be able to help you out a lot more")
+			await say("let me know when you finish")
+			SaveManager.saveItem("dylan","givenSketch",true)
+			stop()
+		elif SaveManager.getItem("dylan","givenWheelbarrow"):
 			await say("isnt that wheelbarrow just great")
 			await say("im really proud of it")
 			makeButtons(["yes!","no"],["likeWheelbarrow","dislikeWheelbarrow"],dylan)

@@ -39,6 +39,8 @@ func _process(_delta: float) -> void:
 		s.tick()
 	if SaveManager.getItem("dylan","toldToGetWheel") and $"../player".position.distance_to($"../noTree/scaryHouse".position) < 25 and not SaveManager.getItem("mrgray","gathered"):
 		play("evil1")
+	if SaveManager.getItem("extension","built") and SaveManager.getItem("toby","donated") and SaveManager.getItem("enriquez","gotFlower") and $"../player".position.distance_to($"../noTree/village".position) > 25 and not SaveManager.getItem("mrgray","gathered2"):
+		play("evil2")
 	if $"../player".position.distance_to($seedmanSpawn.position) > 25 and SaveManager.getItem("Copper Axe","has") and not SaveManager.getItem("seedman","introduced"):
 		play("seedmanIntro")
 func play(sceneName: String, loop = false) -> void:
@@ -361,6 +363,89 @@ func evil1(s) -> void:
 	await mrgray.goto("npcExit")
 	mrgray.queue_free()
 
+func evil2(s) -> void:
+	var mrgray = load("res://scenes/mrgray.tscn").instantiate()
+	add_child(mrgray)
+	mrgray.global_position = $graySpawn.global_position
+	SaveManager.saveItem("mrgray","gathered2",true)
+	s.gate = mrgray
+	var crowd = [mayor, toby, dylan, enriquez,may,colin]
+	await s.take(crowd + [mrgray])
+	for npc in crowd + [mrgray]:
+		npc.setActivity("idle")
+	await gather(s, crowd, "mrgray")
+	for npc in crowd:
+		npc.lookAtNode(mrgray)
+	mrgray.lookAtNode(s.player)
+	await s.wait(2.0)
+	await mrgray.say("hello again")
+	await mrgray.say("i can tell by the look on all of your faces that you all missed me!")
+	may.say("mr gray")
+	await colin.say("mr gray")
+	may.say("go away")
+	await colin.say("go away")
+	may.say("mr gray")
+	await colin.say("mr gray")
+	may.say("go away")
+	await colin.say("go away")
+	await mrgray.say("adorable")
+	await enriquez.say("i dont think they are playing around")
+	await mayor.say("so leave!")
+	await mrgray.say("hold on,")
+	await mrgray.say("lets not be to hasty now")
+	await mrgray.say("ive got something for you guys")
+	await mayor.say("what")
+	await mrgray.say("if you guys leave")
+	await mrgray.say("i will give you each 10,000")
+	for i in crowd:
+		i.say("no")
+	await mayor.say("no")
+	await mrgray.say("okay fine")
+	await mrgray.say("100,000")
+	for i in crowd:
+		i.say("no")
+	await mayor.say("youre pushing it")
+	await mrgray.say("but the most i can do is")
+	await mrgray.say("1,000,000")
+	await mrgray.say("final offer")
+	await toby.say("when are you going to understand")
+	await toby.say("this isnt about money")
+	await mrgray.say("5,000,000?")
+	await toby.say("do you understand me?")
+	await mrgray.say("but you guys use money here all the time")
+	await mrgray.say("so whats the issue")
+	await toby.say("theres a difference between the way we see money and the way you see it")
+	await toby.say("money here is a custom")
+	await toby.say("people only use it to reward other for their hard work")
+	await toby.say("but")
+	await toby.say("in your world")
+	await toby.say("money is the strings on a puppets back")
+	await toby.say("you use it to control people")
+	await mrgray.say("i still dont see the difference")
+	await toby.say("maybe one day you will understand but for now")
+	await toby.say("you arent welcome here")
+	await mrgray.say("whatever you say but il be back with a bigger and better deal")
+	for npc in crowd:
+		npc.lookAway()
+	mrgray.lookAway()
+	mrgray.goto("npcExit")
+	s.gate = null
+	for npc in crowd:
+		if npc != mayor and npc.shop in npc.HOUSES:
+			npc.setActivity(npc.shop)
+	await s.wait(2.0)
+	await mayor.goto("player")
+	s.gate = mayor
+	await mayor.say("he just wont go away will he")
+	await mayor.say("its so weird")
+	await mayor.say("his whole concept of money")
+	await mayor.say("hold on!")
+	await mayor.say("dont think your efforts have gone unnoticed")
+	await mayor.say("when you have a minute come see me in the hall")
+	s.gate = null
+	mayor.goto("townHall")
+	await mrgray.goto("npcExit")
+	mrgray.queue_free()
 
 func seedmanIntro(s) -> void:
 	var child = load("res://scenes/seedman.tscn").instantiate()
