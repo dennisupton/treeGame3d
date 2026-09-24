@@ -10,6 +10,46 @@ extends Control
 
 var person   # the npc being shopped from; owns the voice and the AudioStreamPlayer3D
 
+# ---------- prices ----------
+#
+# Every price in the game lives here. Change a number and the line the shopkeeper
+# says, the text on the button and the check the player has to pass all follow it.
+const PRICES = {
+	"Trainers": 30,
+	"Gloves": 100,
+	"Hat": 100,
+	"Copper Axe": 150,
+	"Steel Axe": 200,
+	"medicine": 400,
+	"Sheet": 60,
+	"Wheelbarrow": 600,
+	"Cart": 1000,
+	"Oak Seed": 500,
+}
+
+# money is written in enriquez's green wherever it turns up, in dialogue or on a button
+const CASH_COLOUR = "green"
+
+var tagRE = RegEx.create_from_string("\\[[^\\]]*\\]")
+
+# an amount as it should read in dialogue or on a button, given either an item name
+# from the table above or a bare amount. `after` carries the words that dress the
+# number up ("30 buckaroos") so the whole phrase goes green together.
+static func cash(amount, after = "") -> String:
+	var shown = PRICES[amount] if amount is String and amount in PRICES else amount
+	return "[color=%s][wave]%s%s[/wave][/color]" % [CASH_COLOUR, shown, after]
+
+# takes the price, or takes nothing and returns false when they cannot cover it
+func charge(item) -> bool:
+	if $"../..".money < PRICES[item]:
+		return false
+	$"../..".money -= PRICES[item]
+	return true
+
+# bbcode stripped, for the places that draw plain text
+func plain(text: String) -> String:
+	return tagRE.sub(text, "", true)
+
 var sayId = 0   # bumped per line, so a superseded say() stops waiting
 var skipWanted = false   # a click waiting to be spent on the current line
 var fx
@@ -51,6 +91,8 @@ func stop():
 func mayor(dialouge = false):
 	if dialouge:
 		match dialouge:
+			"bye":
+				await say("see ya!")
 			"cantFindPeople":
 				if not SaveManager.getItem("kids","met"):
 					await say("not everyone in the village lives in a shop")
@@ -102,7 +144,7 @@ func mayor(dialouge = false):
 			await say("but it would mean a lot to me")
 			await say("remember the bench has to be by the river though")
 			stop()
-		elif SaveManager.getItem("perfume","has") and SaveManager.getItem("Steel Axe","has") and SaveManager.getItem("dylan","givenCart"):
+		elif SaveManager.getItem("Perfume","has") and SaveManager.getItem("Steel Axe","has") and SaveManager.getItem("dylan","givenCart"):
 			await say("hey "+SaveManager.playerName)
 			await say("i was wondering since youve got all those logs")
 			await say("if you could make me a bench by the river")
@@ -141,6 +183,7 @@ func mayor(dialouge = false):
 			await say("where the bird understood what she wanted and she understood what the bird wanted")
 			await say("anyway thats all i wanted to tell you")
 			await say("thank you for listening")
+			SaveManager.saveItem("player","canWhistle",true)
 			stop()
 
 		elif SaveManager.getItem("mayor","metEveryone"):
@@ -169,6 +212,7 @@ func mayor(dialouge = false):
 			await say("colin and may left something for you")
 			SaveManager.saveItem("mayor","metEveryone",true)
 			var child = load("res://scenes/sketch.tscn").instantiate()
+			child.preset("slide")
 			$"../..".add_child(child)
 			child.position = $"../../townhall/itemSpawn".global_position
 			await say("some kind of drawing?")
@@ -229,13 +273,13 @@ func enriquez(dialouge = false):
 				person.get_node("spin").play("spin")
 				await say("fashion isnt free [color=pink][wave]darling[/wave][/color]")
 				person.playAnim("lean")
-				await say("so im going to need to ask for [color=green][wave]30 buckaroos[/wave][/color] in return")
+				await say("so im going to need to ask for " + cash("Trainers", " buckaroos") + " in return")
 				SaveManager.saveItem("enriquez","offeredShoes",true)
 				if not SaveManager.getItem("enriquez","introduced"):
 					makeButtons(["who are you?"],["who"],enriquez)
-				makeButtons(["can i get the shoes ($30)","bye"],["buyShoes","bye"],enriquez)
+				makeButtons(["can i get the shoes (" + cash("Trainers") + ")","bye"],["buyShoes","bye"],enriquez)
 			"buyShoes":
-				if $"../..".money < 30:
+				if not charge("Trainers"):
 					person.playAnim("think")
 					await say("sorry but i dont think thats gonna be enough")
 					person.playAnim("eyeroll")
@@ -265,7 +309,7 @@ func enriquez(dialouge = false):
 					SaveManager.saveItem("Trainers","has",true)
 					makeButtons(["bye"],["bye"],enriquez)
 			"buyGloves":
-				if $"../..".money < 30:
+				if not charge("Gloves"):
 					person.playAnim("think")
 					await say("sorry but i dont think thats gonna be enough")
 					person.playAnim("eyeroll")
@@ -281,7 +325,6 @@ func enriquez(dialouge = false):
 					await say("just come back when you got a bit more money")
 					makeButtons(["bye"],["bye"],enriquez)
 				else:
-					$"../..".money -= 30
 					await say("thank you!")
 					await say("ive left them in the changing room again")
 					await say("because me personally")
@@ -291,8 +334,7 @@ func enriquez(dialouge = false):
 					person.playAnim("idle")
 					stop()
 			"buyHat":
-				if $"../..".money >= 100:
-					$"../..".money -= 100
+				if charge("Hat"):
 					await say("i see you have true taste darling")
 					await say("not a lot of people have that these days")
 					await say("so as your magnificento reward")
@@ -338,8 +380,8 @@ func enriquez(dialouge = false):
 
 
 	else:
-		if SaveManager.getItem("perfume","has"):
-			if SaveManager.getItem("perfume","selected"):
+		if SaveManager.getItem("Perfume","has"):
+			if SaveManager.getItem("Perfume","selected"):
 				await say("damnnnnnnn")
 				await say("you smell good")
 				await say("kind of like a trusting scent")
@@ -381,16 +423,18 @@ func enriquez(dialouge = false):
 			await say("and then she was like its my old perfume")
 			await say("and she said that you should try approaching animals while wearing it")
 			await say("so i left it in the changing room for you")
-			SaveManager.saveItem("perfume","has",true)
+			SaveManager.saveItem("Perfume","has",true)
 			await say("but isnt that crazy that she just said whatever after i did all of that work")
 			makeButtons(["i got you that flower","thats crazy"],["iGotFlower","thatsCrazy"],enriquez)
 
-		elif SaveManager.getItem("enriquez","gotFlower") and false:
+		elif SaveManager.getItem("enriquez","gotFlower"):
 			await say("i havent managed to give her the flower yet darling")
 			await say("but when i do i will let you know!")
 			stop()
-		elif SaveManager.saveItem("enriquez","toldToGetFlower",true) and false:
+		elif SaveManager.getItem("enriquez","toldToGetFlower"):
 			if $"../../player/player/hold".get_child(0).name == "blueFlower":
+				var item = $"../../player/player/hold".get_child(0)
+				$"../../player/player/hold".remove_child(item)
 				await say("thank you!")
 				await say("i was kinda sending you on a wild goose chase")
 				await say("since last i checked there were none")
@@ -404,7 +448,7 @@ func enriquez(dialouge = false):
 				await say("but i would really like it if you got that flower for holly")
 				await say("remember its just east of here by the river")
 				stop()
-		elif SaveManager.getItem("seedman","givenOak") and false:
+		elif SaveManager.getItem("seedman","givenOak"):
 			await say("i need a favour from you")
 			await say("its a very very small favour")
 			await say("so you know how holly is not doing so great")
@@ -417,7 +461,7 @@ func enriquez(dialouge = false):
 			await say("holly and i would create fabulous outfits and show eachother")
 			await say("and through that she showed me this amazing technique")
 			await say("when making her dresses")
-			await say("she would put all sorts of random things from the ground into he dress")
+			await say("she would put all sorts of random things from the ground into her dress")
 			await say("flowers , grass,  leaves and all sorts")
 			await say("and it resulted in these magical dresses")
 			await say("that melted your eyes when you saw them")
@@ -441,7 +485,7 @@ func enriquez(dialouge = false):
 			SaveManager.saveItem("enriquez","toldToGetFlower",true)
 			stop()
 
-		elif SaveManager.getItem("Hat","has") and false:
+		elif SaveManager.getItem("Hat","has"):
 			if not SaveManager.getItem("Hat","selected"):
 				await say("i am INSULTED")
 				await say("i spent years conceptualizing and designing le chapeau")
@@ -455,12 +499,12 @@ func enriquez(dialouge = false):
 				await say("you might get crushed by all the people swarming you")
 				await say("stay magneficent darling")
 				stop()
-		if SaveManager.getItem("enriquez","offeredHat") and false:
+		elif SaveManager.getItem("enriquez","offeredHat"):
 			await say("so are you ready for ...")
 			await say("le chapeau")
 			await say("yet?")
-			makeButtons(["yes (100$)","no"],["buyHat","bye"],enriquez)
-		elif SaveManager.getItem("mrgray","gathered") and false:
+			makeButtons(["yes (" + cash("Hat") + ")","no"],["buyHat","bye"],enriquez)
+		elif SaveManager.getItem("mrgray","gathered"):
 			await say("i see you have to come to see my new fashion statement")
 			await say("it is called ...")
 			await say("le chapeau")
@@ -469,10 +513,10 @@ func enriquez(dialouge = false):
 			await say("although toby called it a lumberjack hat")
 			await say("IT IS NOT A LUMBERJACK HAT")
 			await say("it is a fashion statement that looks similar to a lumberjack hat")
-			await say("and its yours for the low price of 100")
+			await say("and its yours for the low price of " + cash("Hat"))
 			SaveManager.saveItem("enriquez","offeredHat",true)
-			makeButtons(["il buy it (100$)","im okay"],["buyHat","bye"],enriquez)
-		elif SaveManager.getItem("Gloves","has") and false:
+			makeButtons(["il buy it (" + cash("Hat") + ")","im okay"],["buyHat","bye"],enriquez)
+		elif SaveManager.getItem("Gloves","has"):
 			await say("now that your hands are all fixed up")
 			await say("you should try nail polish")
 			await say("i think you would look fabulous")
@@ -481,15 +525,15 @@ func enriquez(dialouge = false):
 			await say("and NO PEEKING")
 			await say("so run along")
 			stop()
-		elif SaveManager.getItem("enriquez","offeredGloves") and false:
+		elif SaveManager.getItem("enriquez","offeredGloves"):
 			await say("ive gotta say")
 			await say("those hands are looking worse by the day")
 			await say("oop!")
 			await say("im a poet and i didnt even know it!")
 			await say("hahaha")
 			await say("so you ready to get your hands protected?")
-			makeButtons(["yes! (100$)","no"],["buyGloves","bye"],enriquez)
-		elif SaveManager.getItem("Trainers","has") and SaveManager.getItem("kids","seenSlide") and false:
+			makeButtons(["yes! (" + cash("Gloves") + ")","no"],["buyGloves","bye"],enriquez)
+		elif SaveManager.getItem("Trainers","has") and SaveManager.getItem("kids","seenSlide"):
 			person.playAnim("lean")
 			await say("welcome back darling")
 			await say("might i add...")
@@ -502,9 +546,10 @@ func enriquez(dialouge = false):
 			await say("but hon you need gloves")
 			await say("lucky for you")
 			await say("ive got the perfect pair")
-			await say("they will help you chop faster and they are only 100 bucks")
+			await say("they will help you chop faster and they are only " + cash("Gloves", " bucks"))
+			SaveManager.saveItem("enriquez","offeredGloves",true)
 			makeButtons(["yeah sure il get them","im alright"],["buyGloves","bye"],enriquez)
-		elif SaveManager.getItem("Trainers","has") and false:
+		elif SaveManager.getItem("Trainers","has"):
 			await say("so how are those new shoes working out for you")
 			if SaveManager.getItem("Trainers","selected"):
 				await say("they look quite nice on you")
@@ -513,12 +558,12 @@ func enriquez(dialouge = false):
 			await say("but ive gotta go now")
 			await say("so see ya!")
 			stop()
-		elif SaveManager.getItem("enriquez","offeredShoes") and false:
+		elif SaveManager.getItem("enriquez","offeredShoes"):
 			person.playAnim("lean")
 			await say("so you ready to buy those shoes then?")
 			if not SaveManager.getItem("enriquez","introduced"):
 				makeButtons(["who are you?"],["who"],enriquez)
-			makeButtons(["yes ($30)","no, bye"],["buyShoes","bye"],enriquez)
+			makeButtons(["yes (" + cash("Trainers") + ")","no, bye"],["buyShoes","bye"],enriquez)
 		else:
 			person.setFace("stare")
 			person.playAnim("shock")
@@ -558,8 +603,7 @@ func toby(dialouge = false):
 				await say("ok bye")
 				stop()
 			"buyCopperAxe":
-				if $"../..".money >= 150:
-					$"../..".money -= 150
+				if charge("Copper Axe"):
 					await say("thank you!")
 					await say("i left the axe on the rack over there for you!")
 					SaveManager.saveItem("Copper Axe","has",true)
@@ -586,8 +630,7 @@ func toby(dialouge = false):
 				$"../../audio".stopOverride()
 				stop()
 			"donate":
-				if $"../..".money >= 400:
-					$"../..".money -= 400
+				if charge("medicine"):
 					await say("thank you so so much")
 					await say("honestly i dont know what i would do without you")
 					await say("have a great day")
@@ -606,8 +649,7 @@ func toby(dialouge = false):
 				await say("id like to see you try kid")
 				stop()
 			"buySteelAxe":
-				if $"../..".money >= 200:
-					$"../..".money -= 200
+				if charge("Steel Axe"):
 					await say("thanks")
 					await say("i left the axe on the rack over there")
 					SaveManager.saveItem("Steel Axe","has",true)
@@ -630,7 +672,7 @@ func toby(dialouge = false):
 			await say("you ready for that axe")
 			await say("cause its price")
 			await say("is a steel") # wink
-			makeButtons(["yes! (200)","nah il steel it"],["buySteelAxe","steal"],toby)
+			makeButtons(["yes! (" + cash("Steel Axe") + ")","nah il steel it"],["buySteelAxe","steal"],toby)
 		elif SaveManager.getItem("mrgray","gathered2"):
 			await say("well well well")
 			await say("if it isnt my favourite lumberjack")
@@ -643,9 +685,9 @@ func toby(dialouge = false):
 			await say("it wasnt that bad")
 			await say("colin and may dont like my dad jokes either")
 			await say("anyway if you arent planning on   steeling   it")
-			await say("its gonna be 200")
+			await say("its gonna be " + cash("Steel Axe"))
 			SaveManager.saveItem("toby","offeredSteelAxe",true)
-			makeButtons(["il take it! (200)","nah il steel it"],["buySteelAxe","steal"],toby)
+			makeButtons(["il take it! (" + cash("Steel Axe") + ")","nah il steel it"],["buySteelAxe","steal"],toby)
 		elif SaveManager.getItem("toby","donated"):
 			await say("thanks again for the money")
 			await say("the doctors said that its looking much better for her")
@@ -654,7 +696,7 @@ func toby(dialouge = false):
 		elif SaveManager.getItem("toby","donationOffered"):
 			await say("hey um")
 			await say("did you manage to pull together any money for hollys medicine?")
-			makeButtons(["i would be glad (400)","i cant sorry"],["donate","cant donate"],toby)
+			makeButtons(["i would be glad (" + cash("medicine") + ")","i cant sorry"],["donate","cant donate"],toby)
 		elif SaveManager.getItem("seedman","givenOak"):
 			await say("hey um")
 			await say("this is kind of weird to ask")
@@ -671,7 +713,7 @@ func toby(dialouge = false):
 			await say("but if you did ...")
 			await say("it would really help me out")
 			SaveManager.saveItem("toby","donationOffered",true)
-			makeButtons(["i would be glad (400)","i cant sorry"],["donate","cant donate"],toby)
+			makeButtons(["i would be glad (" + cash("medicine") + ")","i cant sorry"],["donate","cant donate"],toby)
 
 		elif SaveManager.getItem("Copper Axe","has"):
 			await say("did you know that the reason copper is orange")
@@ -682,7 +724,7 @@ func toby(dialouge = false):
 			await say("hey hows it going")
 			await say("no chance you remember that axe i offered")
 			await say("you up for buying it?")
-			makeButtons(["sure (150)","nah not today"],["buyCopperAxe","bye"],toby)
+			makeButtons(["sure (" + cash("Copper Axe") + ")","nah not today"],["buyCopperAxe","bye"],toby)
 		elif SaveManager.getItem("mrgray","gathered"):
 			await say("hey "+SaveManager.playerName)
 			await say("i gotta come clean")
@@ -691,9 +733,9 @@ func toby(dialouge = false):
 			await say("so ive been working on a new axe for you thats made of copper")
 			await say("and its a lot stronger")
 			await say("so whaddya say")
-			await say("for 150 its yours")
+			await say("for " + cash("Copper Axe") + " its yours")
 			SaveManager.saveItem("toby","offeredCopperAxe",true)
-			makeButtons(["sure (150)","im okay thanks"],["buyCopperAxe","bye"],toby)
+			makeButtons(["sure (" + cash("Copper Axe") + ")","im okay thanks"],["buyCopperAxe","bye"],toby)
 		elif SaveManager.getItem("kids","seenSlide") and SaveManager.getItem("Bronze Axe","has"):
 			await say("thank you for forgiving me")
 			await say("i know that if i was in your shoes i wouldnt have")
@@ -802,12 +844,11 @@ func dylan(dialouge = false):
 				await say("but its actually quite useful")
 				await say("basically you can use it to carry two logs along at once")
 				await say("genius right?")
-				await say("anywho its gonna set you back [color=green][wave]60[/wave][/color]")
+				await say("anywho its gonna set you back " + cash("Sheet"))
 				SaveManager.saveItem("dylan","offeredSheet",true)
 				makeButtons(["sounds good!","im good"],["buySheet","bye"],dylan)
 			"buySheet":
-				if $"../..".money >= 60:
-					$"../..".money -= 60
+				if charge("Sheet"):
 					await say("okie doke thank you very much")
 					await say("ive left it outside for you!")
 					var child = load("res://scenes/sheet.tscn").instantiate()
@@ -825,8 +866,7 @@ func dylan(dialouge = false):
 					await say("i know youl get there eventually!")
 					stop()
 			"buyWheelbarrow":
-				if $"../..".money >= 600:
-					$"../..".money -= 600
+				if charge("Wheelbarrow"):
 					await say("great!")
 					await say("your gonna love it")
 					await say("its right outside")
@@ -850,8 +890,7 @@ func dylan(dialouge = false):
 				await say("trust me")
 				stop()
 			"buyCart":
-				if $"../..".money >= 600:
-					$"../..".money -= 600
+				if charge("Cart"):
 					await say("thank you!")
 					await say("i left it in the garage")
 					SaveManager.saveItem("dylan","givenCart",true)
@@ -872,7 +911,7 @@ func dylan(dialouge = false):
 		elif SaveManager.getItem("dylan","offeredCart"):
 			await say("have you got enough to buy that cart now?")
 			await say("i promise its worth it!")
-			makeButtons(["sure (1000)","not right now"],["buyCart","bye"],dylan)
+			makeButtons(["sure (" + cash("Cart") + ")","not right now"],["buyCart","bye"],dylan)
 		elif SaveManager.getItem("mrgray","gathered2"):
 			await say("okay so this is gonna sound weird")
 			await say("but you know the way mr gray 'walks' ")
@@ -887,10 +926,10 @@ func dylan(dialouge = false):
 			await say("but thanks to that extension you built i can actually make it!")
 			await say("that does make it free though!")
 			await say("sorry")
-			await say("im still gonna need 1000 for it")
+			await say("im still gonna need " + cash("Cart") + " for it")
 			await say("does that sound good?")
 			SaveManager.saveItem("dylan","offeredCart",true)
-			makeButtons(["sure (1000)","not right now"],["buyCart","bye"],dylan)
+			makeButtons(["sure (" + cash("Cart") + ")","not right now"],["buyCart","bye"],dylan)
 
 		elif SaveManager.getItem("extension","built"):
 			await say("it looks amazing!")
@@ -902,6 +941,7 @@ func dylan(dialouge = false):
 			await say("i dont mean to uhh")
 			await say("hows the uhh extension going")
 			await say("okay sorry i shouldnt have asked")
+			stop()
 		elif SaveManager.getItem("toby","donated"):
 			await say("thank goodness your here")
 			await say("so ive been trying to design a better solution to help your carry stuff")
@@ -930,13 +970,15 @@ func dylan(dialouge = false):
 			await say("i made a wheelbarrow can hold 4 logs!")
 			await say("which should be leagues better than that sheet")
 			await say("so you ready to put it to work?")
-			makeButtons(["yes! (600)","later"],["buyWheelbarrow","bye"],dylan)
+			makeButtons(["yes! (" + cash("Wheelbarrow") + ")","later"],["buyWheelbarrow","bye"],dylan)
 		elif SaveManager.getItem("dylan","workingOnWheelbarrow"):
 			await say("im still working on it, sorry")
 			await say("come back later!")
 			stop()
 		elif SaveManager.getItem("dylan","toldToGetWheel"):
 			if $"../../player/player/hold".get_child(0).name == "wheel":
+				var item = $"../../player/player/hold".get_child(0)
+				$"../../player/player/hold".remove_child(item)
 				await say("wow you found it!")
 				await say("its not finished yet so your gonna have to wait")
 				await say("but please check in")
@@ -970,7 +1012,7 @@ func dylan(dialouge = false):
 			stop()
 		elif SaveManager.getItem("dylan","offeredSheet"):
 			await say("you ready to buy that sheet?")
-			makeButtons(["yes! (60$)","im good"],["buySheet","bye"],dylan)
+			makeButtons(["yes! (" + cash("Sheet") + ")","im good"],["buySheet","bye"],dylan)
 		elif SaveManager.getItem("dylan","met"):
 			await say("welcome back!") 
 			await say("so is there anything i can help you with?")
@@ -999,8 +1041,7 @@ func seedman(dialouge = false):
 				await say("goodbye")
 				stop()
 			"buyOakSeed":
-				if $"../..".money >= 500:
-					$"../..".money -= 500
+				if charge("Oak Seed"):
 					await say("interestinggg")
 					await say("veryyyy interestinggg")
 					await say("i think il keep this")
@@ -1029,7 +1070,7 @@ func seedman(dialouge = false):
 				await say("since we are on the verge of blowing my cover")
 				await say("we are going to need to act EXACTLY like we did before..")
 				await say("so,")
-				await say("do you maybe potencially perhaps have 500?")
+				await say("do you maybe potencially perhaps have " + cash("Oak Seed") + "?")
 				makeButtons(["maybe","potencially","perhaps","no"],["buyOakSeed","buyOakSeed","buyOakSeed","bye"],seedman)
 			"didntLoseIt":
 				await say("okay few")
@@ -1052,22 +1093,27 @@ func seedman(dialouge = false):
 			await say("shhhhhh")
 			await say("there could be someone watching")
 			await say("anyway")
-			await say("do you maybe potencially perhaps have 500 now?")
+			await say("do you maybe potencially perhaps have " + cash("Oak Seed") + " now?")
 			makeButtons(["maybe","potencially","perhaps","no"],["buyOakSeed","buyOakSeed","buyOakSeed","bye"],seedman)
 		else:
 			await say("so you decided to induge hmm?")
 			await say("remember to keep this between us")
-			await say("lets just say if you had 500 bucks...")
+			await say("lets just say if you had " + cash("Oak Seed", " bucks") + "...")
 			await say("i could , potencially have something for you")
 			await say("so,")
-			await say("do you maybe potencially perhaps have 500?")
+			await say("do you maybe potencially perhaps have " + cash("Oak Seed") + "?")
 			SaveManager.saveItem("seedman","offeredOak2",true)
 			makeButtons(["maybe","potencially","perhaps","no"],["buyOakSeed","buyOakSeed","buyOakSeed","bye"],seedman)
 func makeButtons(text,binds,function):
 	var idx = 0
 	for i in text:
 		var child = button.instantiate()
-		child.text = i
+		# a Button draws plain text, so a price cannot be coloured mid-label the way it
+		# is in dialogue. the tags come off and the whole option goes green instead.
+		child.text = plain(i)
+		if "[color=" + CASH_COLOUR in i:
+			for state in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:
+				child.add_theme_color_override(state, Color(CASH_COLOUR))
 		child.set_script(load("res://scripts/button.gd"))
 		child.pressed.connect(function.bind(binds[idx]))
 		child.pressed.connect(removeButtons)

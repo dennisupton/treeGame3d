@@ -2,6 +2,7 @@ extends Node3D
 
 
 const CutsceneScript = preload("res://scripts/cutscene.gd")
+const Shop = preload("res://scripts/shop.gd")   # for cash(), so money is one green everywhere
 
 
 var scenes = []   # cutscenes currently running
@@ -20,6 +21,10 @@ func _ready() -> void:
 	await get_tree().process_frame
 	while not get_parent().worldReady:
 		await get_tree().process_frame
+	if SaveManager.getItem("seedman","introduced") and not has_node("seedman"):
+		var sm = load("res://scenes/seedman.tscn").instantiate()
+		sm.position = $seedmanSpawn.position
+		add_child(sm)
 	if not SaveManager.getItem("mayor","introPlayed"):
 		play("introduction")
 	
@@ -396,21 +401,21 @@ func evil2(s) -> void:
 	await mrgray.say("ive got something for you guys")
 	await mayor.say("what")
 	await mrgray.say("if you guys leave")
-	await mrgray.say("i will give you each 10,000")
+	await mrgray.say("i will give you each " + Shop.cash("10,000"))
 	for i in crowd:
 		i.say("no")
 	await mayor.say("no")
 	await mrgray.say("okay fine")
-	await mrgray.say("100,000")
+	await mrgray.say(Shop.cash("100,000"))
 	for i in crowd:
 		i.say("no")
 	await mayor.say("youre pushing it")
 	await mrgray.say("but the most i can do is")
-	await mrgray.say("1,000,000")
+	await mrgray.say(Shop.cash("1,000,000"))
 	await mrgray.say("final offer")
 	await toby.say("when are you going to understand")
 	await toby.say("this isnt about money")
-	await mrgray.say("5,000,000?")
+	await mrgray.say(Shop.cash("5,000,000") + "?")
 	await toby.say("do you understand me?")
 	await mrgray.say("but you guys use money here all the time")
 	await mrgray.say("so whats the issue")
@@ -510,7 +515,22 @@ func mayorBench(s):
 	await mayor.say("and toby seems like hes starting cope a lot better")
 	await s.wait(2)
 	await mayor.say("i know that mr gray is destined to come back here")
-	await mayor.say("and he will probably keep doing so till he drops")
+	await mayor.say("and he will probably keep doing so till the day he drops")
 	await mayor.say("but theres something special about this valley")
 	await mayor.say("almost supernatural")
-	await mayor.say("so i will")
+	await mayor.say("so i will fight tooth and nail to keep it ")
+	await mayor.say("and im sure other will join me")
+	await s.wait(2)
+	await mayor.say("i hope you decide to stay with us")
+	await mayor.say("i know it can be quite rocky sometimes")
+	await mayor.say("but its looking up")
+	await mayor.say("i heard that dylan is working desining a bridge to help us cross this river")
+	await mayor.say("and toby is working on an engine which sounds quite cool")
+	await mayor.say("but for now i must say goodbye")
+	await s.wait(2)
+	await mayor.say("thank you for helping us")
+	#credits roll
+	
+	
+	
+	

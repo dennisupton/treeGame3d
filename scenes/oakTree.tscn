@@ -1,8 +1,8 @@
-[gd_scene format=4 uid="uid://260i2lmxe7sh"]
+[gd_scene format=4 uid="uid://c7rv5ctc5hhq5"]
 
-[ext_resource type="Shader" uid="uid://dmuns2w2rh0s5" path="res://shaders/wind.gdshader" id="1_brfkd"]
-[ext_resource type="Script" uid="uid://dgtlchu8wuedn" path="res://scripts/tree.gd" id="1_nnvrw"]
-[ext_resource type="AudioStream" uid="uid://b0e8omndsdoiq" path="res://sfx/thud.mp3" id="3_gvmkm"]
+[ext_resource type="Script" uid="uid://dgtlchu8wuedn" path="res://scripts/tree.gd" id="1_g1l5p"]
+[ext_resource type="Shader" uid="uid://dmuns2w2rh0s5" path="res://shaders/wind.gdshader" id="2_uxevl"]
+[ext_resource type="AudioStream" uid="uid://b0e8omndsdoiq" path="res://sfx/thud.mp3" id="3_qcpoy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g8f63"]
 resource_name = "Material.001"
@@ -312,22 +312,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_qoue4")
 
-[sub_resource type="Gradient" id="Gradient_viusy"]
+[sub_resource type="Gradient" id="Gradient_lquwl"]
 offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0, 0.57214785, 0.33003333, 1)
+colors = PackedColorArray(0.7432059, 0.57214785, 0.33003333, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_qd6xs"]
-gradient = SubResource("Gradient_viusy")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7mycd"]
+gradient = SubResource("Gradient_lquwl")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ake3r"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_272bh"]
 render_priority = 0
-shader = ExtResource("1_brfkd")
+shader = ExtResource("2_uxevl")
 shader_parameter/debug_mode = false
 shader_parameter/wind_direction = 90.0
 shader_parameter/wind_strenth = 1.0
 shader_parameter/sway_speed = 2.0
 shader_parameter/bendieness_multiplier = 0.0
-shader_parameter/albedo_texture = SubResource("GradientTexture1D_qd6xs")
+shader_parameter/albedo_texture = SubResource("GradientTexture1D_7mycd")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nnvrw"]
 size = Vector3(0.46887207, 5.199524, 0.5079956)
@@ -348,12 +348,13 @@ point_count = 2
 [sub_resource type="Gradient" id="Gradient_7mycd"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[node name="tree" type="RigidBody3D" unique_id=1333644917 groups=["nav", "tree"]]
+[node name="oakTree" type="RigidBody3D" unique_id=1333644917 groups=["nav", "tree"]]
 mass = 750.0
 freeze = true
 contact_monitor = true
 max_contacts_reported = 1
-script = ExtResource("1_nnvrw")
+script = ExtResource("1_g1l5p")
+type = "oak"
 
 [node name="Hole" type="MeshInstance3D" parent="." unique_id=976937364]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09964186, 0)
@@ -390,7 +391,7 @@ mesh = SubResource("ArrayMesh_yo5jj")
 [node name="leaves" type="MeshInstance3D" parent="." unique_id=1775813202 groups=["leave"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.625, 0)
 mesh = SubResource("ArrayMesh_du7gb")
-surface_material_override/0 = SubResource("ShaderMaterial_ake3r")
+surface_material_override/0 = SubResource("ShaderMaterial_272bh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1081729470]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.120743394, 2.3732429, 0)
@@ -426,7 +427,7 @@ vertices = PackedVector3Array(-0.45, 0, -0.45, 0.45, 0, -0.45, 0.45, 0, 0.45, -0
 avoidance_enabled = false
 
 [node name="fall" type="AudioStreamPlayer3D" parent="." unique_id=1640826595]
-stream = ExtResource("3_gvmkm")
+stream = ExtResource("3_qcpoy")
 
 [node name="growthTimer" type="Timer" parent="." unique_id=1366684449]
 

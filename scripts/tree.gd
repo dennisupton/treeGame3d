@@ -6,7 +6,9 @@ var health = 0
 var age = 0
 var growTime = 5
 var random = RandomNumberGenerator.new()
-var type = "basic"
+@export var type = "basic"
+var holdRotation = Vector3.ZERO
+
 @export var still = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -14,6 +16,8 @@ func _ready() -> void:
 	contact_monitor = true
 	max_contacts_reported = 1  
 	body_entered.connect(_on_body_entered)
+	if type == "oak":
+		health *= 2
 	setAge(0)
 	$growthTimer.wait_time = growTime + random.randf_range(0-growTime/2,growTime/2)
 	$growthTimer.start()
@@ -96,7 +100,7 @@ func restore(d):
 	type = str(d.get("type", "basic"))
 	chopped = false
 	setAge(int(d.get("age", 4)))
-	health = d.get("health", startingHealth)
+	health = d.get("health", health)
 	if d.get("chopped", false):
 		chopped = true
 		freeze = false

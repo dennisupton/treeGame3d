@@ -9,6 +9,9 @@ extends CharacterBody3D
 @export var dragDistance = 1.6   # how far behind the player a dragged sheet sits
 @export var dragPull = 6.0       # how hard it is yanked back into place
 
+# how hard each axe hits, worst to best. the wooden one is what you start with.
+const AXES = {"Wooden Axe": 1, "Bronze Axe": 2, "Copper Axe": 3, "Steel Axe": 4}
+
 const JUMP_VELOCITY = 4.5
 var holding = false
 var random = RandomNumberGenerator.new()
@@ -39,14 +42,13 @@ func reloadEquipped():
 		SPEED = 7
 	else:
 		SPEED = 5
-	if SaveManager.getItem("Metal Axe","selected") or true:
-		damage = 2
-		$player/Axe/metalAxe.show()
-		$player/Axe/Axe.hide()
-	else:
-		damage = 1
-		$player/Axe/metalAxe.hide()
-		$player/Axe/Axe.show()
+	damage = 1
+	for axe in AXES:
+		if SaveManager.getItem(axe,"selected"):
+			damage = maxi(damage, AXES[axe])
+	# anything past the wooden one is drawn as the metal head
+	$player/Axe/metalAxe.visible = damage > 1
+	$player/Axe/Axe.visible = damage <= 1
 func chop():
 	for i in $player/Area3D.get_overlapping_bodies():
 		if i.is_in_group("tree"):
@@ -72,10 +74,10 @@ func pickup(object):
 		$player/sketchMesh.show()
 		$player/sketchHold.add_child(object)
 	else:
-		$player/hands.show()
+		$player/hands2.show()
 		$player/hold.add_child(object)
 	object.position = Vector3.ZERO
-	object.rotation = Vector3.ZERO
+	object.rotation_degrees = object.holdRotation
 
 # whichever carrier is in hand right now, dragged or driven
 func activeCarrier():
@@ -159,7 +161,7 @@ func updateGlyphs():
 			prompts.append(["Chop", chop])
 		if shopPerson():
 			prompts.append(["Enter", "talk"])
-		if holding and holding == "acorn" and not $"..".tooClose(position):
+		if holding and holding == "acorn" and not $"..".tooClose(position,true):
 			prompts.append(["Plant", "plant"])
 		if holding and holding == "sketch" and len($player/sketchMesh/Area3D.get_overlapping_bodies()) == 0:
 			prompts.append(["Plant", "place"])
@@ -167,7 +169,7 @@ func updateGlyphs():
 			var barrow = carrierInReach()
 			if barrow and barrow.topLog():
 				prompts.append(["Plant", "take log"])
-		if not holding and not whistling and getClosestTameable():
+		if not holding and not whistling and SaveManager.getItem("player","canWhistle") and getClosestTameable():
 			prompts.append(["whistle", "whistle"])
 		if not holding and $"../scaryHouse" in $player/Area3D.get_overlapping_bodies():
 			prompts.append(["Plant", "knock"])
@@ -185,6 +187,24 @@ func spawnFootstep(side):
 		child.global_rotation = $player/Lleg/foot.global_rotation
 
 func _physics_process(delta: float) -> void:
+	# TESTING
+	if holding and holding == "tree" and len($player/treeHit.get_overlapping_bodies())>0:
+		var item
+		item = $player/treeHold.get_child(0)
+		$player/treeHold.remove_child(item)
+		get_parent().add_child(item)
+		item.position = $player/treeHold.global_position
+		item.rotation = $player/treeHold.global_rotation
+		item.freeze = false
+		item.set_collision_layer_value(1, true)
+		item.linear_velocity = velocity*1.5 + Vector3.UP*2
+		holding = false
+		$player/hands.hide()
+		$player/hands2.hide()
+		$player/sketchMesh.hide()
+	
+	# TESTING OVER
+	
 	if self in $"../fashionHouse/changingRoom".get_overlapping_bodies():
 		$"../CanvasLayer/selector".open("fashion")
 	elif self in $"../blacksmithHouse/changingRoom".get_overlapping_bodies():
@@ -235,6 +255,18 @@ func _physics_process(delta: float) -> void:
 			elif i.is_in_group("sketch"):
 				pickup(i)
 				holding = "sketch"
+				$player/sketchMesh.mesh = i.mesh
+				var child = i.sketch.instantiate()
+				var area = child.get_node("Area3D")
+				child.remove_child(area)
+				child.queue_free()
+				for c in $player/sketchMesh.get_children():
+					$player/sketchMesh.remove_child(c)
+					c.queue_free()
+				$player/sketchMesh.add_child(area)
+				area.name = "Area3D"
+				print($player/sketchMesh.get_children())
+				$player/sketchMesh.mesh = i.mesh
 				i.held = true
 				break
 			elif i.is_in_group("carrier"):
@@ -261,10 +293,12 @@ func _physics_process(delta: float) -> void:
 		var item
 		if holding == "tree":
 			item = $player/treeHold.get_child(0)
+			item.freeze = false
 			$player/treeHold.remove_child(item)
 			get_parent().add_child(item)
 			item.position = $player/treeHold.global_position
 			item.rotation = $player/treeHold.global_rotation
+			item.linear_velocity = velocity*1.5 + Vector3.UP*2
 		elif holding == "sketch":
 			item = $player/sketchHold.get_child(0)
 			$player/sketchHold.remove_child(item)
@@ -280,7 +314,6 @@ func _physics_process(delta: float) -> void:
 			item.held = false
 		item.freeze = false
 		item.set_collision_layer_value(1, true)
-		item.linear_velocity = velocity*1.5 + Vector3.UP*2
 		holding = false
 		$player/hands.hide()
 		$player/hands2.hide()
@@ -296,7 +329,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			$"../CanvasLayer/shop".person = null
 	if Input.is_action_just_pressed("Plant") and not freeze:
-		if holding and holding == "acorn" and not $"..".tooClose(position):
+		if holding and holding == "acorn" and not $"..".tooClose(position,true):
 			var item = $player/hold.get_child(0)
 			item.queue_free()
 			holding = false
@@ -304,12 +337,12 @@ func _physics_process(delta: float) -> void:
 			$"..".spawnTree(position, item.type)
 		if holding and holding == "sketch":
 			var item = $player/sketchHold.get_child(0)
-			item.queue_free()
 			holding = false
 			$player/hands2.hide()
 			$player/sketchMesh.hide()
-			var child = slide.instantiate()
+			var child = item.sketch.instantiate()
 			$"..".add_child(child)
+			item.queue_free()
 			child.position = $player/sketchMesh.global_position
 		if not holding and controlling == self:
 			var barrow = carrierInReach()
@@ -319,8 +352,9 @@ func _physics_process(delta: float) -> void:
 			
 	if holding:
 		if holding == "sketch":
+			print($player/sketchMesh.get_children())
 			$player/sketchMesh.visible = len($player/sketchMesh/Area3D.get_overlapping_bodies()) == 0
-	if Input.is_action_pressed("whistle") and not holding and not whistling:
+	if Input.is_action_pressed("whistle") and not holding and not whistling and SaveManager.getItem("player","canWhistle"):
 		freeze = true
 		whistling = true
 		$AnimationPlayer.play("whistle")
@@ -340,8 +374,11 @@ func _physics_process(delta: float) -> void:
 
 	updateGlyphs()
 
-	var moveSpeed = (SPEED/2 if (holding or carrierLoaded()) else SPEED) * speedMulti
-	
+	var moveSpeed
+	if ((holding and holding == "tree") or carrierLoaded()):
+		moveSpeed = SPEED/2 * speedMulti
+	else:
+		moveSpeed = SPEED* speedMulti
 	if controlling == self:
 		if input_dir and not freeze:
 			controlling.velocity.x = -sin($player.rotation.y) * moveSpeed
@@ -403,7 +440,7 @@ func _physics_process(delta: float) -> void:
 			desPos = $"../dylansHouse/Area3D/cam".global_position
 		elif area == "fashionHouse":
 			desPos = $"../fashionHouse/Area3D/cam".global_position
-		elif area == "seedmanAlley":
+		elif area == "seedmanAlley" and SaveManager.getItem("seedman","introduced"):
 			desPos = $"../seedmanAlley/Area3D/cam".global_position
 		desPos.x = global_position.x
 		if cam.global_position.distance_to(desPos) < 1:

@@ -7,6 +7,7 @@ var money: int = 0:
 var random = RandomNumberGenerator.new()
 var acorn
 var tree
+var oakTree
 var treePositions = []
 var seperation = 3**2
 
@@ -15,25 +16,31 @@ var seperation = 3**2
 @onready var theme = preload("res://theme.tres")
 @onready var glyph = preload("res://scenes/glyph.tscn")
 
-func tooClose(pos):
+func tooClose(pos,isAcorn = false):
 	for i in $noTree.get_children():
-		if not i.canSpawnTreeAt(pos):
+		if (not isAcorn and not i.canSpawnTreeAt(pos)) or (isAcorn and not i.canPlace(pos)):
 			return true
 	for i in treePositions:
-		if i.distance_squared_to(pos) < seperation:
+		var dx = i.x - pos.x
+		var dz = i.z - pos.z
+		if dx * dx + dz * dz < seperation:
 			return true
 	return false
 func reloadCollision():
 	$NavigationRegion3D.bake_navigation_mesh(true)
+
+const GROUND_LAYER = 4
 # Called when the node enters the scene tree for the first time.
 const LOADING_SCENE = preload("res://scenes/loading.tscn")
 const SCENE_TREE = "res://scenes/tree.tscn"
+const SCENE_OAK = "res://scenes/oakTree.tscn"
+const TREE_SCENES = [SCENE_TREE, SCENE_OAK]
 const SCENE_ACORN = "res://scenes/acorn.tscn"
 const SCENE_SKETCH = "res://scenes/sketch.tscn"
 const SCENE_SLIDE = "res://scenes/slide.tscn"
 const SCENE_SHEET = "res://scenes/sheet.tscn"
 const SCENE_BARROW = "res://scenes/wheelbarrow.tscn"
-const DYNAMIC = [SCENE_TREE, SCENE_ACORN, SCENE_SKETCH, SCENE_SLIDE, SCENE_SHEET, SCENE_BARROW]
+const DYNAMIC = [SCENE_TREE, SCENE_OAK, SCENE_ACORN, SCENE_SKETCH, SCENE_SLIDE, SCENE_SHEET, SCENE_BARROW]
 const TREE_COUNT = 1800
 const AUTOSAVE_SECONDS = 30.0
 
@@ -43,9 +50,8 @@ var autosaveLeft = AUTOSAVE_SECONDS
 
 func _ready() -> void:
 	tree = preload("res://scenes/tree.tscn")
+	oakTree = preload("res://scenes/oakTree.tscn")
 	acorn = preload("res://scenes/acorn.tscn")
-	# money saves on every change with the rest of the flags, so a shop flag can never
-	# be written without the price having come off too
 	money = int(SaveManager.getItem("player","money"))
 	$CanvasLayer/Control/money.snap()
 	await buildWorld()
@@ -57,7 +63,7 @@ func buildWorld():
 	await get_tree().process_frame
 
 	var saved = SaveManager.loadWorld()
-	if saved:
+	if saved and false:
 		loadingScreen.setStatus("remembering")
 		await applyWorld(saved)
 	else:
@@ -76,16 +82,25 @@ func progress(done, total, from, span):
 		loadingScreen.setProgress(from + span * (float(done) / max(total, 1)))
 
 func generateWorld():
+	await get_tree().physics_frame
+	await get_tree().physics_frame
 	for i in range(TREE_COUNT):
-		var child = tree.instantiate()
-		var pos = Vector3(random.randf_range(-200,200),0,random.randf_range(-200,200))
-		add_child(child)
-		child.position = pos
-		while tooClose(pos):
-			pos = Vector3(random.randf_range(-200,200),0,random.randf_range(-200,200))
-			child.position = pos
-		treePositions.append(pos)
-		child.setAge(4)
+		for tries in 30:
+			var pos = Vector3(random.randf_range(-200,200),0,random.randf_range(-200,200))
+			var q = PhysicsRayQueryParameters3D.create(Vector3(pos.x,200,pos.z), Vector3(pos.x,-200,pos.z))
+			q.collision_mask = GROUND_LAYER
+			var hit = get_world_3d().direct_space_state.intersect_ray(q)
+			if hit.is_empty() or tooClose(hit["position"]):
+				continue
+			var child = tree.instantiate()
+			add_child(child)
+			child.position = hit["position"]
+			var axis = Vector3.UP.cross(hit["normal"])
+			if axis.length() > 0.001:
+				child.basis = Basis(axis.normalized(), Vector3.UP.angle_to(hit["normal"]))
+			treePositions.append(child.position)
+			child.setAge(4)
+			break
 		if i % 60 == 0:
 			progress(i, TREE_COUNT, 0.0, 1.0)
 			await get_tree().process_frame
@@ -166,7 +181,7 @@ func applyWorld(data):
 	var items = data.get("items", [])
 	for i in items.size():
 		var n = spawn(items[i])
-		if n and n.scene_file_path == SCENE_TREE and not n.chopped:
+		if n and n.scene_file_path in TREE_SCENES and not n.chopped:
 			treePositions.append(n.position)
 		if i % 60 == 0:
 			progress(i, items.size(), 0.0, 0.9)
@@ -218,18 +233,28 @@ func _process(delta: float) -> void:
 		saveWorldNow()
 	$CanvasLayer/bubbles.visible = not $player.freeze
 	spawnGlyphs()
-func trySpawnTree(pos, kind = "basic"):
-	if not tooClose(pos):
+func trySpawnTree(pos, kind = "basic",isAcorn =false):
+	if not tooClose(pos,isAcorn):
 		spawnTree(pos, kind)
 		return true
 	return false
 func spawnTree(pos, kind = "basic"):
-	var child = tree.instantiate()
+	var child
+	if kind == "oak":
+		child = oakTree.instantiate()
+	else:
+		child = tree.instantiate()
 	child.type = kind
-	pos.y = 0
-	treePositions.append(pos)
-	child.position = pos
 	add_child(child)
+	var q = PhysicsRayQueryParameters3D.create(Vector3(pos.x,pos.y+200,pos.z), Vector3(pos.x,-200,pos.z))
+	q.collision_mask = GROUND_LAYER
+	var hit = get_world_3d().direct_space_state.intersect_ray(q)
+	child.position = hit["position"] if hit else pos
+	if hit:
+		var axis = Vector3.UP.cross(hit["normal"])
+		if axis.length() > 0.001:
+			child.basis = Basis(axis.normalized(), Vector3.UP.angle_to(hit["normal"]))
+	treePositions.append(child.position)
 
 func spawnAcorn(pos, kind = "basic"):
 	var child = acorn.instantiate()

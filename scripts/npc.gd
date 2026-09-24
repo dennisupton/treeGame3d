@@ -508,8 +508,15 @@ func handleTalking(delta: float):
 	letterTimer += step * 1000.0
 	if letterTimer > talkSpeed:
 		letterTimer = 0.0
-		typed += remainingText[0]
-		remainingText = remainingText.substr(1)
+		# a bbcode tag goes on whole. typed a character at a time it would draw the
+		# markup itself ("[co", "[col") before the tag ever closed.
+		var take = 1
+		if remainingText[0] == "[":
+			var close = remainingText.find("]")
+			if close > 0:
+				take = close + 1
+		typed += remainingText.substr(0, take)
+		remainingText = remainingText.substr(take)
 		if bubble: bubble.setText("[bounce]" + typed + "[/bounce]")
 		if not hasLookTarget():
 			turnTo(player.global_position, rotationSpeed)

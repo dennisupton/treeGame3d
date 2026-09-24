@@ -7,7 +7,7 @@
 size = Vector3(1, 1.1816406, 0.9428711)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jkv2x"]
-size = Vector3(0.8494873, 1, 1.1176758)
+size = Vector3(1.4745178, 1.7548828, 1.1965332)
 
 [node name="wheelbarrow" type="CharacterBody3D" unique_id=72515036 groups=["carrier"]]
 script = ExtResource("1_kr6em")
@@ -24,17 +24,19 @@ shape = SubResource("BoxShape3D_jbj1t")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.56179786, -1.1265533)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=396336813]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0028686523, -0.010872364, 0.069762945)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.059432983, 0.36656904, 0.030334234)
 shape = SubResource("BoxShape3D_jkv2x")
 
-[node name="log1" type="Marker3D" parent="." unique_id=404464325]
+[node name="logs" type="Node3D" parent="." unique_id=1708222504]
+
+[node name="log1" type="Marker3D" parent="logs" unique_id=404464325]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26641464, 0.9169543, -1.3746262)
 
-[node name="log2" type="Marker3D" parent="." unique_id=2097023166]
+[node name="log2" type="Marker3D" parent="logs" unique_id=2097023166]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17275038, 0.94428146, -1.4439595)
 
-[node name="log3" type="Marker3D" parent="." unique_id=1520398471]
+[node name="log3" type="Marker3D" parent="logs" unique_id=1520398471]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24118176, 0.9169543, -0.9246262)
 
-[node name="log4" type="Marker3D" parent="." unique_id=1783026594]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19751540, 0.94428146, -0.9939595)
+[node name="log4" type="Marker3D" parent="logs" unique_id=1783026594]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1975154, 0.94428146, -0.9939595)

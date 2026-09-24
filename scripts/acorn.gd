@@ -2,12 +2,11 @@ extends RigidBody3D
 
 var held = false
 @export var type = "basic"
-
+var holdRotation = Vector3.ZERO
 func _ready() -> void:
 	applyType()
 
 func applyType():
-	# the override material is shared by every acorn in the scene, so tint a copy
 	var mat = $Icosphere.get_surface_override_material(0)
 	if mat and type == "oak":
 		mat = mat.duplicate()

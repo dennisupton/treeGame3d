@@ -1,10 +1,8 @@
 extends CharacterBody3D
 
-# every log marker the scene has, in the order they appear in it: the barrow carries
-# four, the sheet two. giving a carrier more capacity is a marker, not a code change.
-@onready var slots = get_children().filter(func(c): return c.name.begins_with("log"))
 
-# false = pushed, the player rides it. true = dragged along behind them.
+@onready var slots = $logs.get_children()
+
 @export var dragged = false
 
 func freeSlot():
@@ -13,7 +11,6 @@ func freeSlot():
 			return s
 	return null
 
-# last one in is the one that comes back out
 func topLog():
 	for i in range(slots.size() - 1, -1, -1):
 		if slots[i].get_child_count() > 0:
@@ -24,15 +21,12 @@ func pickup(object):
 	var slot = freeSlot()
 	if not slot:
 		return
+	var oldPos = object.global_position
 	object.freeze = true
 	object.set_collision_layer_value(1, false)
 	object.get_parent().remove_child(object)
 	slot.add_child(object)
-	object.position = Vector3.ZERO
-	object.rotation = Vector3.ZERO
-
-# the logs in the slots are saved as records of their own, so a half-grown or
-# half-chopped log comes back exactly as it went in
+	object.global_position = oldPos
 func save():
 	var logs = []
 	for s in slots:
@@ -49,9 +43,12 @@ func _physics_process(delta: float) -> void:
 	if not freeSlot():
 		return
 	for i in $Area3D.get_overlapping_bodies():
-		# loose logs only. one the player is carrying is parented to them, not the
-		# world, so this stops the barrow snatching back what was just taken out.
-		if i.is_in_group("tree") and i.get_parent() == get_parent():
+		if i.is_in_group("tree") and i.get_parent() == get_parent() and i.chopped == true:
 			pickup(i)
 			if not freeSlot():
 				return
+	for i in slots:
+		if i.get_child_count()> 0:
+			var child = i.get_child(0)
+			child.position = lerp(child.position,Vector3.ZERO,0.2)
+			child.rotation = lerp(child.rotation,Vector3.ZERO,0.2)

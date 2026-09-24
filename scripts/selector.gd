@@ -15,16 +15,28 @@ func _ready() -> void:
 			"Gloves":{
 				"image": preload("res://images/shoes.png"),
 				},
+			"Hat":{
+				"image": preload("res://images/shoes.png"),
+				},
+			"Perfume":{
+				"image": preload("res://images/shoes.png"),
+				},
 			},
 		},
 	"axe":{
 		"name": "Axe Rack",
 		"items": {
 			"Wooden Axe":{
-				"image": preload("res://images/shoes.png"),
+				"image": preload("res://images/axe.png"),
 				},
 			"Bronze Axe":{
-				"image": preload("res://images/shoes.png"),
+				"image": preload("res://images/axe.png"),
+				},
+			"Copper Axe":{
+				"image": preload("res://images/axe.png"),
+				},
+			"Steel Axe":{
+				"image": preload("res://images/axe.png"),
 				},
 			},
 		},
@@ -41,6 +53,7 @@ func open(newPlace):
 	place = newPlace
 	for i in $VBoxContainer.get_children():
 		if i is CheckBox:
+			$VBoxContainer.remove_child(i)
 			i.queue_free()
 	$VBoxContainer/Label.text = items[place]["name"]
 	var owned = 0

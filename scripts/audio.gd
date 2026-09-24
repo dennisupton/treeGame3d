@@ -74,13 +74,11 @@ func overrideMusic(time):
 	$musicOverride.wait_time = time
 	$musicOverride.start()
 
-# hand the music back to the area system before the timer is up. _process
-# picks it up from there and switches to whatever room the player is in.
+
 func stopOverride():
 	$musicOverride.stop()
 	musicOverride = false
 
-# start an override and put a named clip on straight away
 func playTrack(clipName, time):
 	overrideMusic(time)
 	$music.get_stream_playback().switch_to_clip_by_name(clipName)

@@ -11,7 +11,7 @@ func _process(delta: float) -> void:
 	for i in get_overlapping_bodies():
 		if i.is_in_group("tree"):
 			# the money is added by moneyFlow.land(), once the circles reach the counter
-			$"../well/moneyFlow".burst(10)
+			$"../well/moneyFlow".burst(20 if i.type == "oak" else 10)
 			i.queue_free()
 		elif i is RigidBody3D:
 			i.position = $respawn.global_position
