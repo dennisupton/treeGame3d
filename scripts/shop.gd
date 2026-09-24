@@ -93,6 +93,7 @@ func mayor(dialouge = false):
 		match dialouge:
 			"bye":
 				await say("see ya!")
+				stop()
 			"cantFindPeople":
 				if not SaveManager.getItem("kids","met"):
 					await say("not everyone in the village lives in a shop")
@@ -617,6 +618,7 @@ func toby(dialouge = false):
 			"i knew":
 				await say("oh well")
 				await say("cant hurt to hear it again huh")
+				stop()
 			"i didnt know":
 				await say("the more you know!")
 				await say("you pick up a surpising amount of random facts being a blacksmith")
@@ -979,6 +981,7 @@ func dylan(dialouge = false):
 			if $"../../player/player/hold".get_child(0).name == "wheel":
 				var item = $"../../player/player/hold".get_child(0)
 				$"../../player/player/hold".remove_child(item)
+				$"../../player".holding = false
 				await say("wow you found it!")
 				await say("its not finished yet so your gonna have to wait")
 				await say("but please check in")

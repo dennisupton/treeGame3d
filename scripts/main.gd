@@ -69,7 +69,7 @@ func buildWorld():
 	else:
 		loadingScreen.setStatus("growing")
 		await generateWorld()
-
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	loadingScreen.queue_free()
