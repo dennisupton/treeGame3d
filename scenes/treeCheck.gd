@@ -24,9 +24,4 @@ func canPlace(pos:Vector3):
 	var distance = pos.distance_to(global_position)
 	if distance < noneRadius or (hasOuter and distance > outerNoneRadius):
 		return false
-	elif pos.distance_to(global_position) < radius or (hasOuter and distance > outerRadius):
-		if hasOuter and distance > outerRadius:
-			return false
-		else:
-			return false
 	return true

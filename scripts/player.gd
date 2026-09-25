@@ -11,6 +11,7 @@ extends CharacterBody3D
 
 # how hard each axe hits, worst to best. the wooden one is what you start with.
 const AXES = {"Wooden Axe": 1, "Bronze Axe": 2, "Copper Axe": 3, "Steel Axe": 4}
+const GLOVE_AXE_SPEED = 1.6   # how much faster the chop swings with gloves on
 
 const JUMP_VELOCITY = 4.5
 var holding = false
@@ -25,7 +26,7 @@ var legFlip = false
 var whistling = false
 @onready var camPos = false
 var shop = false
-
+var sitting = false
 
 
 @onready var footstep = preload("res://scenes/footstep.tscn")
@@ -42,6 +43,8 @@ func reloadEquipped():
 		SPEED = 7
 	else:
 		SPEED = 5
+	# gloves let you swing faster, which is the whole pitch enriquez makes for them
+	axeSpeed = GLOVE_AXE_SPEED if SaveManager.getItem("Gloves","selected") else 1.0
 	damage = 1
 	for axe in AXES:
 		if SaveManager.getItem(axe,"selected"):
@@ -139,6 +142,19 @@ func shopPerson():
 		return person
 	return null
 
+func sitOn(bench):
+	var seat = bench.get_node_or_null("playerSeat")
+	if not seat:
+		return
+	sitting = true
+	freeze = true
+	velocity = Vector3.ZERO
+	global_position = seat.global_position
+	# turn the model, not the body: movement drives the inner node, so nothing else
+	# has to know the body was ever pointed anywhere
+	$player.global_rotation.y = seat.global_rotation.y
+	$AnimationPlayer.play("sit")
+
 func chopPrompt():
 	if controlling != self or dragging:
 		return "let go"
@@ -149,6 +165,8 @@ func chopPrompt():
 			return "pick up" if i.chopped else "chop"
 		elif i.is_in_group("acorn"):
 			return "pick up"
+		elif i.name == "bench":
+			return "sit"
 		elif i.is_in_group("carrier") and controlling == self:
 			return "drag" if i.dragged else "drive"
 	return ""
@@ -255,7 +273,12 @@ func _physics_process(delta: float) -> void:
 			elif i.is_in_group("sketch"):
 				pickup(i)
 				holding = "sketch"
+				# the scene only carries one override; a mesh with more surfaces than
+				# that would draw the rest in its own materials instead of as linework
+				var sketchMat = $player/sketchMesh.get_surface_override_material(0)
 				$player/sketchMesh.mesh = i.mesh
+				for surf in i.mesh.get_surface_count():
+					$player/sketchMesh.set_surface_override_material(surf, sketchMat)
 				var child = i.sketch.instantiate()
 				var area = child.get_node("Area3D")
 				child.remove_child(area)
@@ -265,8 +288,6 @@ func _physics_process(delta: float) -> void:
 					c.queue_free()
 				$player/sketchMesh.add_child(area)
 				area.name = "Area3D"
-				print($player/sketchMesh.get_children())
-				$player/sketchMesh.mesh = i.mesh
 				i.held = true
 				break
 			elif i.is_in_group("carrier"):
@@ -283,12 +304,13 @@ func _physics_process(delta: float) -> void:
 				holding = "thing"
 				i.held = true
 				break
+			elif i.name == "bench":
+				sitOn(i)
+				break
 		if isItem and not holding and not $AnimationPlayer.current_animation:
 			$AnimationPlayer.stop()
 			$"../audio/chop".pitch_scale = random.randf_range(0.8,1.2)
-			$AnimationPlayer.speed_scale = axeSpeed
-			$AnimationPlayer.play("chop")
-			$AnimationPlayer.speed_scale = 1
+			$AnimationPlayer.play("chop", -1, axeSpeed)
 	elif Input.is_action_just_pressed("Chop") and not freeze and holding:
 		var item
 		if holding == "tree":
@@ -333,7 +355,7 @@ func _physics_process(delta: float) -> void:
 			var item = $player/hold.get_child(0)
 			item.queue_free()
 			holding = false
-			$player/hands.hide()
+			$player/hands2.hide()
 			$"..".spawnTree(position, item.type)
 		if holding and holding == "sketch":
 			var item = $player/sketchHold.get_child(0)
@@ -342,6 +364,14 @@ func _physics_process(delta: float) -> void:
 			$player/sketchMesh.hide()
 			var child = item.sketch.instantiate()
 			$"..".add_child(child)
+			match item.sketchName:
+				"garage":
+					child.global_rotation.y = 0
+				"slide":
+					child.global_rotation.y = 0
+				"bench":
+					child.look_at($player/sketchMesh.global_position * 2.0, Vector3.UP)
+					child.rotation_degrees.y += 90
 			item.queue_free()
 			child.position = $player/sketchMesh.global_position
 		if not holding and controlling == self:
@@ -352,8 +382,21 @@ func _physics_process(delta: float) -> void:
 			
 	if holding:
 		if holding == "sketch":
-			print($player/sketchMesh.get_children())
 			$player/sketchMesh.visible = len($player/sketchMesh/Area3D.get_overlapping_bodies()) == 0
+			print($player/sketchMesh/Area3D.get_overlapping_bodies())
+			print(global_position.distance_to($"../dylansHouse2/itemSpawn".global_position))
+			if $player/sketchHold.get_child(0).sketchName == "garage" and global_position.distance_to($"../dylansHouse2/itemSpawn".global_position) > 10:
+				$player/sketchMesh.visible = false
+			if $player/sketchHold.get_child(0).sketchName == "bench" and global_position.distance_to($"../noTree/village".global_position) < 120:
+				$player/sketchMesh.visible = false
+			match $player/sketchHold.get_child(0).sketchName:
+				"garage":
+					$player/sketchMesh.global_rotation.y = 0
+				"slide":
+					$player/sketchMesh.global_rotation.y = 0
+				"bench":
+					$player/sketchMesh.look_at($player/sketchMesh.global_position * 2.0, Vector3.UP)
+					$player/sketchMesh.rotation_degrees.y += 90
 	if Input.is_action_pressed("whistle") and not holding and not whistling and SaveManager.getItem("player","canWhistle"):
 		freeze = true
 		whistling = true
@@ -429,7 +472,7 @@ func _physics_process(delta: float) -> void:
 	var cam = $camPivot/Camera3D
 	if camPos:
 		cam.global_position = lerp(cam.global_position,camPos.global_position,0.2)
-		cam.global_rotation = lerp(cam.global_rotation,camPos.global_rotation,0.2)
+		cam.global_basis = cam.global_basis.slerp(camPos.global_basis,0.2)
 	elif area:
 		var desPos = cam.global_position
 		if area == "townhall":

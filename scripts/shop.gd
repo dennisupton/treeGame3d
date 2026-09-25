@@ -131,7 +131,7 @@ func mayor(dialouge = false):
 					await say("you seemed fine helping the kids with their slide")
 				stop()
 	else:
-		if false: # if bench is done
+		if SaveManager.getItem("bench","done"):
 			await say("thank you so much")
 			await say("il go check it out now")
 			await wait(2)
@@ -153,6 +153,10 @@ func mayor(dialouge = false):
 			await say("anyway i drew a little sketch of what i wanted it to look like here")
 			await say("if you have time i would really appreciate it")
 			await say("and let me know when youre done!")
+			var child = load("res://scenes/sketch.tscn").instantiate()
+			child.preset("bench")
+			$"../..".add_child(child)
+			child.position = $"../../townhall/itemSpawn".global_position
 			SaveManager.saveItem("mayor","givenBench",true)
 			stop()
 		elif SaveManager.getItem("mrgray","gathered2"):
@@ -933,7 +937,7 @@ func dylan(dialouge = false):
 			SaveManager.saveItem("dylan","offeredCart",true)
 			makeButtons(["sure (" + cash("Cart") + ")","not right now"],["buyCart","bye"],dylan)
 
-		elif SaveManager.getItem("extension","built"):
+		elif SaveManager.getItem("garage","done"):
 			await say("it looks amazing!")
 			await say("thank you so much!")
 			await say("im gonna get to work with it immedeatly")
@@ -951,7 +955,10 @@ func dylan(dialouge = false):
 			await say("and i know this is a lot to ask...")
 			await say("but could you help me build an extension")
 			await say("here i even have the design")
-			#give design
+			var child = load("res://scenes/sketch.tscn").instantiate()
+			child.preset("garage")
+			$"../..".add_child(child)
+			child.position = $"../../dylansHouse2/sketchSpawn".global_position
 			await say("also if you build this")
 			await say("i think i will be able to help you out a lot more")
 			await say("let me know when you finish")

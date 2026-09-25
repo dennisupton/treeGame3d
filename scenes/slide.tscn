@@ -80,6 +80,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_wv4y7")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jod2s"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_dympr")
 shader_parameter/cut_in_world = true

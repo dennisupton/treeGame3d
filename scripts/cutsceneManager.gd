@@ -42,9 +42,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	for s in scenes:
 		s.tick()
-	if SaveManager.getItem("dylan","toldToGetWheel") and $"../player".position.distance_to($"../noTree/scaryHouse".position) < 25 and not SaveManager.getItem("mrgray","gathered"):
+	if SaveManager.getItem("dylan","toldToGetWheel") and $"../player".position.distance_to($"../noTree/scaryHouse".position) < 25 and not "mrgray" in get_children().map(func(c): return c.name) and not SaveManager.getItem("mrgray","gathered"):
 		play("evil1")
-	if SaveManager.getItem("extension","built") and SaveManager.getItem("toby","donated") and SaveManager.getItem("enriquez","gotFlower") and $"../player".position.distance_to($"../noTree/village".position) > 25 and not SaveManager.getItem("mrgray","gathered2"):
+	if SaveManager.getItem("extension","built") and SaveManager.getItem("toby","donated") and SaveManager.getItem("enriquez","gotFlower") and $"../player".position.distance_to($"../noTree/village".position) > 25 and not "mrgray" in get_children().map(func(c): return c.name) and not SaveManager.getItem("mrgray","gathered2"):
 		play("evil2")
 	if $"../player".position.distance_to($seedmanSpawn.position) > 25 and SaveManager.getItem("Copper Axe","has") and not SaveManager.getItem("seedman","introduced"):
 		play("seedmanIntro")
@@ -309,7 +309,6 @@ func evil1(s) -> void:
 	var mrgray = load("res://scenes/mrgray.tscn").instantiate()
 	add_child(mrgray)
 	mrgray.global_position = $graySpawn.global_position
-	SaveManager.saveItem("mrgray","gathered",true)
 	s.gate = mrgray
 	var crowd = [mayor, toby, dylan, enriquez]
 	await s.take(crowd + [mrgray])
@@ -363,6 +362,7 @@ func evil1(s) -> void:
 	await mayor.say("i dont know what to do")
 	await mayor.say("anyway apollogies for the distubance")
 	await mayor.say("il let you get back to what you were doing")
+	SaveManager.saveItem("mrgray","gathered",true)
 	s.gate = null
 	mayor.goto("townHall")
 	await mrgray.goto("npcExit")
@@ -460,7 +460,7 @@ func seedmanIntro(s) -> void:
 	var seedman = $seedman
 	await waitUntil(func(): return playerNear(seedman))
 	$"../audio".overrideMusic(10)
-	$"../audio/music".playing = false
+	$"../audio".silenceMusic()
 	await seedman.say("pssst")
 	await seedman.say("hey you")
 	await seedman.say("come over here")
@@ -468,19 +468,50 @@ func seedmanIntro(s) -> void:
 	s.gate = seedman
 	await waitUntil(func(): return playerNear(seedman))
 	$"../audio".overrideMusic(20)
-	$"../audio/music".playing = false
+	$"../audio".silenceMusic()
 	await seedman.say("ive got a deal for you")
 	await seedman.say("a deal you cant turn down")
 	await s.wait(1.0)
 	await seedman.say("lets just say ive got some black market seeds")
 	await seedman.say("so come talk to me if you want to learn more")
 	s.gate = null
-	$"../audio/music".playing = true
 	$"../audio".stopOverride()
 	SaveManager.saveItem("seedman","offeredOakSeed",true)
 
 func mayorBench(s):
-	# mayor goes to bench
+	var bench = $"../bench"
+	if not bench:
+		return
+	await s.take([mayor])
+	s.gate = mayor
+	# he walks the whole way, however far the bench was built. a flat timeout made him
+	# pop onto the seat on a long walk, so this waits on progress instead: he keeps
+	# going as long as he is getting closer, and only gives up once he has been stuck
+	# for a few seconds (a bench somewhere he genuinely cannot path to).
+	var seat = bench.get_node("mayorSeat")
+	mayor.goto("bench")
+	var closest = INF
+	var still = 0.0
+	var left = 180.0
+	while left > 0.0 and still < 4.0:
+		var gap = mayor.flatTo(seat.global_position).length()
+		if gap < 0.8:
+			break
+		await get_tree().process_frame
+		var step = get_process_delta_time()
+		left -= step
+		still += step
+		if gap < closest - 0.1:
+			closest = gap
+			still = 0.0
+	mayor.sitAt(seat)
+	await waitUntil(func(): return $"../player".sitting)
+	# nothing but the river from here. the override goes on first, or audio.gd sees a
+	# stopped track next frame and starts it again.
+	$"../audio".overrideMusic(900)
+	$"../audio".silenceMusic()
+	await s.wait(1.5)
+	'''
 	await mayor.say("thank you for joining me here")
 	await s.wait(1)
 	await mayor.say("wow this bench is really good ")
@@ -528,9 +559,10 @@ func mayorBench(s):
 	await mayor.say("and toby is working on an engine which sounds quite cool")
 	await mayor.say("but for now i must say goodbye")
 	await s.wait(2)
-	await mayor.say("thank you for helping us")
+	await mayor.say("thank you for helping us")'''
+	await s.wait(2)
 	#credits roll
-	
-	
-	
+	$"../player".camPos = bench.get_node("camera")
+	$"../AnimationPlayer".play("end")
+	$"../audio/music".play("mainTheme")
 	

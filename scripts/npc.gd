@@ -53,6 +53,7 @@ const NAV_TARGETS = {
 	"colin": "NPCs/colin",
 	"mrgray": "NPCs/mrgray",
 	"npcExit": "NPCs/npcExit",
+	"bench": "bench/mayorSeat",
 }
 
 # ---- tag state ----
@@ -66,6 +67,7 @@ var talking = false
 var letterTimer = 0.0   # ms accumulated toward the next letter
 var soundTimer = 0.0    # ms accumulated toward the next blip
 var lookTarget = null   # a node to face instead of the player, or null
+var seated = false      # sat down: hold still and face where you were put
 var wantsBubble = false # there's something worth showing, range permitting
 var bubbleShown = false # whether the bubble is currently popped in
 var scene = null        # the Cutscene driving this npc right now, or null
@@ -139,6 +141,12 @@ func _physics_process(delta: float) -> void:
 	handleTalking(delta)
 	updateBubble()
 
+	# sat down: no gravity nudge, no pathing, and no walk animation stomping the pose
+	if seated:
+		velocity = Vector3.ZERO
+		updateLookIK(delta)
+		return
+
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
@@ -146,7 +154,7 @@ func _physics_process(delta: float) -> void:
 		tagStep()
 	else:
 		navStep()
-		if hasLookTarget():
+		if hasLookTarget() and not seated:
 			turnTo(lookTarget.global_position, rotationSpeed * 0.5)
 
 	updateLookIK(delta)
@@ -190,6 +198,24 @@ func lookAtNode(who) -> void:
 		var marker = who.get_node_or_null("textBoxPos")
 		lookAt.target_node = lookAt.get_path_to(marker if marker else who)
 
+# park on a seat marker, facing wherever it faces
+func sitAt(marker) -> void:
+	# drop whatever walk was in progress first, or navStep picks it straight back up
+	whereTo = ""
+	gotoPending = 0
+	gotoId += 1
+	nav.target_position = global_position
+	seated = true
+	lookTarget = null
+	velocity = Vector3.ZERO
+	global_position = marker.global_position
+	global_rotation.y = marker.global_rotation.y
+	playAnim("sit")
+
+func stand() -> void:
+	seated = false
+	stopPose()
+
 func lookAway() -> void:
 	lookTarget = null
 	if lookAt:
@@ -209,7 +235,9 @@ func updateLookIK(delta: float) -> void:
 	if not lookAt:
 		return
 
-	if hasLookTarget():
+	if seated:
+		lookAt.influence = move_toward(lookAt.influence, 0.0, delta * 4.0)
+	elif hasLookTarget():
 		lookAt.influence = move_toward(lookAt.influence, 1.0, delta * 4.0)
 	elif lookAtPlayer:
 		if activity == "idle":
@@ -519,7 +547,8 @@ func handleTalking(delta: float):
 		remainingText = remainingText.substr(take)
 		if bubble: bubble.setText("[bounce]" + typed + "[/bounce]")
 		if not hasLookTarget():
-			turnTo(player.global_position, rotationSpeed)
+			if not seated:
+				turnTo(player.global_position, rotationSpeed)
 
 func tagStep():
 	grace = maxi(grace - 1, 0)

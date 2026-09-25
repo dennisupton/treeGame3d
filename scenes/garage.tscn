@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://dbi67f85og826"]
+
+[ext_resource type="Script" uid="uid://cg7eefalw61md" path="res://scenes/slide.gd" id="1_f50xb"]
+[ext_resource type="ArrayMesh" uid="uid://dfnr7pke0upay" path="res://models/garage.obj" id="2_3yerp"]
+[ext_resource type="Material" uid="uid://b73xtc8rgqt8" path="res://sketch.material" id="2_6thhw"]
+[ext_resource type="Shader" uid="uid://bhvu8qoxaav0h" path="res://shaders/heightCut.gdshader" id="3_3yerp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wall"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_3yerp")
+shader_parameter/cut_in_world = true
+shader_parameter/cut_height = 5.125
+shader_parameter/albedo = Color(0.198069, 0.132868, 0.104617, 1)
+shader_parameter/roughness = 1.0
+shader_parameter/metallic = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_roof"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_3yerp")
+shader_parameter/cut_in_world = true
+shader_parameter/cut_height = 0.0
+shader_parameter/albedo = Color(0.287441, 0.323143, 0.332452, 1)
+shader_parameter/roughness = 1.0
+shader_parameter/metallic = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6thhw"]
+size = Vector3(0.70544434, 1, 5.601074)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7xd8p"]
+size = Vector3(0.75561523, 1, 5.601074)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3yerp"]
+size = Vector3(0.75561523, 1, 5.395752)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_844jt"]
+size = Vector3(5.3984985, 0.40587997, 4.5383377)
+
+[node name="garage" type="StaticBody3D" unique_id=1953637316]
+script = ExtResource("1_f50xb")
+treesNeeded = 30
+maxHeight = 5.2
+
+[node name="sketch" type="MeshInstance3D" parent="." unique_id=507779504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41892767)
+mesh = ExtResource("2_3yerp")
+surface_material_override/0 = ExtResource("2_6thhw")
+surface_material_override/1 = ExtResource("2_6thhw")
+surface_material_override/2 = ExtResource("2_6thhw")
+surface_material_override/3 = ExtResource("2_6thhw")
+
+[node name="solid" type="MeshInstance3D" parent="." unique_id=596244111]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41892767)
+mesh = ExtResource("2_3yerp")
+surface_material_override/0 = SubResource("ShaderMaterial_wall")
+surface_material_override/1 = SubResource("ShaderMaterial_roof")
+surface_material_override/2 = SubResource("ShaderMaterial_wall")
+surface_material_override/3 = SubResource("ShaderMaterial_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1886700810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3172264, 0.5025979, 0.42016602)
+shape = SubResource("BoxShape3D_6thhw")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=2117523941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3528595, 0.5025979, 0.42016602)
+shape = SubResource("BoxShape3D_7xd8p")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="." unique_id=26691497]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.047397137, 0.5025979, -1.9765861)
+shape = SubResource("BoxShape3D_3yerp")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1727124500]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4257276, 0, 0.08813381)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1385709180]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42971802, 0.23268461, -0.22034836)
+shape = SubResource("BoxShape3D_844jt")
+
+[node name="spawn" type="Marker3D" parent="." unique_id=759929662]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5864041, 0.30208433)
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

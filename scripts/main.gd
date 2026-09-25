@@ -38,9 +38,12 @@ const TREE_SCENES = [SCENE_TREE, SCENE_OAK]
 const SCENE_ACORN = "res://scenes/acorn.tscn"
 const SCENE_SKETCH = "res://scenes/sketch.tscn"
 const SCENE_SLIDE = "res://scenes/slide.tscn"
+const SCENE_GARAGE = "res://scenes/garage.tscn"
 const SCENE_SHEET = "res://scenes/sheet.tscn"
 const SCENE_BARROW = "res://scenes/wheelbarrow.tscn"
-const DYNAMIC = [SCENE_TREE, SCENE_OAK, SCENE_ACORN, SCENE_SKETCH, SCENE_SLIDE, SCENE_SHEET, SCENE_BARROW]
+# anything the player can put down has to be listed here or it is not remembered
+const DYNAMIC = [SCENE_TREE, SCENE_OAK, SCENE_ACORN, SCENE_SKETCH, SCENE_SLIDE, SCENE_GARAGE,
+	SCENE_SHEET, SCENE_BARROW]
 const TREE_COUNT = 1800
 const AUTOSAVE_SECONDS = 30.0
 
@@ -54,7 +57,7 @@ func _ready() -> void:
 	acorn = preload("res://scenes/acorn.tscn")
 	money = int(SaveManager.getItem("player","money"))
 	$CanvasLayer/Control/money.snap()
-	await buildWorld()
+	await harness()   #TESTHARNESS
 
 func buildWorld():
 	$player.freeze = true
@@ -231,7 +234,9 @@ func _process(delta: float) -> void:
 	if autosaveLeft <= 0.0:
 		autosaveLeft = AUTOSAVE_SECONDS
 		saveWorldNow()
-	$CanvasLayer/bubbles.visible = not $player.freeze
+	# the shop panel does its own talking, so bubbles step aside for it. being frozen
+	# for anything else -- a cutscene, sitting on the bench -- still wants them.
+	$CanvasLayer/bubbles.visible = not $CanvasLayer/shop.visible
 	spawnGlyphs()
 func trySpawnTree(pos, kind = "basic",isAcorn =false):
 	if not tooClose(pos,isAcorn):
@@ -316,3 +321,28 @@ func spawnGlyphs():
 		label.label_settings = LabelSettings.new()
 		label.label_settings.font_size = 50
 		$CanvasLayer/glyphs.add_child(label)
+
+func harness():   #TESTHARNESS
+	autosaveLeft = 999999.0
+	worldReady = true
+	await get_tree().physics_frame
+	var region = $NavigationRegion3D
+	var nm = region.navigation_mesh
+	print("H navmesh aabb (local): %s" % [nm.get_vertices().size() > 0])
+	var lo = Vector3(1e9,1e9,1e9)
+	var hi = Vector3(-1e9,-1e9,-1e9)
+	for v in nm.get_vertices():
+		lo = Vector3(minf(lo.x,v.x), minf(lo.y,v.y), minf(lo.z,v.z))
+		hi = Vector3(maxf(hi.x,v.x), maxf(hi.y,v.y), maxf(hi.z,v.z))
+	print("H navmesh covers x %.0f..%.0f  z %.0f..%.0f" % [lo.x, hi.x, lo.z, hi.z])
+
+	var mayor = $NPCs/mayor
+	for spot in [mayor.global_position + Vector3(55, 0, 30), Vector3(140, 0, -28)]:
+		mayor.nav.target_position = spot
+		await get_tree().physics_frame
+		await get_tree().physics_frame
+		var final = mayor.nav.get_final_position()
+		print("H target (%.0f, %.0f): reachable=%s, path ends %.1f units short"
+			% [spot.x, spot.z, mayor.nav.is_target_reachable(), final.distance_to(spot)])
+	worldReady = false
+	get_tree().quit()

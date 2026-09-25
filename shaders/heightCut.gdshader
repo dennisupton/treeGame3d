@@ -21,7 +21,7 @@ void vertex() {
 }
 
 void fragment() {
-	if (height > cut_height) {
+	if (height >= cut_height) {
 		discard;
 	}
 	ALBEDO = albedo * texture(albedo_texture, UV).rgb;

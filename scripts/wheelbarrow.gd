@@ -40,6 +40,11 @@ func restore(d):
 			pickup(l)
 
 func _physics_process(delta: float) -> void:
+	for i in slots:
+		if i.get_child_count()> 0:
+			var child = i.get_child(0)
+			child.position = lerp(child.position,Vector3.ZERO,0.2)
+			child.rotation = lerp(child.rotation,Vector3.ZERO,0.2)
 	if not freeSlot():
 		return
 	for i in $Area3D.get_overlapping_bodies():
@@ -47,8 +52,3 @@ func _physics_process(delta: float) -> void:
 			pickup(i)
 			if not freeSlot():
 				return
-	for i in slots:
-		if i.get_child_count()> 0:
-			var child = i.get_child(0)
-			child.position = lerp(child.position,Vector3.ZERO,0.2)
-			child.rotation = lerp(child.rotation,Vector3.ZERO,0.2)

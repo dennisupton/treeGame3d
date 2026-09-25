@@ -52,6 +52,8 @@
 [ext_resource type="AudioStream" uid="uid://bbau1eb76lkm4" path="res://sfx/colin/talk3.mp3" id="39_txyw0"]
 [ext_resource type="AudioStream" uid="uid://dfcyl4nbpptpo" path="res://sfx/colin/talk4.mp3" id="40_vc5cj"]
 [ext_resource type="AudioStream" uid="uid://b12iffa54q3mn" path="res://sfx/colin/talk5.mp3" id="41_nvyfr"]
+[ext_resource type="Material" uid="uid://bi6f2run4o753" path="res://shaders/squiggle.tres" id="42_2s0kr"]
+[ext_resource type="Script" uid="uid://cq4e2od2dntxg" path="res://scripts/pauseMenu.gd" id="42_j4bwh"]
 [ext_resource type="AudioStream" uid="uid://dwk15syq6ctx" path="res://music/intoducingOrc.ogg" id="43_o7ddy"]
 [ext_resource type="PackedScene" uid="uid://b450ljon0m8ui" path="res://scenes/toby.tscn" id="45_ty1g6"]
 [ext_resource type="PackedScene" uid="uid://df5ky4ud2bw0a" path="res://scenes/dylan.tscn" id="46_j2jfr"]
@@ -68,13 +70,15 @@
 [ext_resource type="PackedScene" uid="uid://dvh6tbihpil6k" path="res://scenes/sketch.tscn" id="63_ro3en"]
 [ext_resource type="AudioStream" uid="uid://betddu8y30vxo" path="res://music/medicine.ogg" id="64_medic"]
 [ext_resource type="Script" uid="uid://clkyysrk5accx" path="res://scenes/holdable.gd" id="68_r4e17"]
-[ext_resource type="ArrayMesh" uid="uid://bdb8ivh8215wb" path="res://models/slide.obj" id="68_xljpf"]
+[ext_resource type="ArrayMesh" uid="uid://dfnr7pke0upay" path="res://models/garage.obj" id="68_xljpf"]
 [ext_resource type="Script" uid="uid://bmej03fvh4aab" path="res://scenes/treeCheck.gd" id="68_y57op"]
-[ext_resource type="PackedScene" uid="uid://b8o1pf4rok5tm" path="res://scenes/slide.tscn" id="69_j4bwh"]
+[ext_resource type="PackedScene" uid="uid://dbi67f85og826" path="res://scenes/garage.tscn" id="69_j4bwh"]
 [ext_resource type="PackedScene" uid="uid://bycl1aiwhrwhx" path="res://models/wheel.blend" id="69_kjtvk"]
 [ext_resource type="PackedScene" uid="uid://qp0vo1ysojcm" path="res://models/blueFlower.blend" id="69_mlv25"]
 [ext_resource type="Shader" uid="uid://dh2boxgujbm2d" path="res://scenes/testWater.gdshader" id="71_gdvew"]
 [ext_resource type="Texture2D" uid="uid://c8ekbuuv0ews6" path="res://images/icon.svg" id="72_kjtvk"]
+[ext_resource type="PackedScene" uid="uid://dusqse1ghxjb4" path="res://scenes/bench.tscn" id="77_ksmap"]
+[ext_resource type="ArrayMesh" uid="uid://b0ul7k10aqka0" path="res://models/bench.obj" id="77_ygd8o"]
 
 [sub_resource type="Gradient" id="Gradient_h2yge"]
 offsets = PackedFloat32Array(0)
@@ -713,6 +717,141 @@ tracks/8/keys = {
 }
 tracks/8/use_blend = true
 
+[sub_resource type="Animation" id="Animation_ygd8o"]
+resource_name = "sit"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Rleg:rotation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-7.160018e-08, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Rleg:rotation:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-2.0943952, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Rleg:rotation:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-1.1252347, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Rleg:position:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.0014266968, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Rleg:position:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Rleg:position:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.00024414063, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/6/type = "bezier"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Lleg:position:x")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.0014266968, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/7/type = "bezier"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Lleg:position:y")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/8/type = "bezier"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Lleg:position:z")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.00024414063, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/9/type = "bezier"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Lleg:rotation:x")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(4.9287337e-08, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/10/type = "bezier"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Lleg:rotation:y")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-1.0471975, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+tracks/11/type = "bezier"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Lleg:rotation:z")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-1.2246455, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.5)
+}
+
 [sub_resource type="Animation" id="Animation_efxa6"]
 resource_name = "storeEnter"
 tracks/0/type = "bezier"
@@ -1330,6 +1469,7 @@ tracks/11/keys = {
 _data = {
 &"RESET": SubResource("Animation_0xm2m"),
 &"chop": SubResource("Animation_1bvp3"),
+&"sit": SubResource("Animation_ygd8o"),
 &"storeEnter": SubResource("Animation_efxa6"),
 &"walk": SubResource("Animation_h2yge"),
 &"whistle": SubResource("Animation_pibwh"),
@@ -1819,6 +1959,34 @@ tracks/6/keys = {
 "points": PackedFloat32Array(-2.3793566e-08, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CanvasLayer/credits/VBoxContainer:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 1080)]
+}
+
+[sub_resource type="Animation" id="Animation_xaipn"]
+resource_name = "end"
+length = 20.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/credits/VBoxContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 19.866667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1080), Vector2(0, -1975)]
+}
 
 [sub_resource type="Animation" id="Animation_jbj1t"]
 resource_name = "start"
@@ -1905,6 +2073,7 @@ tracks/6/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_muem4"]
 _data = {
 &"RESET": SubResource("Animation_jkv2x"),
+&"end": SubResource("Animation_xaipn"),
 &"start": SubResource("Animation_jbj1t")
 }
 
@@ -2043,6 +2212,20 @@ _data = {
 &"in": SubResource("Animation_e755i"),
 &"out": SubResource("Animation_ro3en")
 }
+
+[sub_resource type="LabelSettings" id="LabelSettings_ndrjj"]
+font = ExtResource("30_vc5cj")
+font_size = 258
+font_color = Color(0.9098039, 0.8352941, 0.68235296, 1)
+shadow_size = 18
+shadow_color = Color(0, 0, 0, 0.186)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ih3m7"]
+font = ExtResource("30_vc5cj")
+font_size = 78
+font_color = Color(0.9098039, 0.8352941, 0.68235296, 1)
+shadow_size = 18
+shadow_color = Color(0, 0, 0, 0.186)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_epphy"]
 shader = ExtResource("25_2f3dj")
@@ -2611,7 +2794,7 @@ sides = 16
 material = SubResource("StandardMaterial3D_7xd8p")
 
 [node name="player" type="CharacterBody3D" parent="." unique_id=1284337863]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.520958, 0.16015804, -2.3419209)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 140.52197, 0.979668, -36.600254)
 collision_mask = 3
 script = ExtResource("4_muem4")
 
@@ -2624,7 +2807,7 @@ root_node = NodePath("../player")
 libraries/ = SubResource("AnimationLibrary_1bvp3")
 
 [node name="player" type="Node3D" parent="player" unique_id=1885324098]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47562933, 0)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0.47562933, 0)
 
 [node name="dirtParticles" type="CPUParticles3D" parent="player/player" unique_id=1562223214]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27452487, 0.37700522)
@@ -2665,7 +2848,7 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.00
 mesh = SubResource("ArrayMesh_h2d6w")
 
 [node name="Rleg" type="MeshInstance3D" parent="player/player" unique_id=359609152]
-transform = Transform3D(-4.2975348e-08, 7.987354e-09, -1, 0.18272935, 0.98316145, 0, 0.98316145, -0.18272935, -4.371139e-08, 0.0014277995, 0, -0.00024113059)
+transform = Transform3D(-4.2975348e-08, 7.987353e-09, -1, 0.18272935, 0.9831614, 0, 0.98316145, -0.18272933, -4.371139e-08, 0.0014277995, 0, -0.00024113059)
 mesh = SubResource("ArrayMesh_2ogoa")
 
 [node name="foot" type="Marker3D" parent="player/player/Rleg" unique_id=773021196]
@@ -2819,7 +3002,7 @@ shop = "fashionHouse"
 shopIdle = "lean"
 
 [node name="mayor" parent="NPCs" unique_id=394498642 instance=ExtResource("14_c6pm6")]
-transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 1.6765616, 0, 60.10798)
+transform = Transform3D(-1.07284414e-07, 0, -1, 0, 1, 0, 1, 0, -1.07284414e-07, 140.58556, 0.47445488, -34.3572)
 activity = "townHall"
 shop = "townHall"
 target = NodePath("../colin")
@@ -2842,7 +3025,7 @@ pitchRange = Vector2(1.2, 1.4)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -194.58435, 0, 0)
 
 [node name="graySpawn" type="Marker3D" parent="NPCs" unique_id=924520798]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.889986, 4.7940454, -12.236963)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.889986, 0.061641693, -17.314217)
 
 [node name="seedmanSpawn" type="Marker3D" parent="NPCs" unique_id=1418999674]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.272826, 0.3732624, -15.359526)
@@ -2986,6 +3169,87 @@ layout_mode = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/selector" unique_id=510498502]
 libraries/ = SubResource("AnimationLibrary_od4ux")
+
+[node name="pauseMenu" type="Control" parent="CanvasLayer" unique_id=61688521]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("42_j4bwh")
+
+[node name="darken" type="ColorRect" parent="CanvasLayer/pauseMenu" unique_id=1938157706]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.32086813, 0.7313913, 0, 0.115)
+
+[node name="pauseMenu" type="CenterContainer" parent="CanvasLayer/pauseMenu" unique_id=350127048]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="Save" type="Button" parent="CanvasLayer/pauseMenu/pauseMenu" unique_id=1541841075]
+layout_mode = 2
+theme = ExtResource("33_vc5cj")
+text = "Save Game"
+
+[node name="credits" type="Control" parent="CanvasLayer" unique_id=1668155076]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/credits" unique_id=1672875471]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 540.0
+offset_bottom = 1619.0007
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/credits/VBoxContainer" unique_id=546075295]
+material = ExtResource("42_2s0kr")
+layout_mode = 2
+text = "tree game"
+label_settings = SubResource("LabelSettings_ndrjj")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/credits/VBoxContainer" unique_id=1073605151]
+material = ExtResource("42_2s0kr")
+layout_mode = 2
+text = "a game by dennis upton"
+label_settings = SubResource("LabelSettings_ih3m7")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="CanvasLayer/credits/VBoxContainer" unique_id=824988894]
+material = ExtResource("42_2s0kr")
+layout_mode = 2
+text = "
+
+
+Art Help - Marco Young
+"
+label_settings = SubResource("LabelSettings_ih3m7")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=46500486]
 material = SubResource("ShaderMaterial_epphy")
@@ -3143,6 +3407,9 @@ shape = SubResource("BoxShape3D_j2jfr")
 [node name="OmniLight3D" type="OmniLight3D" parent="dylansHouse" unique_id=681201228]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.74715996, 4.077766, 0)
 
+[node name="sketchSpawn" type="Marker3D" parent="dylansHouse" unique_id=605278376]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6577364, -1.6601996)
+
 [node name="treeCycle" type="Area3D" parent="." unique_id=903628053]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -27.236876, 0)
 script = ExtResource("39_c6pm6")
@@ -3235,7 +3502,7 @@ mesh = SubResource("PlaneMesh_7xd8p")
 surface_material_override/0 = SubResource("StandardMaterial3D_jod2s")
 
 [node name="sketch" parent="." unique_id=775577464 instance=ExtResource("63_ro3en")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.782085, 0.35306692, -5.3672447)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2006125, 0.35306692, 6.622495)
 mesh = ExtResource("68_xljpf")
 sketch = ExtResource("69_j4bwh")
 
@@ -3342,5 +3609,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.988041, 0)
 mesh = SubResource("PlaneMesh_ffcr4")
 surface_material_override/0 = SubResource("ShaderMaterial_d5iq4")
 
+[node name="sketch2" parent="." unique_id=823275716 instance=ExtResource("63_ro3en")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 140.50497, 2.8908088, -28.15929)
+mesh = ExtResource("77_ygd8o")
+sketch = ExtResource("77_ksmap")
+sketchName = "bench"
+
 [connection signal="animation_finished" from="player/AnimationPlayer" to="player" method="animDone"]
+[connection signal="pressed" from="CanvasLayer/pauseMenu/pauseMenu/Save" to="CanvasLayer/pauseMenu" method="_on_save_pressed"]
 [connection signal="timeout" from="audio/musicOverride" to="audio" method="_on_music_override_timeout"]

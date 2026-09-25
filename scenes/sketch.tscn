@@ -10,6 +10,7 @@ size = Vector3(0.9885254, 0.16606903, 0.7611084)
 
 [node name="sketch" type="RigidBody3D" unique_id=775577464 groups=["sketch"]]
 script = ExtResource("1_ysbar")
+sketchName = "garage"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=835017271]
 mesh = SubResource("BoxMesh_ro3en")
