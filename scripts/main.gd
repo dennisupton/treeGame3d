@@ -326,23 +326,30 @@ func harness():   #TESTHARNESS
 	autosaveLeft = 999999.0
 	worldReady = true
 	await get_tree().physics_frame
-	var region = $NavigationRegion3D
-	var nm = region.navigation_mesh
-	print("H navmesh aabb (local): %s" % [nm.get_vertices().size() > 0])
-	var lo = Vector3(1e9,1e9,1e9)
-	var hi = Vector3(-1e9,-1e9,-1e9)
-	for v in nm.get_vertices():
-		lo = Vector3(minf(lo.x,v.x), minf(lo.y,v.y), minf(lo.z,v.z))
-		hi = Vector3(maxf(hi.x,v.x), maxf(hi.y,v.y), maxf(hi.z,v.z))
-	print("H navmesh covers x %.0f..%.0f  z %.0f..%.0f" % [lo.x, hi.x, lo.z, hi.z])
-
 	var mayor = $NPCs/mayor
-	for spot in [mayor.global_position + Vector3(55, 0, 30), Vector3(140, 0, -28)]:
-		mayor.nav.target_position = spot
-		await get_tree().physics_frame
-		await get_tree().physics_frame
-		var final = mayor.nav.get_final_position()
-		print("H target (%.0f, %.0f): reachable=%s, path ends %.1f units short"
-			% [spot.x, spot.z, mayor.nav.is_target_reachable(), final.distance_to(spot)])
+	var bench = load("res://scenes/bench.tscn").instantiate()
+	bench.name = "bench"
+	add_child(bench)
+	bench.global_position = Vector3(170, 0, 40)   # well outside the baked navmesh
+	bench.trees = bench.treesNeeded
+	bench.reveal()
+	var seat = bench.get_node("mayorSeat")
+	mayor.nav.target_position = seat.global_position
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	print("H seat %.0f units away, pathable=%s" % [mayor.flatTo(seat.global_position).length(), mayor.nav.is_target_reachable()])
+
+	$NPCs.play("mayorBench")
+	var jumped = 0.0
+	var last = mayor.global_position
+	var t = 0.0
+	while t < 120.0 and not mayor.seated:
+		await get_tree().process_frame
+		t += get_process_delta_time()
+		jumped = maxf(jumped, mayor.global_position.distance_to(last))
+		last = mayor.global_position
+	print("H seated after %.1fs, biggest single-frame jump %.3f units" % [t, jumped])
+	print("H final gap to seat %.2f, seated=%s, beeline cleared=%s"
+		% [mayor.flatTo(seat.global_position).length(), mayor.seated, mayor.beeline == Vector3.ZERO])
 	worldReady = false
 	get_tree().quit()

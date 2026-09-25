@@ -117,6 +117,22 @@ func stopWalking(npc) -> void:
 	npc.nav.target_position = npc.global_position
 
 
+# wait while they are still closing the gap; give up once they have been stuck a while
+func walkTo(npc, pos: Vector3, patience: float) -> void:
+	var closest = INF
+	var still = 0.0
+	while patience > 0.0 and still < 3.0:
+		if npc.flatTo(pos).length() < 0.8:
+			return
+		await get_tree().process_frame
+		var step = get_process_delta_time()
+		patience -= step
+		still += step
+		var gap = npc.flatTo(pos).length()
+		if gap < closest - 0.1:
+			closest = gap
+			still = 0.0
+
 func waitUntil(cond: Callable) -> void:
 	while not cond.call():
 		await get_tree().process_frame
@@ -484,26 +500,15 @@ func mayorBench(s):
 		return
 	await s.take([mayor])
 	s.gate = mayor
-	# he walks the whole way, however far the bench was built. a flat timeout made him
-	# pop onto the seat on a long walk, so this waits on progress instead: he keeps
-	# going as long as he is getting closer, and only gives up once he has been stuck
-	# for a few seconds (a bench somewhere he genuinely cannot path to).
+	# path as far as the navmesh goes, then walk the rest straight. the mesh is baked
+	# at startup and the bench gets built outside it, so pathing alone leaves him
+	# stranded and he used to pop onto the seat from wherever he stopped.
 	var seat = bench.get_node("mayorSeat")
 	mayor.goto("bench")
-	var closest = INF
-	var still = 0.0
-	var left = 180.0
-	while left > 0.0 and still < 4.0:
-		var gap = mayor.flatTo(seat.global_position).length()
-		if gap < 0.8:
-			break
-		await get_tree().process_frame
-		var step = get_process_delta_time()
-		left -= step
-		still += step
-		if gap < closest - 0.1:
-			closest = gap
-			still = 0.0
+	await walkTo(mayor, seat.global_position, 120.0)
+	if mayor.flatTo(seat.global_position).length() > 0.8:
+		mayor.beeline = seat.global_position
+		await walkTo(mayor, seat.global_position, 120.0)
 	mayor.sitAt(seat)
 	await waitUntil(func(): return $"../player".sitting)
 	# nothing but the river from here. the override goes on first, or audio.gd sees a

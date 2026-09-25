@@ -68,6 +68,7 @@ var letterTimer = 0.0   # ms accumulated toward the next letter
 var soundTimer = 0.0    # ms accumulated toward the next blip
 var lookTarget = null   # a node to face instead of the player, or null
 var seated = false      # sat down: hold still and face where you were put
+var beeline = Vector3.ZERO   # walk straight at this, for where the navmesh cannot reach
 var wantsBubble = false # there's something worth showing, range permitting
 var bubbleShown = false # whether the bubble is currently popped in
 var scene = null        # the Cutscene driving this npc right now, or null
@@ -150,7 +151,9 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	if activity == "tag":
+	if beeline != Vector3.ZERO:
+		beelineStep()
+	elif activity == "tag":
 		tagStep()
 	else:
 		navStep()
@@ -201,6 +204,7 @@ func lookAtNode(who) -> void:
 # park on a seat marker, facing wherever it faces
 func sitAt(marker) -> void:
 	# drop whatever walk was in progress first, or navStep picks it straight back up
+	beeline = Vector3.ZERO
 	whereTo = ""
 	gotoPending = 0
 	gotoId += 1
@@ -579,6 +583,21 @@ func tagStep():
 			changeDir()
 	else:
 		stopMove(speed)
+	move_and_slide()
+
+# the navmesh is baked once at startup, so anything built outside it can't be pathed
+# to. this walks straight at a point instead, the way tag steers.
+func beelineStep() -> void:
+	var dir = flatTo(beeline)
+	if dir.length() < 0.8:
+		beeline = Vector3.ZERO
+		stopMove(moveSpeed)
+		return
+	dir = dir.normalized()
+	faceDir(dir, rotationSpeed)
+	playMove()
+	velocity.x = dir.x * moveSpeed
+	velocity.z = dir.z * moveSpeed
 	move_and_slide()
 
 func navStep():
